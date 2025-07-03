@@ -6,7 +6,11 @@ const authRoutes = require("./routes/authRoutes.js")
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173", // your React app's URL
+  credentials: true
+}));
+
 app.use(express.json());
 
 connectDB();

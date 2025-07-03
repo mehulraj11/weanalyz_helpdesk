@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import "../styles/signin.css";
-import { Link } from "react-router-dom";;
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Signin() {
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
     email: "",
+    password: "",
   });
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -16,25 +18,36 @@ function Signin() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    // TODO: Send to backend
+    setError("");
+
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", formData);
+      const { token, user } = res.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      navigate("/main");
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed");
+    }
   };
 
   return (
     <div className="app-wrapper">
       <div className="helpdesk-container">
         <h1 className="helpdesk-title">Helpdesk System</h1>
-        <h2 className="helpdesk-title">Sign up here</h2>
 
         <form onSubmit={handleSubmit}>
           <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={formData.username}
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
             onChange={handleChange}
+            required
           />
           <input
             type="password"
@@ -42,27 +55,31 @@ function Signin() {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
+            required
           />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <button type="submit">Sign Up</button>
+
+          <button type="submit" style={{ backgroundColor: "green" }}>
+            Sign In
+          </button>
 
           <div className="redirect">
             <Link to="/forgotpassword" style={{ color: "red" }}>
               Forgot Password
             </Link>
-            <Link to="/signin">Sign In</Link>
+            <Link to="/signup" style={{ color: "black" }}>
+              Sign Up
+            </Link>
           </div>
+
+          {error && (
+            <p style={{ color: "red", marginTop: "15px", fontWeight: "bold" }}>
+              {error}
+            </p>
+          )}
         </form>
       </div>
     </div>
   );
 }
 
-
-export default Signin
+export default Signin;
