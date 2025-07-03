@@ -1,18 +1,17 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import SignUp from "./pages/Signup";
-import SignIn from "./pages/Signin";
-import ForgotPassword from "./pages/Forgotpwd";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import Signin from "./pages/Signin";
+import Signup from "./pages/Signup";
+import ForgotPwd from "./pages/ForgotPwd";
 function App() {
   return (
     <Router>
-      <div className="app-wrapper">
+      <div>
         <Routes>
-          <Route path="/" element={<SignUp />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/" element={<Signin />}></Route>
+          <Route path="/signup" element={<Signup />}></Route>
+          <Route path="/forgotpassword" element={<ForgotPwd />}></Route>
         </Routes>
       </div>
     </Router>

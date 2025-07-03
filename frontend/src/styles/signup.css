@@ -1,0 +1,66 @@
+.app-wrapper {
+  /* border: 1px solid black; */
+  background-color: #55d6c2;
+}
+
+.helpdesk-container {
+  height: 100vh;
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  background-color: #94f9ea;
+  width: 40%;
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+input {
+  font-size: 1rem;
+  padding: 1rem;
+  margin: 10px 0;
+  border-radius: 4px;
+  /* border: 1px solid #aaa; */
+}
+
+button {
+  margin: 10px auto 0;
+  width: 150px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  background-color: #3066be;
+  padding: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1e4ca2;
+}
+
+.redirect {
+  background-color: #94f9ea;
+
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.redirect a {
+  text-decoration: none;
+  color: #3066be;
+}
+
+.redirect a:hover {
+  text-decoration: underline;
+}
