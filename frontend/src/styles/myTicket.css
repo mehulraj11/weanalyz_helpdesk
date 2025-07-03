@@ -1,0 +1,117 @@
+.myticket-wrapper {
+  /* padding: 1rem; */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: white;
+  /* min-height: 100vh; */
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  padding: 4px 8px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: transparent;
+}
+
+.search-bar button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding-left: 4px;
+}
+
+.show-entries {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ticket-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.ticket-table th,
+.ticket-table td {
+  border: none;
+  padding: 10px;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.ticket-table thead {
+  background-color: white;
+  border-bottom: 2px solid #ccc;
+}
+
+.ticket-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.ticket-table tbody tr:nth-child(odd) {
+  background-color: #e5e5e5;
+}
+
+.ticket-table a {
+  color: blue;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.status-badge {
+  font-weight: bold;
+  font-size: 0.9rem;
+  display: inline-block;
+  min-width: 80px;
+  text-align: center;
+}
+
+.footer-section {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  border-top: 1px solid #ccc;
+  font-size: 0.9rem;
+}
+
+.pagination-controls {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.footer-area {
+  margin-top: 1rem;
+  background-color: #55d6c2;
+  text-align: center;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #111;
+}

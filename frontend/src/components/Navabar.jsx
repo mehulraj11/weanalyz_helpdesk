@@ -2,6 +2,7 @@ import React from "react";
 import { IoNotifications, IoPerson } from "react-icons/io5";
 import { TbLogout } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import ico from "../images/Vector(1).png"
 import "../styles/navbar.css";
 
 function Navbar() {
@@ -17,7 +18,7 @@ function Navbar() {
     <div className="wrapper">
       <div className="title">Helpdesk</div>
       <ul className="nav-icons">
-        <li>bm/bi</li>
+        {/* <li><img src={ico} /></li> */}
         <li><IoNotifications size={22} color="black" /></li>
         <li><IoPerson size={22} color="black" /></li>
         <li onClick={handleLogout} style={{ cursor: "pointer" }}>
