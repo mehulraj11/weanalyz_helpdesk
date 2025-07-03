@@ -29,7 +29,7 @@ function Signin() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      navigate("/main");
+      navigate("/mainpage");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }
