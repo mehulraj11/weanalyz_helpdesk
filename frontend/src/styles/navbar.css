@@ -1,0 +1,29 @@
+.wrapper {
+  background-color: #55d6c2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  color: white;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-icons li {
+  list-style: none;
+  color: black;
+  font-size: 1rem;
+  cursor: pointer;
+}

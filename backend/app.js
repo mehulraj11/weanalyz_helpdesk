@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/database.js");
 const authRoutes = require("./routes/authRoutes.js")
+const ticketRoutes = require("./routes/ticketRoutes.js")
 dotenv.config();
 const app = express();
 
@@ -16,7 +17,7 @@ app.use(express.json());
 connectDB();
 
 app.use("/api/auth", authRoutes);
-
+app.use("/api/tickets", ticketRoutes)
 app.get("/", (req, res) => {
   res.send("Helpdesk API Running");
 });
