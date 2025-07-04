@@ -7,16 +7,13 @@ const ticketRoutes = require("./routes/ticketRoutes.js")
 dotenv.config();
 const app = express();
 
-import cors from "cors";
-
 const allowedOrigins = [
-  "http://localhost:5173", // for local dev
-  "https://weanalyz-helpdesk-frontend.vercel.app", // (optional) for deployed frontend
+  "http://localhost:5173",
+  "https://weanalyz-helpdesk-frontend.vercel.app",
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
