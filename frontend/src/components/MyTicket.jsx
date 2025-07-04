@@ -19,8 +19,12 @@ function MyTicket() {
     const fetchTickets = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/tickets/getalltickets"
+          `${import.meta.env.VITE_BACKEND_URL}/tickets/getalltickets`,
+          {
+            withCredentials: true,
+          }
         );
+
         setTickets(res.data);
       } catch (error) {
         console.error("Error fetching tickets:", error);

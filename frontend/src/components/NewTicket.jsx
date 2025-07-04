@@ -1,10 +1,8 @@
-import React, { useState, useRef } from "react";
-// import ReCAPTCHA from "react-google-recaptcha";
-import api from "../api/axios";
+import React, { useState } from "react";
+import axios from "axios";
 import "../styles/newTicket.css";
 
 function NewTicket() {
-  //   const captchaRef = useRef();
   const [ticketData, setTicketData] = useState({
     ticketNo: "",
     date: "",
@@ -30,14 +28,25 @@ function NewTicket() {
     if (file) {
       setTicketData((prev) => ({
         ...prev,
-        image: file.name, 
+        image: file.name,
       }));
     }
   };
 
   const handleSubmit = async () => {
     try {
-      await api.post("/tickets/create", ticketData);
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/tickets/create`,
+        {
+          withCredentials: true,
+        },
+        ticketData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       alert("Ticket created successfully!");
       console.log(res.data);
     } catch (err) {
