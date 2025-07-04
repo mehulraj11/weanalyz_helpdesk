@@ -82,13 +82,13 @@ function Signup() {
             <option value="technical">Technical Team</option>
             <option value="admin">Admin</option>
           </select>
-          <button type="submit">Sign Up</button>
+          <button type="submit" className="signupbutton">Sign Up</button>
 
           <div className="redirect">
             <Link to="/forgotpassword" style={{ color: "red" }}>
               Forgot Password
             </Link>
-            <Link to="/">Sign In</Link>
+            <Link to="/" style={{color:"black"}}>Sign In</Link>
           </div>
 
           {message && (

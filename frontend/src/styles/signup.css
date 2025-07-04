@@ -30,7 +30,8 @@ input {
   /* border: 1px solid #aaa; */
 }
 
-button {
+.signupbutton {
+  background-color: #3066be;
   margin: 10px auto 0;
   width: 150px;
   font-size: 1rem;
@@ -42,9 +43,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #1e4ca2;
-}
 
 .redirect {
   background-color: #94f9ea;
