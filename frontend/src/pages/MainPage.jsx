@@ -8,6 +8,8 @@ import Performance from "../components/Performance";
 import Setting from "../components/Setting";
 import TicketApproval from "../components/TicketApproval";
 import UserLogHistory from "../components/UserLogHistory";
+import UserProfile from "../components/UserProfile";
+import UserProfileSetting from "../components/UserProfileSetting";
 import "../styles/mainpage.css";
 
 function MainPage() {
@@ -20,7 +22,6 @@ function MainPage() {
 
   const { role } = user;
 
-  // Define accessible components based on role
   const componentsMap = {
     dashboard: <Dashboard />,
     newticket: <NewTicket />,
@@ -30,6 +31,8 @@ function MainPage() {
     setting: <Setting />,
     database: <Database />,
     userlog: <UserLogHistory />,
+    userprofile: <UserProfile setSelected={setSelected} />, // 👈 Pass setSelected
+    userprofilesetting: <UserProfileSetting />,
   };
 
   const roleOptions = {
@@ -40,30 +43,30 @@ function MainPage() {
   };
 
   return (
-  <div className="main-wrapper">
-    <Navabar />
-    <div className="content-area">
-      {/* Sidebar */}
-      <div className="sidebar">
-        {roleOptions[role].map((key) => (
-          <button
-            key={key}
-            className="side-btn"
-            onClick={() => setSelected(key)}
-          >
-            {key.toUpperCase()}
-          </button>
-        ))}
-      </div>
+    <div className="main-wrapper">
+      <Navabar onSelect={setSelected} /> {/* ✅ Pass function to navbar */}
+      <div className="content-area">
+        {/* Sidebar */}
+        <div className="sidebar">
+          {roleOptions[role].map((key) => (
+            <button
+              key={key}
+              className="side-btn"
+              onClick={() => setSelected(key)}
+            >
+              {key.toUpperCase()}
+            </button>
+          ))}
+        </div>
 
-      {/* Main Display Area with Footer */}
-      <div className="main-section">
-        <div className="main-content">{componentsMap[selected]}</div>
-        <footer className="footer">Footer Area</footer>
+        {/* Main Display Area */}
+        <div className="main-section">
+          <div className="main-content">{componentsMap[selected]}</div>
+          <footer className="footer">Footer Area</footer>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default MainPage;

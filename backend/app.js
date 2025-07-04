@@ -18,9 +18,7 @@ connectDB();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/tickets", ticketRoutes)
-app.get("/", (req, res) => {
-  res.send("Helpdesk API Running");
-});
+
 
 app.listen(process.env.PORT, () =>
   console.log(`Server running on port ${process.env.PORT}`)

@@ -1,0 +1,91 @@
+.profile-container {
+  padding: 20px;
+  background: white;
+}
+
+.profile-heading {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.profile-main {
+    height: 60vh;
+  display: flex;
+  gap: 40px;
+  background-color: #96e5dd;
+  padding: 40px;
+  border-radius: 10px;
+}
+
+.profile-card {
+    height: 50vh;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.edit-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.user-icon {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.user-info {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.feedback-card {
+    height: 30vh;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  width: 280px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.feedback-card h4 {
+  margin-bottom: 10px;
+}
+
+.feedback-text {
+  width: 100%;
+  resize: none;
+  border: 1px solid gray;
+  background-color: #c1bdbd;
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  font-family: sans-serif;
+}
+
+.star-rating {
+  font-size: 24px;
+  color: gray;
+  margin-bottom: 10px;
+}
+
+.submit-btn {
+  background-color: #46cbb3;
+  border: none;
+  padding: 10px 0px;
+  color: black;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.submit-btn:hover {
+  background-color: #36b2a0;
+}

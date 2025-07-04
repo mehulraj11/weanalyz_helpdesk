@@ -1,0 +1,139 @@
+.approval-wrapper {
+  padding: 20px;
+  background-color: white;
+}
+
+.approval-heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.approval-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* 🔍 Search bar styling */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  padding: 4px 8px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: transparent;
+}
+
+.search-bar button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding-left: 4px;
+  color: black;
+}
+
+/* 🔽 Entry control under search */
+.entry-control {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.entry-control select {
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #777;
+  background-color: #ccc;
+}
+
+/* 📋 Table styling */
+.approval-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-family: sans-serif;
+}
+
+.approval-table th,
+.approval-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border: none;
+}
+
+/* 👇 Row alternation */
+.approval-table tbody tr:nth-child(odd) {
+  background-color: #d3d3d3; /* light gray */
+}
+
+.approval-table tbody tr:nth-child(even) {
+  background-color: #a9a9a9; /* gray */
+}
+
+/* 🔗 Ticket No. */
+.ticket-link {
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ✔️ ❌ Icons */
+.action-icons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+.approve {
+  color: black;
+  cursor: pointer;
+}
+
+.reject {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  border: none;
+}
+
+
+/* ⬇️ Assign button */
+.assign-btn {
+  background-color: #bbb;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Footer */
+.approval-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.pagination {
+  font-weight: bold;
+}

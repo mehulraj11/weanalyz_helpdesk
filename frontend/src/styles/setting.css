@@ -1,0 +1,67 @@
+.settings-container {
+  padding: 20px;
+  background-color: white;
+  min-height: 100vh;
+}
+
+.settings-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.setting-section {
+  margin-bottom: 10px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.section-header {
+  background-color: #50d1c4;
+  padding: 10px 20px;
+  font-weight: bold;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.section-items {
+  background-color: #eee;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+  font-size: 16px;
+}
+
+.setting-item:nth-child(even) {
+  background-color: #ddd;
+}
+
+.badge {
+  background-color: black;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.check-icon {
+  color: black;
+  font-size: 16px;
+}
+
+.dropdown {
+  background-color: #bbb;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+}

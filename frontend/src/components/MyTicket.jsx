@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
+import TicketDetails from "./TicketDetails"; // Make sure this path is correct
 import axios from "axios";
 import "../styles/myTicket.css";
 
 function MyTicket() {
   const [tickets, setTickets] = useState([]);
+  const [selectedTicket, setSelectedTicket] = useState(null);
 
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/tickets/getalltickets");
+        const res = await axios.get(
+          "http://localhost:5000/api/tickets/getalltickets"
+        );
         setTickets(res.data);
       } catch (error) {
         console.error("Error fetching tickets:", error);
@@ -35,6 +39,14 @@ function MyTicket() {
   return (
     <div className="myticket-wrapper">
       <h2 className="title">List of Ticket</h2>
+
+      {/* Modal when ticket is selected */}
+      {selectedTicket && (
+        <TicketDetails
+          ticket={selectedTicket}
+          onClose={() => setSelectedTicket(null)}
+        />
+      )}
 
       <div className="controls">
         <div className="search-bar">
@@ -66,11 +78,13 @@ function MyTicket() {
         </thead>
         <tbody>
           {tickets.map((ticket) => (
-            <tr key={ticket._id}>
+            <tr
+              key={ticket._id}
+              onClick={() => setSelectedTicket(ticket)}
+              style={{ cursor: "pointer" }}
+            >
               <td>
-                <a href="#" style={{ color: "blue" }}>
-                  {ticket.ticketNo}
-                </a>
+                <span style={{ color: "blue" }}>{ticket.ticketNo}</span>
               </td>
               <td>{ticket.subject}</td>
               <td>
@@ -86,12 +100,11 @@ function MyTicket() {
                   {ticket.status || "Pending"}
                 </span>
               </td>
-              <td>{ticket.createdBy?.role || "User"}</td> {/* Fallback */}
+              <td>{ticket.createdBy?.role || "User"}</td>
               <td>
                 {ticket.date ? new Date(ticket.date).toLocaleDateString() : "-"}
               </td>
-              <td>{renderStars(ticket.rating || 0)}</td>{" "}
-              {/* Will render 0 stars for now */}
+              <td>{renderStars(ticket.rating || 0)}</td>
             </tr>
           ))}
         </tbody>
@@ -103,8 +116,6 @@ function MyTicket() {
         </span>
         <span className="pagination-controls">≪ 1 ≫</span>
       </div>
-
-      <footer className="footer-area">Footer Area</footer>
     </div>
   );
 }
