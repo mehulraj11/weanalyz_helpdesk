@@ -28,9 +28,10 @@ function Signup() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${import.meta.env.VITE_BACKEND_URL}/auth/register`,
         formData
       );
+
       setMessage(res.data.message || "Signup successful!");
       setTimeout(() => {
         navigate("/");
@@ -43,10 +44,16 @@ function Signup() {
   return (
     <div className="app-wrapper">
       <div className="helpdesk-container">
-
         <form onSubmit={handleSubmit}>
-        <h1 className="helpdesk-title" style={{marginBottom:"20px", fontStyle:"italic"}}>Helpdesk System</h1>
-        <p className="helpdesk-title" style={{fontSize:"1.5rem"}}>Sign up here</p>
+          <h1
+            className="helpdesk-title"
+            style={{ marginBottom: "20px", fontStyle: "italic" }}
+          >
+            Helpdesk System
+          </h1>
+          <p className="helpdesk-title" style={{ fontSize: "1.5rem" }}>
+            Sign up here
+          </p>
           <input
             type="text"
             name="username"
@@ -82,13 +89,17 @@ function Signup() {
             <option value="technical">Technical Team</option>
             <option value="admin">Admin</option>
           </select>
-          <button type="submit" className="signupbutton">Sign Up</button>
+          <button type="submit" className="signupbutton">
+            Sign Up
+          </button>
 
           <div className="redirect">
             <Link to="/forgotpassword" style={{ color: "red" }}>
               Forgot Password
             </Link>
-            <Link to="/" style={{color:"black"}}>Sign In</Link>
+            <Link to="/" style={{ color: "black" }}>
+              Sign In
+            </Link>
           </div>
 
           {message && (
