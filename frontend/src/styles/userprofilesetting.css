@@ -10,7 +10,6 @@
   margin-bottom: 20px;
 }
 
-/* Tab */
 .tab {
   margin-bottom: 0;
 }
@@ -30,7 +29,6 @@
   color: black;
 }
 
-/* Form Layout */
 .settings-form {
     width: 100%;
   display: grid;
@@ -43,7 +41,7 @@
 }
 
 .form-row {
-  display: contents; /* Makes label + input use grid columns */
+  display: contents; 
 }
 
 .settings-form label {
@@ -68,7 +66,6 @@
   color: #999;
 }
 
-/* Submit Button */
 .update-btn {
   /* grid-column: 1 / span 2; */
   /* margin: 20px auto; */

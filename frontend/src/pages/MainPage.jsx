@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Dashboard from "../components/Dashboard";
 import Database from "../components/Database";
 import MyTicket from "../components/MyTicket";
@@ -31,7 +30,7 @@ function MainPage() {
     setting: <Setting />,
     database: <Database />,
     userlog: <UserLogHistory />,
-    userprofile: <UserProfile setSelected={setSelected} />, // 👈 Pass setSelected
+    userprofile: <UserProfile setSelected={setSelected} />,
     userprofilesetting: <UserProfileSetting />,
   };
 
@@ -44,7 +43,7 @@ function MainPage() {
 
   return (
     <div className="main-wrapper">
-      <Navabar onSelect={setSelected} /> {/* ✅ Pass function to navbar */}
+      <Navabar onSelect={setSelected} /> 
       <div className="content-area">
         {/* Sidebar */}
         <div className="sidebar">

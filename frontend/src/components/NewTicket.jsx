@@ -15,7 +15,6 @@ function NewTicket() {
     type: "",
     priority: "",
     description: "",
-    image: "", // optional
   });
 
   const handleChange = (e) => {
@@ -31,7 +30,7 @@ function NewTicket() {
     if (file) {
       setTicketData((prev) => ({
         ...prev,
-        image: file.name, // only saving filename for now
+        image: file.name, 
       }));
     }
   };

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FaSearch, FaTrash, FaPen } from "react-icons/fa";
+import { useState } from "react";
+import { FaSearch } from "react-icons/fa";
 import "../styles/database.css";
 
 const Database = () => {
@@ -65,8 +65,6 @@ const Database = () => {
               <td>{entry.department}</td>
               <td>{entry.specialty}</td>
               <td className="actions">
-                {/* <FaPen className="edit-icon" /> */}
-                {/* <FaTrash className="delete-icon" /> */}
               </td>
             </tr>
           ))}

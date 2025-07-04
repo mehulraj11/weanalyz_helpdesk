@@ -1,11 +1,19 @@
-import React, { useEffect, useState } from "react";
-import TicketDetails from "./TicketDetails"; // Make sure this path is correct
+import { useEffect, useState } from "react";
+import TicketDetails from "./TicketDetails";
+import TeamCreationModal from "./TeamCreationModal";
+import { FaSearch, FaEdit, FaTrash } from "react-icons/fa";
+import { MdOutlinePersonAdd } from "react-icons/md";
 import axios from "axios";
 import "../styles/myTicket.css";
 
 function MyTicket() {
   const [tickets, setTickets] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [showTeamModal, setShowTeamModal] = useState(false);
+  const [teamTicket, setTeamTicket] = useState(null);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = user?.role || "user";
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -39,8 +47,6 @@ function MyTicket() {
   return (
     <div className="myticket-wrapper">
       <h2 className="title">List of Ticket</h2>
-
-      {/* Modal when ticket is selected */}
       {selectedTicket && (
         <TicketDetails
           ticket={selectedTicket}
@@ -51,7 +57,9 @@ function MyTicket() {
       <div className="controls">
         <div className="search-bar">
           <input type="text" placeholder="Find ticket" />
-          <div>🔍</div>
+          <button>
+            <FaSearch color="black" />
+          </button>
         </div>
 
         <div className="show-entries">
@@ -70,41 +78,119 @@ function MyTicket() {
           <tr>
             <th>Ticket No.</th>
             <th>Subject</th>
-            <th>Status</th>
-            <th>Support by</th>
-            <th>Date</th>
-            <th>Rate</th>
+            {role === "user" ? (
+              <>
+                <th>Status</th>
+                <th>Support by</th>
+                <th>Date</th>
+                <th>Rate</th>
+              </>
+            ) : (
+              <>
+                <th>Category</th>
+                <th>Priority</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Person In Charge</th>
+                <th>Action</th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
           {tickets.map((ticket) => (
-            <tr
-              key={ticket._id}
-              onClick={() => setSelectedTicket(ticket)}
-              style={{ cursor: "pointer" }}
-            >
-              <td>
-                <span style={{ color: "blue" }}>{ticket.ticketNo}</span>
+            <tr key={ticket._id}>
+              <td
+                onClick={() => setSelectedTicket(ticket)}
+                style={{ color: "blue", cursor: "pointer" }}
+              >
+                {ticket.ticketNo}
               </td>
-              <td>{ticket.subject}</td>
-              <td>
-                <span
-                  className="status-badge"
-                  style={{
-                    backgroundColor: statusColors[ticket.status] || "gray",
-                    color: "white",
-                    padding: "2px 10px",
-                    borderRadius: "10px",
-                  }}
-                >
-                  {ticket.status || "Pending"}
-                </span>
+              <td
+                onClick={() => setSelectedTicket(ticket)}
+                style={{ cursor: "pointer" }}
+              >
+                {ticket.subject}
               </td>
-              <td>{ticket.createdBy?.role || "User"}</td>
-              <td>
-                {ticket.date ? new Date(ticket.date).toLocaleDateString() : "-"}
-              </td>
-              <td>{renderStars(ticket.rating || 0)}</td>
+
+              {role === "user" ? (
+                <>
+                  <td>
+                    <span
+                      className="status-badge"
+                      style={{
+                        backgroundColor: statusColors[ticket.status] || "gray",
+                        color: "white",
+                        padding: "2px 10px",
+                        borderRadius: "10px",
+                      }}
+                    >
+                      {ticket.status || "Pending"}
+                    </span>
+                  </td>
+                  <td>{ticket.createdBy?.role || "User"}</td>
+                  <td>
+                    {ticket.date
+                      ? new Date(ticket.date).toLocaleDateString()
+                      : "-"}
+                  </td>
+                  <td>{renderStars(ticket.rating || 0)}</td>
+                </>
+              ) : (
+                <>
+                  <td>{ticket.category || "-"}</td>
+                  <td>{ticket.priority || "-"}</td>
+                  <td>
+                    {ticket.date
+                      ? new Date(ticket.date).toLocaleDateString()
+                      : "-"}
+                  </td>
+                  <td>
+                    <span
+                      className="status-badge"
+                      style={{
+                        backgroundColor: statusColors[ticket.status] || "gray",
+                        color: "white",
+                        padding: "2px 10px",
+                        borderRadius: "10px",
+                      }}
+                    >
+                      {ticket.status || "Pending"}
+                    </span>
+                  </td>
+                  <td>{ticket.personInCharge || "Unassigned"}</td>
+                  <td className="action-icons">
+                    <button
+                      title="View"
+                      onClick={() => {
+                        setTeamTicket(ticket);
+                        setShowTeamModal(true);
+                      }}
+                    >
+                      <MdOutlinePersonAdd size={20} color="black" />
+                    </button>
+
+                    <button
+                      title="Edit"
+                      onClick={() => console.log("Edit", ticket._id)}
+                    >
+                      <FaEdit size={14} color="black" />
+                    </button>
+                    <button
+                      title="Delete"
+                      onClick={() => console.log("Delete", ticket._id)}
+                    >
+                      <FaTrash size={14} color="black" />
+                    </button>
+                  </td>
+                  {showTeamModal && (
+                    <TeamCreationModal
+                      ticket={teamTicket}
+                      onClose={() => setShowTeamModal(false)}
+                    />
+                  )}
+                </>
+              )}
             </tr>
           ))}
         </tbody>

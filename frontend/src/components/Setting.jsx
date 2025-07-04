@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { FaCheck, FaChevronDown } from "react-icons/fa";
 import "../styles/setting.css";
 

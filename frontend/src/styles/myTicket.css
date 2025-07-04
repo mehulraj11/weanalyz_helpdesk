@@ -1,8 +1,6 @@
 .myticket-wrapper {
-  /* padding: 1rem; */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: white;
-  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
 }
@@ -91,6 +89,30 @@
   display: inline-block;
   min-width: 80px;
   text-align: center;
+}
+
+.action-icons {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0;
+}
+
+.action-icons button {
+  width: 0;
+  background: none;
+  border: none;
+  padding: 0 4px;
+  cursor: pointer;
+}
+
+.action-icons button svg {
+  font-size: 14px;
+  color: black;
+}
+
+.action-icons button:hover {
+  color: black;
 }
 
 .footer-section {

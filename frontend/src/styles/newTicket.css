@@ -116,7 +116,7 @@
   border: 1px solid #ccc;
   background-color: #e0e0e0;
   resize: none;
-  height: 100px; /* Reduced height */
+  height: 100px; 
 }
 
 .attach-floating {

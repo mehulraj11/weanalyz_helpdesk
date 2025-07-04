@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../styles/signin.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -23,7 +23,10 @@ function Signin() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", formData);
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        formData
+      );
       const { token, user } = res.data;
 
       localStorage.setItem("token", token);
@@ -38,9 +41,13 @@ function Signin() {
   return (
     <div className="app-wrapper">
       <div className="helpdesk-container">
-        <h1 className="helpdesk-title">Helpdesk System</h1>
-
         <form onSubmit={handleSubmit}>
+          <h1
+            className="helpdesk-title"
+            style={{ fontStyle: "italic", marginBottom: "50px" }}
+          >
+            Helpdesk System
+          </h1>
           <input
             type="email"
             name="email"
@@ -58,7 +65,7 @@ function Signin() {
             required
           />
 
-          <button type="submit" style={{ backgroundColor: "green" }}>
+          <button type="submit" className="signinbtn">
             Sign In
           </button>
 

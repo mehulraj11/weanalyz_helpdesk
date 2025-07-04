@@ -32,7 +32,7 @@ const ticketSchema = new mongoose.Schema({
     },
     priority: {
         type: String,
-        enum: ["Low", "Medium", "High"], // optional constraint
+        enum: ["Low", "Medium", "High"], 
         required: true,
     },
     description: {
@@ -40,7 +40,7 @@ const ticketSchema = new mongoose.Schema({
         required: true,
     },
     image: {
-        type: String, // will store image URL or base64 or filename
+        type: String, 
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
@@ -48,7 +48,7 @@ const ticketSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        default: "Pending", // or "Open", "In Progress", "Resolved"
+        default: "Pending", 
     },
 }, { timestamps: true });
 

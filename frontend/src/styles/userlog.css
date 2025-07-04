@@ -32,16 +32,15 @@
 .log-table td {
   padding: 12px 10px;
   text-align: left;
-  border: none; /* Remove column borders */
+  border: none; 
 }
 
-/* Alternating row background colors */
 .log-table tbody tr:nth-child(even) {
-  background-color: #ddd; /* light gray */
+  background-color: #ddd;
 }
 
 .log-table tbody tr:nth-child(odd) {
-  background-color: #bbb; /* gray */
+  background-color: #bbb; 
 }
 
 .log-footer {

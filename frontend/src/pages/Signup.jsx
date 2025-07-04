@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../styles/signup.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -43,10 +43,10 @@ function Signup() {
   return (
     <div className="app-wrapper">
       <div className="helpdesk-container">
-        <h1 className="helpdesk-title">Helpdesk System</h1>
-        <h2 className="helpdesk-title">Sign up here</h2>
 
         <form onSubmit={handleSubmit}>
+        <h1 className="helpdesk-title" style={{marginBottom:"20px", fontStyle:"italic"}}>Helpdesk System</h1>
+        <p className="helpdesk-title" style={{fontSize:"1.5rem"}}>Sign up here</p>
           <input
             type="text"
             name="username"

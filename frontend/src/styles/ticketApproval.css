@@ -16,7 +16,6 @@
   margin-bottom: 15px;
 }
 
-/* 🔍 Search bar styling */
 .search-bar {
   display: flex;
   align-items: center;
@@ -43,7 +42,6 @@
   color: black;
 }
 
-/* 🔽 Entry control under search */
 .entry-control {
   display: flex;
   align-items: center;
@@ -58,7 +56,6 @@
   background-color: #ccc;
 }
 
-/* 📋 Table styling */
 .approval-table {
   width: 100%;
   border-collapse: collapse;
@@ -73,23 +70,20 @@
   border: none;
 }
 
-/* 👇 Row alternation */
 .approval-table tbody tr:nth-child(odd) {
-  background-color: #d3d3d3; /* light gray */
+  background-color: #d3d3d3; 
 }
 
 .approval-table tbody tr:nth-child(even) {
-  background-color: #a9a9a9; /* gray */
+  background-color: #a9a9a9;
 }
 
-/* 🔗 Ticket No. */
 .ticket-link {
   color: black;
   text-decoration: underline;
   cursor: pointer;
 }
 
-/* ✔️ ❌ Icons */
 .action-icons {
   display: flex;
   gap: 12px;
@@ -118,7 +112,6 @@
 }
 
 
-/* ⬇️ Assign button */
 .assign-btn {
   background-color: #bbb;
   border: none;
@@ -126,7 +119,6 @@
   cursor: pointer;
 }
 
-/* Footer */
 .approval-footer {
   display: flex;
   justify-content: space-between;

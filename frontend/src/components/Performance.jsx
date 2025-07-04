@@ -1,4 +1,3 @@
-import React from "react";
 import { IoMdPerson } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
 import "../styles/performance.css";
@@ -15,7 +14,6 @@ function Performance() {
       <h2 className="performance-title">Performance</h2>
 
       <div className="performance-content">
-        {/* Left Side */}
         <div className="left-panel">
           <div className="profile-box">
             <div className="profile-icon">
@@ -46,8 +44,6 @@ function Performance() {
             </div>
           </div>
         </div>
-
-        {/* Right Side */}
         <div className="right-panel">
           {teamMembers.map((member) => (
             <div key={member.id} className="member-card">

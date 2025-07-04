@@ -1,5 +1,4 @@
-import React from "react";
-import "../styles/userprofilesetting.css"; // You'll define this CSS
+import "../styles/userprofilesetting.css"; 
 
 function UserProfileSetting() {
   return (

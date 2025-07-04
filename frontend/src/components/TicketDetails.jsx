@@ -1,9 +1,9 @@
-
-import React from "react";
 import "../styles/ticketDetails.css";
 
-function TicketDetails({ ticket, onClose }) {
+function TicketDetails({ ticket, onClose, role }) {
   if (!ticket) return null;
+
+  const isUser = role === "user";
 
   return (
     <div className="modal-overlay">
@@ -19,10 +19,21 @@ function TicketDetails({ ticket, onClose }) {
         <p><strong>Status:</strong> {ticket.status}</p>
         <p><strong>Date:</strong> {new Date(ticket.date).toLocaleDateString()}</p>
         <p><strong>Description:</strong> {ticket.description}</p>
+        
         {ticket.image && (
-          <img src={`uploads/${ticket.image}`} alt="Attachment" style={{ width: "100px" }} />
+          <img
+            src={`uploads/${ticket.image}`}
+            alt="Attachment"
+            style={{ width: "100px" }}
+          />
         )}
-        <button className="close-btn" onClick={onClose}>Close</button>
+
+        <div className="btn-group">
+          <button className="close-btn" onClick={onClose}>Close</button>
+          {!isUser && (
+            <button className="update-btn">Update</button>
+          )}
+        </div>
       </div>
     </div>
   );

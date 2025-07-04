@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
 import { FaUserCircle, FaEdit } from "react-icons/fa";
 import "../styles/userProfile.css";
 
-function UserProfile({ setSelected }) { // 👈 accept setSelected
+function UserProfile({ setSelected }) { 
 
   const handleEditClick = () => {
-    setSelected("userprofilesetting"); // 👈 switch to settings
+    setSelected("userprofilesetting"); 
   };
 
   return (
