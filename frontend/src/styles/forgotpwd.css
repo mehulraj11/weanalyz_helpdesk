@@ -1,0 +1,24 @@
+.forgotsigninbtn {
+  background-color: #3066be;
+  margin: 10px auto 0;
+  width: 150px;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  /* background-color: #3066be !important; */
+  padding: 10px;
+  cursor: pointer;
+}
+.forgotsubmitbtn{
+     background-color: green;
+  margin: 10px auto 0;
+  width: 150px;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  /* background-color: #3066be !important; */
+  padding: 10px;
+  cursor: pointer; 
+}
