@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const morgan = require("morgan")
 const connectDB = require("./config/database.js");
 const authRoutes = require("./routes/authRoutes.js")
 const ticketRoutes = require("./routes/ticketRoutes.js")
@@ -23,7 +24,7 @@ app.use(cors({
   credentials: true
 }));
 
-
+app.use(morgan("dev"))
 app.use(express.json());
 
 connectDB();

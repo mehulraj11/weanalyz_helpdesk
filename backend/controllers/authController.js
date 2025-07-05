@@ -15,6 +15,7 @@ exports.register = async (req, res) => {
         const newUser = await User.create({ username, email, password: hashedPassword, role });
 
         res.status(201).json({ message: "User registered successfully" });
+        console.log(username + "registered")
     } catch (err) {
         res.status(500).json({ message: "Server error" });
     }
@@ -40,6 +41,7 @@ exports.login = async (req, res) => {
             token,
             user: { id: user._id, username: user.username, role: user.role },
         });
+        console.log(user.username + "logged")
     } catch (err) {
         res.status(500).json({ message: "Server error" });
     }
