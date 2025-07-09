@@ -70,11 +70,12 @@
   border: none;
 }
 
-.approval-table tbody tr:nth-child(odd) {
+.approval-table tbody tr {
   background-color: #d3d3d3; 
 }
 
-.approval-table tbody tr:nth-child(even) {
+.approval-table tbody tr:hover {
+  cursor: pointer;
   background-color: #a9a9a9;
 }
 
@@ -85,6 +86,7 @@
 }
 
 .action-icons {
+  /* border: 1px solid black; */
   display: flex;
   gap: 12px;
   justify-content: center;
@@ -97,18 +99,12 @@
 }
 
 .reject {
+  background-color: white;
+  font-size: 1rem;
+  font-weight: 700;
   background-color: black;
-  color: white;
+  color: red;
   cursor: pointer;
-  padding: 6px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  font-size: 14px;
-  border: none;
 }
 
 

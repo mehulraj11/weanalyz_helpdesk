@@ -12,7 +12,7 @@ import UserProfile from "../components/UserProfile";
 import UserProfileSetting from "../components/UserProfileSetting";
 import "../styles/mainpage.css";
 
-function MainPage() {
+function MainPage({ fetchTickets, tickets, setTickets }) {
   const user = JSON.parse(localStorage.getItem("user"));
   const [selected, setSelected] = useState("dashboard");
 
@@ -25,8 +25,20 @@ function MainPage() {
   const componentsMap = {
     dashboard: <Dashboard />,
     newticket: <NewTicket />,
-    myticket: <MyTicket />,
-    ticketapproval: <TicketApproval />,
+    myticket: (
+      <MyTicket
+        fetchTickets={fetchTickets}
+        tickets={tickets}
+        setTickets={setTickets}
+      />
+    ),
+    ticketapproval: (
+      <TicketApproval
+        fetchTickets={fetchTickets}
+        tickets={tickets}
+        setTickets={setTickets}
+      />
+    ),
     performance: <Performance />,
     setting: <Setting />,
     database: <Database />,
@@ -44,7 +56,7 @@ function MainPage() {
 
   return (
     <div className="main-wrapper">
-      <Navabar onSelect={setSelected} /> 
+      <Navabar onSelect={setSelected} />
       <div className="content-area">
         {/* Sidebar */}
         <div className="sidebar">

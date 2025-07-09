@@ -1,45 +1,45 @@
 import { FaCheck, FaTimes, FaChevronDown } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import "../styles/ticketApproval.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-function TicketApproval() {
-  const tickets = [
-    {
-      id: 1234,
-      subject: "Login issue",
-      category: "Access issue",
-      priority: "High",
-      date: "13/08/21",
-    },
-    {
-      id: 1124,
-      subject: "New ticket issue",
-      category: "Access issue",
-      priority: "Medium",
-      date: "14/08/21",
-    },
-    {
-      id: 1224,
-      subject: "New request",
-      category: "Feedback",
-      priority: "Low",
-      date: "13/08/21",
-    },
-    {
-      id: 1244,
-      subject: "Ticket submission",
-      category: "Ticketing",
-      priority: "High",
-      date: "14/08/21",
-    },
-    {
-      id: 1114,
-      subject: "Login issue",
-      category: "Access issue",
-      priority: "High",
-      date: "3/08/21",
-    },
-  ];
+function TicketApproval({ fetchTickets, tickets }) {
+  const [approvalAssignRole, setApprovalAssignRole] = useState({
+    assignedTo: "",
+  });
+  useEffect(() => {
+    fetchTickets();
+  }, []);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setApprovalAssignRole((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const handleSubmit = async () => {
+    if (!approvalAssignRole) return;
+
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/tickets/op_approvals`,
+        approvalAssignRole,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Response:", res.data);
+      alert("Assigned successfully!");
+    } catch (error) {
+      console.error("Error assigning:", error.response?.data || error.message);
+      alert("Failed to assign.");
+    }
+  };
 
   return (
     <div className="approval-wrapper">
@@ -82,24 +82,33 @@ function TicketApproval() {
         </thead>
         <tbody>
           {tickets.map((ticket, index) => (
-            <tr key={ticket.id}>
+            <tr key={ticket._id}>
               <td>
                 <a href="#" className="ticket-link">
-                  {ticket.id}
+                  {ticket.ticketNo}
                 </a>
               </td>
               <td>{ticket.subject}</td>
               <td>{ticket.category}</td>
               <td>{ticket.priority}</td>
-              <td>{ticket.date}</td>
+              <td>{ticket.date.split("T")[0]}</td>
               <td className="action-icons">
-                <FaCheck className="approve" />
-                <FaTimes className="reject" />
+                <button style={{ padding: "0px 10px" }} onClick={handleSubmit}>
+                  <FaCheck className="approve" />
+                </button>
+                <button className="reject">X</button>
               </td>
               <td>
-                <button className="assign-btn">
-                  <FaChevronDown />
-                </button>
+                <select
+                  name="assignedTo"
+                  value={approvalAssignRole.assignedTo}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="" disabled hidden></option>
+                  <option value="technical">Technical Team</option>
+                  <option value="operation">Operation Team</option>
+                </select>
               </td>
             </tr>
           ))}

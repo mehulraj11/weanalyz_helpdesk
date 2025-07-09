@@ -32,7 +32,7 @@ const ticketSchema = new mongoose.Schema({
     },
     priority: {
         type: String,
-        enum: ["Low", "Medium", "High"], 
+        enum: ["Low", "Medium", "High"],
         required: true,
     },
     description: {
@@ -40,7 +40,7 @@ const ticketSchema = new mongoose.Schema({
         required: true,
     },
     image: {
-        type: String, 
+        type: String,
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
@@ -48,8 +48,15 @@ const ticketSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        default: "Pending", 
+        enum: ["Pending", "In Progress", "Resolved"],
+        default: "Pending",
     },
+
+    assignedTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    },
+
 }, { timestamps: true });
 
 module.exports = mongoose.model("Ticket", ticketSchema);

@@ -1,9 +1,14 @@
+const mongoose = require("mongoose");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
     const { username, email, password, role } = req.body;
+    if (!username || !email || !password || !role) {
+        return res.status(400).json({ message: "All fields are required" });
+    }
+
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -23,6 +28,9 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required" });
+    }
     try {
         const user = await User.findOne({ email });
         if (!user) {
@@ -47,6 +55,11 @@ exports.login = async (req, res) => {
     }
 };
 exports.getUserById = async (req, res) => {
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ message: "Invalid user ID" });
+    }
+
     try {
         const user = await User.findById(req.params.id).select("username email role");
         if (!user) {

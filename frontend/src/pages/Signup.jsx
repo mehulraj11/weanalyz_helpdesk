@@ -63,18 +63,18 @@ function Signup() {
             required
           />
           <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          <input
             type="email"
             name="email"
             placeholder="Email"
             value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
             onChange={handleChange}
             required
           />

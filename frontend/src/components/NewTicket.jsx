@@ -15,6 +15,7 @@ function NewTicket() {
     description: "",
   });
 
+  const token = localStorage.getItem("token");
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTicketData((prev) => ({
@@ -34,15 +35,15 @@ function NewTicket() {
   };
 
   const handleSubmit = async () => {
+    console.log(ticketData);
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/tickets/create`,
-        {
-          withCredentials: true,
-        },
         ticketData,
         {
+          withCredentials: true,
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

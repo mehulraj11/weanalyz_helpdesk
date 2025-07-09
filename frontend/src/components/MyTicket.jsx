@@ -6,8 +6,8 @@ import { MdOutlinePersonAdd } from "react-icons/md";
 import axios from "axios";
 import "../styles/myTicket.css";
 
-function MyTicket() {
-  const [tickets, setTickets] = useState([]);
+function MyTicket({ fetchTickets, tickets, setTickets }) {
+  // const [tickets, setTickets] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [teamTicket, setTeamTicket] = useState(null);
@@ -16,20 +16,20 @@ function MyTicket() {
   const role = user?.role || "user";
 
   useEffect(() => {
-    const fetchTickets = async () => {
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/tickets/getalltickets`,
-          {
-            withCredentials: true,
-          }
-        );
+    // const fetchTickets = async () => {
+    //   try {
+    //     const res = await axios.get(
+    //       `${import.meta.env.VITE_BACKEND_URL}/tickets/getalltickets`,
+    //       {
+    //         withCredentials: true,
+    //       }
+    //     );
 
-        setTickets(res.data);
-      } catch (error) {
-        console.error("Error fetching tickets:", error);
-      }
-    };
+    //     setTickets(res.data);
+    //   } catch (error) {
+    //     console.error("Error fetching tickets:", error);
+    //   }
+    // };
 
     fetchTickets();
   }, []);
