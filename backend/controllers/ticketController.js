@@ -24,32 +24,44 @@ exports.totalTicket = async (req, res) => {
         const count = await Ticket.countDocuments();
         res.status(200).json({ totalTickets: count });
     } catch (err) {
+        console.log("Total Ticket Error : " + err.message);
         res.status(500).json({ message: "Error fetching ticket count" });
     }
 }
 exports.getAllTickets = async (req, res) => {
     try {
-        const tickets = await Ticket.find()
-            .populate("createdBy", "username role")
-            .populate("assignedTo", "username role");
+        const tickets = await Ticket.find({ assignedTo: req.user.id })
+            .populate("assignedTo", "username role")
+            .populate("createdBy", "username role");
+
         res.status(200).json(tickets);
     } catch (err) {
+        console.log("get All Ticket : " + err.message);
         res.status(500).json({ message: "Server error" });
     }
 };
 
 exports.getUserTickets = async (req, res) => {
     try {
-        const tickets = await Ticket.find({ createdBy: req.user.id });
+        let tickets;
+
+        if (req.user.role === "user") {
+            tickets = await Ticket.find({ createdBy: req.user.id });
+        } else {
+            tickets = await Ticket.find({ assignedTo: req.user.id });
+        }
+
         res.status(200).json(tickets);
     } catch (err) {
         res.status(500).json({ message: "Server error" });
     }
 };
 
+
 exports.op_approvals = async (req, res) => {
     try {
-        const { role, ticketId } = req.body;
+        const role = req.body.assignedTo;
+        const ticketId = req.user.id;
 
         if (!role || !ticketId)
             return res.status(400).json({ message: "Missing role or ticketId" });
@@ -67,7 +79,6 @@ exports.op_approvals = async (req, res) => {
         res.status(200).json({ message: "Ticket assigned", ticket: updatedTicket });
     } catch (err) {
         console.log("Ticket Approval Error : " + err.message);
-
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
@@ -86,6 +97,8 @@ exports.resolveTicket = async (req, res) => {
 
         res.status(200).json({ message: "Ticket resolved", ticket });
     } catch (err) {
+        console.log("Ticket reslove error : " + err.message);
+
         res.status(500).json({ message: "Server error" });
     }
 };

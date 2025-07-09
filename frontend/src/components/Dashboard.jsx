@@ -11,13 +11,16 @@ function Dashboard() {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const role = user?.role;
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchTicketCount = async () => {
       try {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/tickets/count`,
           {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
             withCredentials: true,
           }
         );

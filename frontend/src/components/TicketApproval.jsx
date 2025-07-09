@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function TicketApproval({ fetchTickets, tickets }) {
+  const token = localStorage.getItem("token");
   const [approvalAssignRole, setApprovalAssignRole] = useState({
     assignedTo: "",
   });
@@ -28,7 +29,9 @@ function TicketApproval({ fetchTickets, tickets }) {
         {
           withCredentials: true,
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
+            "Cache-Control": "no-cache",
           },
         }
       );

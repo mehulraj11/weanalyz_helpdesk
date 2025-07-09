@@ -6,8 +6,9 @@ import { MdOutlinePersonAdd } from "react-icons/md";
 import axios from "axios";
 import "../styles/myTicket.css";
 
-function MyTicket({ fetchTickets, tickets, setTickets }) {
+function MyTicket({ tickets, setTickets }) {
   // const [tickets, setTickets] = useState([]);
+  const token = localStorage.getItem("token");
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [teamTicket, setTeamTicket] = useState(null);
@@ -16,20 +17,25 @@ function MyTicket({ fetchTickets, tickets, setTickets }) {
   const role = user?.role || "user";
 
   useEffect(() => {
-    // const fetchTickets = async () => {
-    //   try {
-    //     const res = await axios.get(
-    //       `${import.meta.env.VITE_BACKEND_URL}/tickets/getalltickets`,
-    //       {
-    //         withCredentials: true,
-    //       }
-    //     );
+    const fetchTickets = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/tickets/my-tickets`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Cache-Control": "no-cache",
+            },
+            withCredentials: true,
+          }
+        );
+        console.log(res.data);
 
-    //     setTickets(res.data);
-    //   } catch (error) {
-    //     console.error("Error fetching tickets:", error);
-    //   }
-    // };
+        setTickets(res.data);
+      } catch (error) {
+        console.error("Error fetching tickets:", error);
+      }
+    };
 
     fetchTickets();
   }, []);
@@ -162,7 +168,7 @@ function MyTicket({ fetchTickets, tickets, setTickets }) {
                       {ticket.status || "Pending"}
                     </span>
                   </td>
-                  <td>{ticket.personInCharge || "Unassigned"}</td>
+                  <td>{ticket.assignedTo?.username || "Unassigned"}</td>
                   <td className="action-icons">
                     <button
                       title="View"
