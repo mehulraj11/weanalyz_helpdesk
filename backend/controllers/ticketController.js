@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Ticket = require("../models/Ticket");
 const User = require("../models/User");
 
@@ -30,10 +31,9 @@ exports.totalTicket = async (req, res) => {
 }
 exports.getAllTickets = async (req, res) => {
     try {
-        const tickets = await Ticket.find({ assignedTo: req.user.id })
-            .populate("assignedTo", "username role")
-            .populate("createdBy", "username role");
-
+        const tickets = await Ticket.find()
+            .populate("createdBy", "username role")
+            .populate("assignedTo", "username role");
         res.status(200).json(tickets);
     } catch (err) {
         console.log("get All Ticket : " + err.message);
@@ -61,7 +61,10 @@ exports.getUserTickets = async (req, res) => {
 exports.op_approvals = async (req, res) => {
     try {
         const role = req.body.assignedTo;
-        const ticketId = req.user.id;
+        const ticketId = String(req.user.id);
+        console.log(ticketId);
+        console.log("Valid ObjectId:", mongoose.Types.ObjectId.isValid(ticketId));
+
 
         if (!role || !ticketId)
             return res.status(400).json({ message: "Missing role or ticketId" });
@@ -70,11 +73,13 @@ exports.op_approvals = async (req, res) => {
         const user = await User.findOne({ role });
         if (!user) return res.status(404).json({ message: "No user with role found" });
 
-        const updatedTicket = await Ticket.findByIdAndUpdate(
-            ticketId,
-            { assignedTo: user._id, status: "In Progress" },
-            { new: true }
-        );
+        const tic = await Ticket.findById(ticketId);
+        console.log("Ticket:", tic); // ✅ logs fine
+
+        if (!tic) {
+            return res.status(404).json({ message: "Ticket not found" });
+        }
+
 
         res.status(200).json({ message: "Ticket assigned", ticket: updatedTicket });
     } catch (err) {
