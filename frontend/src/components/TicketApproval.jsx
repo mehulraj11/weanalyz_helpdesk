@@ -20,7 +20,6 @@ function TicketApproval({ tickets, setTickets }) {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-            withCredentials: true,
           }
         );
 
@@ -40,7 +39,7 @@ function TicketApproval({ tickets, setTickets }) {
     }));
   };
   const handleSubmit = async (ticketNo) => {
-    // if (!approvalAssignRole) return;
+    if (!approvalAssignRole) return;
 
     try {
       const res = await axios.post(
@@ -51,7 +50,6 @@ function TicketApproval({ tickets, setTickets }) {
           Headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-            "Cache-Control": "no-cache",
           },
           withCredentials: true,
         }
@@ -69,18 +67,13 @@ function TicketApproval({ tickets, setTickets }) {
   return (
     <div className="approval-wrapper">
       <h2 className="approval-heading">Ticket Approval</h2>
-
-      {/* Controls */}
       <div className="approval-controls">
-        {/* Search Section */}
         <div className="search-bar">
           <input type="text" placeholder="Find ticket" />
           <button>
             <FaSearch color="black" />
           </button>
         </div>
-
-        {/* Show Entries Section */}
         <div className="entry-control">
           <label>Show:</label>
           <select>
@@ -91,8 +84,6 @@ function TicketApproval({ tickets, setTickets }) {
           <span>Entries</span>
         </div>
       </div>
-
-      {/* Table */}
       <table className="approval-table">
         <thead>
           <tr>
@@ -142,8 +133,6 @@ function TicketApproval({ tickets, setTickets }) {
           ))}
         </tbody>
       </table>
-
-      {/* Footer */}
       <div className="approval-footer">
         <span>
           Showing 1 to {tickets.length} of {tickets.length} entries

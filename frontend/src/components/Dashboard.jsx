@@ -29,8 +29,6 @@ function Dashboard() {
             withCredentials: true,
           }
         );
-
-        // Destructure backend keys and map to your state keys
         setTicketCount({
           total: res.data.totalTickets,
           resolved: res.data.resolvedTickets,

@@ -11,7 +11,9 @@ function TicketDetails({ ticket, onClose, role }) {
     console.log(ticket.ticketNo);
     try {
       await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/tickets/resolve/${ticket.ticketNo}`,
+        `${import.meta.env.VITE_BACKEND_URL}/tickets/resolve/${
+          ticket.ticketNo
+        }`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -54,15 +56,6 @@ function TicketDetails({ ticket, onClose, role }) {
         <p>
           <strong>Description:</strong> {ticket.description}
         </p>
-
-        {/* {ticket.image && (
-          <img
-            src={`uploads/${ticket.image}`}
-            alt="Attachment"
-            style={{ width: "100px" }}
-          />
-        )} */}
-
         <div className="btn-group">
           <button className="close-btn" onClick={onClose}>
             Close

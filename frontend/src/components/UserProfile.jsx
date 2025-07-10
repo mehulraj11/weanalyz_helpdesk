@@ -12,7 +12,6 @@ function UserProfile({ setSelected }) {
       <h2 className="profile-heading">User Profile</h2>
 
       <div className="profile-main">
-        {/* Profile Card */}
         <div className="profile-card">
           <FaEdit className="edit-icon" onClick={handleEditClick} style={{ cursor: "pointer" }} />
 
@@ -28,7 +27,6 @@ function UserProfile({ setSelected }) {
           </div>
         </div>
 
-        {/* Feedback Card */}
         <div className="feedback-card">
           <h4>Give Your Feedback</h4>
           <input placeholder="[Lorem Ipsum]" className="feedback-text" />
