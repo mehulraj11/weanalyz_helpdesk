@@ -8,6 +8,8 @@ import "../styles/myTicket.css";
 
 function MyTicket({ tickets, setTickets }) {
   // const [tickets, setTickets] = useState([]);
+  console.log(tickets);
+
   const token = localStorage.getItem("token");
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showTeamModal, setShowTeamModal] = useState(false);
@@ -16,6 +18,10 @@ function MyTicket({ tickets, setTickets }) {
   const user = JSON.parse(localStorage.getItem("user"));
   const role = user?.role || "user";
 
+  const handleTicketSelection = (ticketData) => {
+    console.log(ticketData);
+    setSelectedTicket(ticketData);
+  };
   useEffect(() => {
     const fetchTickets = async () => {
       try {
@@ -109,19 +115,11 @@ function MyTicket({ tickets, setTickets }) {
         </thead>
         <tbody>
           {tickets.map((ticket) => (
-            <tr key={ticket._id}>
-              <td
-                onClick={() => setSelectedTicket(ticket)}
-                style={{ color: "blue", cursor: "pointer" }}
-              >
+            <tr key={ticket._id} onClick={() => handleTicketSelection(ticket)}>
+              <td style={{ color: "blue", cursor: "pointer" }}>
                 {ticket.ticketNo}
               </td>
-              <td
-                onClick={() => setSelectedTicket(ticket)}
-                style={{ cursor: "pointer" }}
-              >
-                {ticket.subject}
-              </td>
+              <td style={{ cursor: "pointer" }}>{ticket.subject}</td>
 
               {role === "user" ? (
                 <>
@@ -168,7 +166,7 @@ function MyTicket({ tickets, setTickets }) {
                       {ticket.status || "Pending"}
                     </span>
                   </td>
-                  <td>{ticket.assignedTo?.username || "Unassigned"}</td>
+                  <td>{ticket.assignedTo?.username || "unassigned"}</td>
                   <td className="action-icons">
                     <button
                       title="View"

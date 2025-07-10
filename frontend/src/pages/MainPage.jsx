@@ -25,19 +25,9 @@ function MainPage({ fetchTickets, tickets, setTickets }) {
   const componentsMap = {
     dashboard: <Dashboard />,
     newticket: <NewTicket />,
-    myticket: (
-      <MyTicket
-        fetchTickets={fetchTickets}
-        tickets={tickets}
-        setTickets={setTickets}
-      />
-    ),
+    myticket: <MyTicket tickets={tickets} setTickets={setTickets} />,
     ticketapproval: (
-      <TicketApproval
-        fetchTickets={fetchTickets}
-        tickets={tickets}
-        setTickets={setTickets}
-      />
+      <TicketApproval tickets={tickets} setTickets={setTickets} />
     ),
     performance: <Performance />,
     setting: <Setting />,

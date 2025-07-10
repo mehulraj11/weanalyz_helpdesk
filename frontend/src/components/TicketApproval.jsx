@@ -4,12 +4,32 @@ import "../styles/ticketApproval.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function TicketApproval({ fetchTickets, tickets }) {
+function TicketApproval({ tickets, setTickets }) {
   const token = localStorage.getItem("token");
+
+  console.log(token);
   const [approvalAssignRole, setApprovalAssignRole] = useState({
     assignedTo: "",
   });
   useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/tickets/getalltickets`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            withCredentials: true,
+          }
+        );
+
+        setTickets(res.data);
+      } catch (error) {
+        console.error("Error fetching tickets:", error);
+      }
+    };
+
     fetchTickets();
   }, []);
   const handleChange = (e) => {
@@ -19,20 +39,21 @@ function TicketApproval({ fetchTickets, tickets }) {
       [name]: value,
     }));
   };
-  const handleSubmit = async () => {
-    if (!approvalAssignRole) return;
+  const handleSubmit = async (ticketNo) => {
+    // if (!approvalAssignRole) return;
 
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/tickets/op_approvals`,
-        approvalAssignRole,
+        approvalAssignRole.assignedTo,
+        ticketNo,
         {
-          withCredentials: true,
-          headers: {
+          Headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
             "Cache-Control": "no-cache",
           },
+          withCredentials: true,
         }
       );
 
@@ -42,6 +63,7 @@ function TicketApproval({ fetchTickets, tickets }) {
       console.error("Error assigning:", error.response?.data || error.message);
       alert("Failed to assign.");
     }
+    // console.log(ticketNo);
   };
 
   return (
@@ -96,7 +118,10 @@ function TicketApproval({ fetchTickets, tickets }) {
               <td>{ticket.priority}</td>
               <td>{ticket.date.split("T")[0]}</td>
               <td className="action-icons">
-                <button style={{ padding: "0px 10px" }} onClick={handleSubmit}>
+                <button
+                  style={{ padding: "0px 10px" }}
+                  onClick={() => handleSubmit(ticket.ticketNo)}
+                >
                   <FaCheck className="approve" />
                 </button>
                 <button className="reject">X</button>

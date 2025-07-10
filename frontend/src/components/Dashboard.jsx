@@ -7,7 +7,12 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 import axios from "axios";
 
 function Dashboard() {
-  const [ticketCount, setTicketCount] = useState(0);
+  const [ticketCount, setTicketCount] = useState({
+    total: "",
+    resolved: "",
+    pending: "",
+    inProgress: "",
+  });
 
   const user = JSON.parse(localStorage.getItem("user"));
   const role = user?.role;
@@ -24,7 +29,14 @@ function Dashboard() {
             withCredentials: true,
           }
         );
-        setTicketCount(res.data.totalTickets);
+
+        // Destructure backend keys and map to your state keys
+        setTicketCount({
+          total: res.data.totalTickets,
+          resolved: res.data.resolvedTickets,
+          pending: res.data.pendingTickets,
+          inProgress: res.data.inProgressTickets,
+        });
       } catch (err) {
         console.error("Error fetching ticket count:", err.message);
       }
@@ -33,6 +45,8 @@ function Dashboard() {
     fetchTicketCount();
   }, []);
 
+  console.log(ticketCount);
+
   return (
     <div className="containerDash">
       <div className="oneDash">Dashboard</div>
@@ -40,19 +54,19 @@ function Dashboard() {
       <div className="twoDash">
         <div className="act twoDash1" style={{ backgroundColor: "blue" }}>
           <div className="act-title">Total Tickets</div>
-          <div className="act-count">{ticketCount}</div>
+          <div className="act-count">{ticketCount.total}</div>
         </div>
         <div className="act twoDash2" style={{ backgroundColor: "#01ff1da6" }}>
           <div className="act-title">Total Solved</div>
-          <div className="act-count">8</div>
+          <div className="act-count">{ticketCount.resolved}</div>
         </div>
         <div className="act twoDash3" style={{ backgroundColor: "red" }}>
           <div className="act-title">Total Awaiting Approval</div>
-          <div className="act-count">2</div>
+          <div className="act-count">{ticketCount.pending}</div>
         </div>
         <div className="act twoDash4" style={{ backgroundColor: "yellow" }}>
           <div className="act-title">Total in Progress</div>
-          <div className="act-count">2</div>
+          <div className="act-count">{ticketCount.inProgress}</div>
         </div>
       </div>
       {role !== "user" && (

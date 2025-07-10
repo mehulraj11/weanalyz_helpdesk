@@ -12,24 +12,7 @@ function App() {
   const token = localStorage.getItem("token");
 
   // fetching tickets
-  const fetchTickets = async () => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/tickets/getalltickets`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          withCredentials: true,
-        }
-      );
-
-      setTickets(res.data);
-    } catch (error) {
-      console.error("Error fetching tickets:", error);
-    }
-  };
-
+ 
   return (
     <Router>
       <div>
@@ -41,7 +24,6 @@ function App() {
             path="/mainpage"
             element={
               <MainPage
-                fetchTickets={fetchTickets}
                 tickets={tickets}
                 setTickets={setTickets}
               />

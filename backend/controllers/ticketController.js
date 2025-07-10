@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const Ticket = require("../models/Ticket");
 const User = require("../models/User");
 
@@ -6,7 +5,7 @@ exports.createTicket = async (req, res) => {
     try {
         const ticketData = {
             ...req.body,
-            createdBy: req.user.id, // logged-in user
+            createdBy: req.user.id,
             status: "Pending"
         };
         console.log(ticketData.createdBy);
@@ -20,15 +19,25 @@ exports.createTicket = async (req, res) => {
     }
 };
 
-exports.totalTicket = async (req, res) => {
+exports.ticketCounts = async (req, res) => {
     try {
-        const count = await Ticket.countDocuments();
-        res.status(200).json({ totalTickets: count });
+        const total = await Ticket.countDocuments();
+        const resolved = await Ticket.countDocuments({ status: "Resolved" });
+        const pending = await Ticket.countDocuments({ status: "Pending" });
+        const inProgress = await Ticket.countDocuments({ status: "In Progress" });
+
+        res.status(200).json({
+            totalTickets: total,
+            resolvedTickets: resolved,
+            pendingTickets: pending,
+            inProgressTickets: inProgress,
+        });
     } catch (err) {
-        console.log("Total Ticket Error : " + err.message);
-        res.status(500).json({ message: "Error fetching ticket count" });
+        console.log("Ticket Counts Error: " + err.message);
+        res.status(500).json({ message: "Error fetching ticket counts" });
     }
-}
+};
+
 exports.getAllTickets = async (req, res) => {
     try {
         const tickets = await Ticket.find()
@@ -61,26 +70,22 @@ exports.getUserTickets = async (req, res) => {
 exports.op_approvals = async (req, res) => {
     try {
         const role = req.body.assignedTo;
-        const ticketId = String(req.user.id);
+        const ticketId = req.body.ticketNo;
         console.log(ticketId);
-        console.log("Valid ObjectId:", mongoose.Types.ObjectId.isValid(ticketId));
-
-
         if (!role || !ticketId)
             return res.status(400).json({ message: "Missing role or ticketId" });
-
-        // Find one user with the given role
         const user = await User.findOne({ role });
         if (!user) return res.status(404).json({ message: "No user with role found" });
 
-        const tic = await Ticket.findById(ticketId);
-        console.log("Ticket:", tic); // ✅ logs fine
+        const updatedTicket = await Ticket.findOneAndUpdate(
+            { "ticketNo": ticketId },
+            { $set: { status: "In Progress", assignedTo: user._id } },
+            { new: true }
+        );
 
-        if (!tic) {
+        if (!updatedTicket) {
             return res.status(404).json({ message: "Ticket not found" });
         }
-
-
         res.status(200).json({ message: "Ticket assigned", ticket: updatedTicket });
     } catch (err) {
         console.log("Ticket Approval Error : " + err.message);
@@ -89,7 +94,9 @@ exports.op_approvals = async (req, res) => {
 };
 exports.resolveTicket = async (req, res) => {
     try {
-        const ticket = await Ticket.findById(req.params.id);
+        const ticket = await Ticket.findOne({ ticketNo: req.params.id });
+        console.log(ticket);
+
 
         if (!ticket) return res.status(404).json({ message: "Ticket not found" });
 
