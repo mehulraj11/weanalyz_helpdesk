@@ -7,7 +7,6 @@ import axios from "axios";
 function TicketApproval({ tickets, setTickets }) {
   const token = localStorage.getItem("token");
 
-  console.log(token);
   const [approvalAssignRole, setApprovalAssignRole] = useState({
     assignedTo: "",
   });
@@ -44,10 +43,9 @@ function TicketApproval({ tickets, setTickets }) {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/tickets/op_approvals`,
-        approvalAssignRole.assignedTo,
-        ticketNo,
+        { assignedTo: approvalAssignRole.assignedTo, ticketNo: ticketNo },
         {
-          Headers: {
+          headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
@@ -55,9 +53,12 @@ function TicketApproval({ tickets, setTickets }) {
         }
       );
 
+      console.log(token);
       console.log("Response:", res.data);
       alert("Assigned successfully!");
     } catch (error) {
+      console.log("token failed" + error.message);
+
       console.error("Error assigning:", error.response?.data || error.message);
       alert("Failed to assign.");
     }

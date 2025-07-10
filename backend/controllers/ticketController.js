@@ -106,7 +106,7 @@ exports.resolveTicket = async (req, res) => {
 
         ticket.status = "Resolved";
         await ticket.save();
-
+        
         res.status(200).json({ message: "Ticket resolved", ticket });
     } catch (err) {
         console.log("Ticket reslove error : " + err.message);

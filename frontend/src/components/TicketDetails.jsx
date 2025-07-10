@@ -14,13 +14,16 @@ function TicketDetails({ ticket, onClose, role }) {
         `${import.meta.env.VITE_BACKEND_URL}/tickets/resolve/${
           ticket.ticketNo
         }`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-    } catch (error) {}
+    } catch (error) {
+      console.log("update failed" + error);
+    }
   };
   return (
     <div className="modal-overlay">
