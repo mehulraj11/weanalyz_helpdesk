@@ -9,7 +9,7 @@ import MainPage from "./pages/MainPage";
 import UserProfile from "./components/UserProfile";
 function App() {
   const [tickets, setTickets] = useState([]);
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
 
   // fetching tickets
  

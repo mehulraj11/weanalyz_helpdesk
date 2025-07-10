@@ -64,7 +64,11 @@ function MainPage({ fetchTickets, tickets, setTickets }) {
         {/* Main Display Area */}
         <div className="main-section">
           <div className="main-content">{componentsMap[selected]}</div>
-          <footer className="footer">Footer Area</footer>
+          <footer className="footer">
+            <a href="https://portfolio-mhvats.onrender.com">
+              Developed by Mehul raj
+            </a>
+          </footer>
         </div>
       </div>
     </div>
