@@ -12,6 +12,8 @@ function Dashboard() {
     resolved: "",
     pending: "",
     inProgress: "",
+    op_team: "",
+    tech_team: "",
   });
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -34,6 +36,8 @@ function Dashboard() {
           resolved: res.data.resolvedTickets,
           pending: res.data.pendingTickets,
           inProgress: res.data.inProgressTickets,
+          op_team: res.data.op_team,
+          tech_team: res.data.tech_team,
         });
       } catch (err) {
         console.error("Error fetching ticket count:", err.message);
@@ -43,7 +47,7 @@ function Dashboard() {
     fetchTicketCount();
   }, []);
 
-  console.log(ticketCount);
+  // console.log(ticketCount);
 
   return (
     <div className="containerDash">
@@ -83,7 +87,7 @@ function Dashboard() {
                 <div className="team-card">
                   <img src={technical} />
                   <p>
-                    <strong>3</strong>
+                    <strong>{ticketCount.tech_team}</strong>
                     <br />
                     Technical Supports
                   </p>
@@ -91,7 +95,7 @@ function Dashboard() {
                 <div className="team-card">
                   <img src={opertaion} />
                   <p>
-                    <strong>4</strong>
+                    <strong>{ticketCount.op_team}</strong>
                     <br />
                     Operation Team
                   </p>

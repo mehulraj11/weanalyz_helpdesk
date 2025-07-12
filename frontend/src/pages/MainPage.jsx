@@ -12,7 +12,7 @@ import UserProfile from "../components/UserProfile";
 import UserProfileSetting from "../components/UserProfileSetting";
 import "../styles/mainpage.css";
 
-function MainPage({ fetchTickets, tickets, setTickets }) {
+function MainPage({ tickets, setTickets }) {
   const user = JSON.parse(localStorage.getItem("user"));
   const [selected, setSelected] = useState("dashboard");
 

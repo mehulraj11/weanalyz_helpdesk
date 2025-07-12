@@ -8,7 +8,7 @@ import "../styles/myTicket.css";
 
 function MyTicket({ tickets, setTickets }) {
   // const [tickets, setTickets] = useState([]);
-  console.log(tickets);
+  // console.log(tickets);
 
   const token = localStorage.getItem("token");
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -30,13 +30,11 @@ function MyTicket({ tickets, setTickets }) {
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Cache-Control": "no-cache",
             },
             withCredentials: true,
           }
         );
-        console.log(res.data);
-
+        // console.log(res.data);
         setTickets(res.data);
       } catch (error) {
         console.error("Error fetching tickets:", error);
@@ -204,12 +202,12 @@ function MyTicket({ tickets, setTickets }) {
         </tbody>
       </table>
 
-      <div className="footer-section">
+      {/* <div className="footer-section">
         <span>
           Showing 1 to {tickets.length} of {tickets.length} entries
         </span>
         <span className="pagination-controls">≪ 1 ≫</span>
-      </div>
+      </div> */}
     </div>
   );
 }
