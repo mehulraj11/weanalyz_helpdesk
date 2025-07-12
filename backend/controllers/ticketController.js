@@ -6,16 +6,13 @@ exports.createTicket = async (req, res) => {
         const ticketData = {
             ...req.body,
             createdBy: req.user.id,
-            status: "Pending"
         };
         console.log(ticketData.createdBy);
-
         const ticket = await Ticket.create(ticketData);
         res.status(201).json({ message: "Ticket created", ticket });
     } catch (err) {
         console.log("Ticket Creation Error : " + err.message);
-
-        res.status(500);
+        res.status(500).json({ message: err.message });
     }
 };
 
@@ -34,7 +31,7 @@ exports.ticketCounts = async (req, res) => {
         });
     } catch (err) {
         console.log("Ticket Counts Error: " + err.message);
-        res.status(500).json({ message: "Error fetching ticket counts" });
+        res.status(500).json({ message: err.message });
     }
 };
 
@@ -60,22 +57,21 @@ exports.getUserTickets = async (req, res) => {
             tickets = await Ticket.find({ assignedTo: req.user.id });
         }
 
-        res.status(200).json(tickets);
+        res.status(200).json({ message: "Tickets GET according to their role in MyTicket.jsx" });
     } catch (err) {
-        res.status(500).json({ message: "Server error" });
+        console.log("Ticket GET AQ Role Error : " + err.message);
+        res.status(500).json({ message: err.message });
     }
 };
-
-
 exports.op_approvals = async (req, res) => {
     try {
         const role = req.body.assignedTo;
         const ticketId = req.body.ticketNo;
-        console.log(ticketId);
+        // console.log(ticketId);
         if (!role || !ticketId)
-            return res.status(400).json({ message: "Missing role or ticketId" });
+            return res.status(404).json({ message: "Missing role or ticketId" });
         const user = await User.findOne({ role });
-        if (!user) return res.status(404).json({ message: "No user with role found" });
+        if (!user) return res.status(404).json({ message: "No role found" });
 
         const updatedTicket = await Ticket.findOneAndUpdate(
             { "ticketNo": ticketId },
@@ -96,21 +92,16 @@ exports.resolveTicket = async (req, res) => {
     try {
         const ticket = await Ticket.findOne({ ticketNo: req.params.id });
         console.log(ticket);
-
-
         if (!ticket) return res.status(404).json({ message: "Ticket not found" });
 
         if (ticket.assignedTo.toString() !== req.user.id && req.user.role !== "admin") {
             return res.status(403).json({ message: "You are not allowed to resolve this ticket" });
         }
-
         ticket.status = "Resolved";
         await ticket.save();
-        
         res.status(200).json({ message: "Ticket resolved", ticket });
     } catch (err) {
         console.log("Ticket reslove error : " + err.message);
-
         res.status(500).json({ message: "Server error" });
     }
 };
