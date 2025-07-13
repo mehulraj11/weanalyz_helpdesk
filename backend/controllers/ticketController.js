@@ -22,12 +22,16 @@ exports.ticketCounts = async (req, res) => {
         const resolved = await Ticket.countDocuments({ status: "Resolved" });
         const pending = await Ticket.countDocuments({ status: "Pending" });
         const inProgress = await Ticket.countDocuments({ status: "In Progress" });
+        const op_team = await User.countDocuments({ role: "operation" });
+        const tech_team = await User.countDocuments({ role: "technical" });
 
         res.status(200).json({
             totalTickets: total,
             resolvedTickets: resolved,
             pendingTickets: pending,
             inProgressTickets: inProgress,
+            op_team: op_team,
+            tech_team: tech_team
         });
     } catch (err) {
         console.log("Ticket Counts Error: " + err.message);
@@ -57,7 +61,7 @@ exports.getUserTickets = async (req, res) => {
             tickets = await Ticket.find({ assignedTo: req.user.id });
         }
 
-        res.status(200).json({ message: "Tickets GET according to their role in MyTicket.jsx" });
+        res.status(200).json(tickets);
     } catch (err) {
         console.log("Ticket GET AQ Role Error : " + err.message);
         res.status(500).json({ message: err.message });

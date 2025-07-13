@@ -54,18 +54,25 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
-exports.getUserById = async (req, res) => {
-
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-        return res.status(400).json({ message: "Invalid user ID" });
-    }
+exports.getAllUser = async (req, res) => {
 
     try {
-        const user = await User.findById(req.params.id).select("username email role");
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
+        const whichRole = req.body.whichRole;
+        const userList = await User.find({ role: "user" });
+        const operarionList = await User.find({ role: "operation" });
+        const technicalList = await User.find({ role: "technical" })
+        if (whichRole == "user") {
+            res.json(userList)
         }
-        res.json(user);
+        else if (whichRole == "operation") {
+            res.json(operarionList)
+        }
+        else if (whichRole == "technical") {
+            res.json(technicalList)
+        }
+        else {
+            return res.status(404).json({ message: "No role" });
+        }
     } catch (err) {
         res.status(500).json({ message: "Server error", error: err.message });
     }
