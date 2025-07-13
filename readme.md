@@ -32,6 +32,8 @@ This system helps organizations streamline ticket creation and management by pro
 
 2. **Ticket Handling**
    - Create a new ticket
+   - Ticket opprovals for resolving
+   - Database Access in Admin panel
 
 3. **Analytics**
    - API to fetch total ticket count
@@ -42,7 +44,7 @@ This system helps organizations streamline ticket creation and management by pro
 
 These features are implemented in the frontend only (no backend functionality yet):
 
-- Ticket Update, Delete, and Assignment Modals
+- Ticket Update and Delete
 - Team Creation Modal
 - Feedback and Ratings UI
 - Charts, Logs, and Database UI Pages
@@ -57,9 +59,3 @@ These features are implemented in the frontend only (no backend functionality ye
 cd backend
 npm install
 node app.js
-
-### 🔁 Frontend Setup
-```bash
-cd frontend
-npm install
-node run dev
