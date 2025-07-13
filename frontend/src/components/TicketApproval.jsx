@@ -3,13 +3,13 @@ import { FaSearch } from "react-icons/fa";
 import "../styles/ticketApproval.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import AssignedTo from "./AssignedTo";
 
 function TicketApproval({ tickets, setTickets }) {
   const token = localStorage.getItem("token");
 
-  const [approvalAssignRole, setApprovalAssignRole] = useState({
-    assignedTo: "",
-  });
+  const [approvalAssignRole, setApprovalAssignRole] = useState({});
+
   useEffect(() => {
     const fetchTickets = async () => {
       try {
@@ -30,20 +30,17 @@ function TicketApproval({ tickets, setTickets }) {
 
     fetchTickets();
   }, []);
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setApprovalAssignRole((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-  const handleSubmit = async (ticketNo) => {
-    if (!approvalAssignRole) return;
+  const handleSubmit = async (ticketNo, ticketId) => {
+    const assignedTo = approvalAssignRole[ticketId];
+    if (!assignedTo) {
+      alert("Please select a team first!");
+      return;
+    }
 
     try {
-      const res = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/tickets/op_approvals`,
-        { assignedTo: approvalAssignRole.assignedTo, ticketNo: ticketNo },
+        { assignedTo, ticketNo },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -53,16 +50,18 @@ function TicketApproval({ tickets, setTickets }) {
         }
       );
 
-      console.log(token);
-      console.log("Response:", res.data);
       alert("Assigned successfully!");
     } catch (error) {
-      console.log("token failed" + error.message);
-
-      console.error("Error assigning:", error.response?.data || error.message);
+      console.error("Error assigning:", error);
       alert("Failed to assign.");
     }
-    // console.log(ticketNo);
+  };
+
+  const handleDelete = (ticketNo) => {
+    const updatedTickets = tickets.filter(
+      (ticket) => ticket.ticketNo !== ticketNo
+    );
+    setTickets(updatedTickets);
   };
 
   return (
@@ -112,34 +111,33 @@ function TicketApproval({ tickets, setTickets }) {
               <td className="action-icons">
                 <button
                   style={{ padding: "0px 10px" }}
-                  onClick={() => handleSubmit(ticket.ticketNo)}
+                  onClick={() => handleSubmit(ticket.ticketNo, ticket._id)}
                 >
                   <FaCheck className="approve" />
                 </button>
-                <button className="reject">X</button>
+
+                <button
+                  className="reject"
+                  onClick={() => handleDelete(ticket.ticketNo)}
+                >
+                  X
+                </button>
               </td>
               <td>
-                <select
-                  name="assignedTo"
-                  value={approvalAssignRole.assignedTo}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="" disabled hidden></option>
-                  <option value="technical">Technical Team</option>
-                  <option value="operation">Operation Team</option>
-                </select>
+                <AssignedTo
+                  value={approvalAssignRole[ticket._id] || ""}
+                  onChange={(newValue) =>
+                    setApprovalAssignRole((prev) => ({
+                      ...prev,
+                      [ticket._id]: newValue,
+                    }))
+                  }
+                />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div className="approval-footer">
-        <span>
-          Showing 1 to {tickets.length} of {tickets.length} entries
-        </span>
-        <span className="pagination">≪ 1 ≫</span>
-      </div>
     </div>
   );
 }
