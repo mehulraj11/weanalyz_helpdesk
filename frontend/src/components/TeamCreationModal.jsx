@@ -1,6 +1,5 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { FaUserPlus, FaSync } from "react-icons/fa";
-import "../styles/teamcreation.css";
 
 function TeamCreationModal({ onClose, onCreate }) {
   const [formData, setFormData] = useState({
@@ -29,25 +28,21 @@ function TeamCreationModal({ onClose, onCreate }) {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content modal-team">
-        {/* Top Title & Close Button */}
-        <div className="modal-header">
+    <div>
+      <div>
+        <div>
           <h2>My Ticket - Team Creation</h2>
-          <button className="close-modal" onClick={onClose}>
-            X
-          </button>
+          <button onClick={onClose}>X</button>
         </div>
 
-        <div className="team-form">
-          <div className="left-fields">
+        <div>
+          <div>
             <input
               type="text"
               name="ticketNo"
               placeholder="Ticket No."
               value={formData.ticketNo}
               onChange={handleChange}
-              className="italic-input"
             />
             <input
               type="text"
@@ -56,7 +51,7 @@ function TeamCreationModal({ onClose, onCreate }) {
               value={formData.teamName}
               onChange={handleChange}
             />
-            <div className="team-member-input">
+            <div>
               <input
                 type="text"
                 name="teamMember"
@@ -64,7 +59,7 @@ function TeamCreationModal({ onClose, onCreate }) {
                 value={formData.teamMember}
                 onChange={handleChange}
               />
-              <FaUserPlus className="icon" />
+              <FaUserPlus />
             </div>
           </div>
 
@@ -76,11 +71,9 @@ function TeamCreationModal({ onClose, onCreate }) {
           />
         </div>
 
-        <div className="team-buttons">
-          <FaSync onClick={handleReset} className="icon-button" />
-          <button className="create-btn" onClick={handleCreate}>
-            Create Team
-          </button>
+        <div>
+          <FaSync onClick={handleReset} />
+          <button onClick={handleCreate}>Create Team</button>
         </div>
       </div>
     </div>

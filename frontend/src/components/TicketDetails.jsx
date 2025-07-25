@@ -1,5 +1,4 @@
 import axios from "axios";
-import "../styles/ticketDetails.css";
 
 function TicketDetails({ ticket, onClose, role }) {
   const token = localStorage.getItem("token");
@@ -26,8 +25,8 @@ function TicketDetails({ ticket, onClose, role }) {
     }
   };
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div>
+      <div>
         <h3>Ticket Details</h3>
         <p>
           <strong>Ticket No:</strong> {ticket.ticketNo}
@@ -59,15 +58,9 @@ function TicketDetails({ ticket, onClose, role }) {
         <p>
           <strong>Description:</strong> {ticket.description}
         </p>
-        <div className="btn-group">
-          <button className="close-btn" onClick={onClose}>
-            Close
-          </button>
-          {!isUser && (
-            <button className="update-btn" onClick={hanldeUpdateClick}>
-              Update
-            </button>
-          )}
+        <div>
+          <button onClick={onClose}>Close</button>
+          {!isUser && <button onClick={hanldeUpdateClick}>Update</button>}
         </div>
       </div>
     </div>

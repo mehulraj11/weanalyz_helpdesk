@@ -41,9 +41,9 @@ exports.ticketCounts = async (req, res) => {
 
 exports.getAllTickets = async (req, res) => {
     try {
-        const tickets = await Ticket.find()
-            .populate("createdBy", "username role")
-            .populate("assignedTo", "username role");
+        const tickets = await Ticket.find({ status: "Pending" })
+            .populate("createdBy", "username role status")
+            .populate("assignedTo", "username role status");
         res.status(200).json(tickets);
     } catch (err) {
         console.log("get All Ticket : " + err.message);

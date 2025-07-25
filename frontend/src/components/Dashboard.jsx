@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "../styles/dashboard.css";
 import graph from "../images/Group.png";
 import opertaion from "../images/691142.png";
 import technical from "../images/soporte-tecnico-icono-png-12.png";
@@ -15,12 +14,17 @@ function Dashboard() {
     op_team: "",
     tech_team: "",
   });
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const role = user?.role;
   const token = localStorage.getItem("token");
+
   useEffect(() => {
     const fetchTicketCount = async () => {
+      setLoading(true);
+      setFetchError(null);
       try {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/tickets/count`,
@@ -41,76 +45,164 @@ function Dashboard() {
         });
       } catch (err) {
         console.error("Error fetching ticket count:", err.message);
+        setFetchError("Failed to load dashboard data. Please try again.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchTicketCount();
-  }, []);
+    if (token) {
+      fetchTicketCount();
+    } else {
+      setFetchError("Authentication token missing. Please log in.");
+      setLoading(false);
+    }
+  }, [token]);
 
-  // console.log(ticketCount);
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-700 text-lg">
+        Loading dashboard data...
+      </div>
+    );
+  }
+
+  if (fetchError) {
+    return (
+      <div className="flex items-center justify-center h-full text-red-600 text-lg font-medium">
+        Error: {fetchError}
+      </div>
+    );
+  }
 
   return (
-    <div className="containerDash">
-      <div className="oneDash">Dashboard</div>
+    <div className="p-4 sm:p-6 lg:p-8">
+      <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-800 mb-8 text-center drop-shadow-sm">
+        Dashboard Overview
+      </h1>
 
-      <div className="twoDash">
-        <div className="act twoDash1" style={{ backgroundColor: "blue" }}>
-          <div className="act-title">Total Tickets</div>
-          <div className="act-count">{ticketCount.total}</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div
+          className="bg-white rounded-xl shadow-lg p-6 text-center
+                        transform transition-transform duration-200 hover:scale-105"
+        >
+          <div className="text-lg font-semibold text-gray-600 mb-2">
+            Total Tickets
+          </div>
+          <div className="text-4xl font-bold text-blue-600">
+            {ticketCount.total}
+          </div>
         </div>
-        <div className="act twoDash2" style={{ backgroundColor: "#01ff1da6" }}>
-          <div className="act-title">Total Solved</div>
-          <div className="act-count">{ticketCount.resolved}</div>
+
+        <div
+          className="bg-white rounded-xl shadow-lg p-6 text-center
+                        transform transition-transform duration-200 hover:scale-105"
+        >
+          <div className="text-lg font-semibold text-gray-600 mb-2">
+            Total Solved
+          </div>
+          <div className="text-4xl font-bold text-green-600">
+            {ticketCount.resolved}
+          </div>
         </div>
-        <div className="act twoDash3" style={{ backgroundColor: "red" }}>
-          <div className="act-title">Total Awaiting Approval</div>
-          <div className="act-count">{ticketCount.pending}</div>
+
+        <div
+          className="bg-white rounded-xl shadow-lg p-6 text-center
+                        transform transition-transform duration-200 hover:scale-105"
+        >
+          <div className="text-lg font-semibold text-gray-600 mb-2">
+            Total Awaiting Approval
+          </div>
+          <div className="text-4xl font-bold text-yellow-600">
+            {ticketCount.pending}
+          </div>
         </div>
-        <div className="act twoDash4" style={{ backgroundColor: "yellow" }}>
-          <div className="act-title">Total in Progress</div>
-          <div className="act-count">{ticketCount.inProgress}</div>
+
+        <div
+          className="bg-white rounded-xl shadow-lg p-6 text-center
+                        transform transition-transform duration-200 hover:scale-105"
+        >
+          <div className="text-lg font-semibold text-gray-600 mb-2">
+            Total in Progress
+          </div>
+          <div className="text-4xl font-bold text-purple-600">
+            {ticketCount.inProgress}
+          </div>
         </div>
       </div>
+
       {role !== "user" && (
-        <div className="threeDash">
-          <div className="threeDash1">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div
+            className="bg-white rounded-xl shadow-lg p-6 flex items-center justify-center
+                          transform transition-transform duration-200 hover:scale-105"
+          >
             <img
               src={graph}
-              alt="Graph"
-              style={{ width: "", height: "auto" }}
+              alt="Ticket Distribution Graph"
+              className="max-w-full h-auto rounded-lg"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src =
+                  "https://placehold.co/400x300/e0e0e0/555555?text=Graph+Placeholder";
+              }}
             />
           </div>
 
-          <div className="dashboard-container">
-            <div className="right-content">
-              <div className="team-info">
-                <div className="team-card">
-                  <img src={technical} />
-                  <p>
-                    <strong>{ticketCount.tech_team}</strong>
-                    <br />
-                    Technical Supports
-                  </p>
-                </div>
-                <div className="team-card">
-                  <img src={opertaion} />
-                  <p>
-                    <strong>{ticketCount.op_team}</strong>
-                    <br />
-                    Operation Team
-                  </p>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div
+              className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center
+                            transform transition-transform duration-200 hover:scale-105"
+            >
+              <img
+                src={technical}
+                alt="Technical Team Icon"
+                className="w-20 h-20 mb-4 rounded-full object-cover"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src =
+                    "https://placehold.co/80x80/e0e0e0/555555?text=Tech";
+                }}
+              />
+              <p className="text-xl font-bold text-gray-800 mb-1">
+                {ticketCount.tech_team}
+              </p>
+              <p className="text-md text-gray-600">Technical Supports</p>
+            </div>
 
-              <div className="feedback-section">
-                <div className="feedback-title">Customer Feedback</div>
-                <div className="stars">
-                  <FaStar />
-                  <FaRegStar />
-                  <FaRegStar />
-                  <FaRegStar />
-                  <FaStar />
-                </div>
+            <div
+              className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center
+                            transform transition-transform duration-200 hover:scale-105"
+            >
+              <img
+                src={opertaion}
+                alt="Operation Team Icon"
+                className="w-20 h-20 mb-4 rounded-full object-cover"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src =
+                    "https://placehold.co/80x80/e0e0e0/555555?text=Ops";
+                }}
+              />
+              <p className="text-xl font-bold text-gray-800 mb-1">
+                {ticketCount.op_team}
+              </p>
+              <p className="text-md text-gray-600">Operation Team</p>
+            </div>
+
+            <div
+              className="bg-white rounded-xl shadow-lg p-6 col-span-1 sm:col-span-2 text-center
+                            transform transition-transform duration-200 hover:scale-105"
+            >
+              <div className="text-lg font-semibold text-gray-600 mb-4">
+                Customer Feedback
+              </div>
+              <div className="flex justify-center items-center text-yellow-500 text-3xl space-x-1">
+                <FaStar />
+                <FaStar />
+                <FaStar />
+                <FaRegStar />
+                <FaRegStar />
               </div>
             </div>
           </div>

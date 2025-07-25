@@ -1,7 +1,6 @@
 import { IoNotifications, IoPerson } from "react-icons/io5";
 import { TbLogout } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
-import "../styles/navbar.css";
 
 function Navabar({ onSelect }) {
   const navigate = useNavigate();
@@ -9,26 +8,47 @@ function Navabar({ onSelect }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/"); 
+    navigate("/");
   };
 
   return (
-    <div className="wrapper">
-      <div className="title">Helpdesk</div>
-      <ul className="nav-icons">
-        <li id="bmbi"> 
-          <p style={{backgroundColor:"black", color:"white"}}>BM</p>
-          <p>BI</p>
-        </li>
-        <li>
-          <IoNotifications size={22} color="black" />
-        </li>
-        <li onClick={() => onSelect("userprofile")} style={{ cursor: "pointer" }}>
-          <IoPerson size={22} color="black" />
+    <div
+      className="w-full p-4 md:px-8 lg:px-12
+                    flex items-center justify-between
+                    bg-gradient-to-r from-blue-600 to-purple-600
+                    text-white shadow-lg"
+    >
+      <div className="text-2xl md:text-3xl font-bold tracking-wide">
+        Helpdesk
+      </div>
+
+      <ul className="flex items-center space-x-4 md:space-x-6">
+        <li className="flex items-center gap-2 cursor-default">
+          <p
+            className="bg-white text-blue-600 font-bold text-sm
+                        w-8 h-8 flex items-center justify-center rounded-full shadow-md"
+          >
+            BM
+          </p>
+          <p className="text-white text-sm hidden sm:block">BI</p>
         </li>
 
-        <li onClick={handleLogout} style={{ cursor: "pointer" }}>
-          <TbLogout size={22} color="black" />
+        <li className="cursor-pointer hover:scale-110 transition-transform duration-200">
+          <IoNotifications size={22} color="white" />
+        </li>
+
+        <li
+          onClick={() => onSelect("userprofile")}
+          className="cursor-pointer hover:scale-110 transition-transform duration-200"
+        >
+          <IoPerson size={22} color="white" />
+        </li>
+
+        <li
+          onClick={handleLogout}
+          className="cursor-pointer hover:scale-110 transition-transform duration-200"
+        >
+          <TbLogout size={22} color="white" />
         </li>
       </ul>
     </div>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "../styles/signup.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -42,18 +41,25 @@ function Signup() {
   };
 
   return (
-    <div className="app-wrapper">
-      <div className="helpdesk-container">
-        <form onSubmit={handleSubmit}>
+    <div
+      className="min-h-screen flex items-center justify-center p-4
+                    bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500"
+    >
+      <div
+        className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md
+                      transform transition-all duration-300 hover:scale-105"
+      >
+        <form onSubmit={handleSubmit} className="space-y-6">
           <h1
-            className="helpdesk-title"
-            style={{ marginBottom: "20px", fontStyle: "italic" }}
+            className="text-4xl font-extrabold text-center text-gray-800 mb-2
+                         drop-shadow-sm"
           >
             Helpdesk System
           </h1>
-          <p className="helpdesk-title" style={{ fontSize: "1.5rem" }}>
+          <p className="text-xl text-center text-gray-600 mb-6 font-medium">
             Sign up here
           </p>
+
           <input
             type="text"
             name="username"
@@ -61,7 +67,12 @@ function Signup() {
             value={formData.username}
             onChange={handleChange}
             required
+            className="w-full px-5 py-3 border border-gray-300 rounded-lg
+                       focus:outline-none focus:ring-3 focus:ring-blue-400
+                       transition duration-200 ease-in-out text-gray-700
+                       placeholder-gray-400 shadow-sm"
           />
+
           <input
             type="email"
             name="email"
@@ -69,7 +80,12 @@ function Signup() {
             value={formData.email}
             onChange={handleChange}
             required
+            className="w-full px-5 py-3 border border-gray-300 rounded-lg
+                       focus:outline-none focus:ring-3 focus:ring-blue-400
+                       transition duration-200 ease-in-out text-gray-700
+                       placeholder-gray-400 shadow-sm"
           />
+
           <input
             type="password"
             name="password"
@@ -77,35 +93,58 @@ function Signup() {
             value={formData.password}
             onChange={handleChange}
             required
+            className="w-full px-5 py-3 border border-gray-300 rounded-lg
+                       focus:outline-none focus:ring-3 focus:ring-blue-400
+                       transition duration-200 ease-in-out text-gray-700
+                       placeholder-gray-400 shadow-sm"
           />
+
           <select
             name="role"
             value={formData.role}
             onChange={handleChange}
             required
+            className="w-full px-5 py-3 border border-gray-300 rounded-lg
+                       focus:outline-none focus:ring-3 focus:ring-blue-400
+                       transition duration-200 ease-in-out text-gray-700
+                       shadow-sm appearance-none bg-white pr-8"
           >
             <option value="user">User</option>
             <option value="operation">Operation Team</option>
             <option value="technical">Technical Team</option>
             <option value="admin">Admin</option>
           </select>
-          <button type="submit" className="signupbutton">
+
+          <button
+            type="submit"
+            className="w-full py-3 rounded-lg text-white font-semibold text-lg
+                       bg-gradient-to-r from-blue-600 to-purple-600
+                       hover:from-blue-700 hover:to-purple-700
+                       focus:outline-none focus:ring-3 focus:ring-blue-400 focus:ring-offset-2
+                       transition duration-300 ease-in-out transform hover:-translate-y-1
+                       shadow-lg hover:shadow-xl"
+          >
             Sign Up
           </button>
 
-          <div className="redirect">
-            <Link to="/forgotpassword" style={{ color: "red" }}>
+          <div className="flex justify-between text-sm pt-2">
+            <Link
+              to="/forgotpassword"
+              className="text-blue-600 hover:text-blue-800 font-medium
+                         transition duration-200 hover:underline"
+            >
               Forgot Password
             </Link>
-            <Link to="/" style={{ color: "black" }}>
+            <Link
+              className="text-blue-600 hover:text-blue-800 font-medium
+                         transition duration-200 hover:underline"
+            >
               Sign In
             </Link>
           </div>
 
           {message && (
-            <p
-              style={{ marginTop: "15px", fontWeight: "bold", color: "green" }}
-            >
+            <p className="text-center mt-4 font-medium text-blue-600">
               {message}
             </p>
           )}
