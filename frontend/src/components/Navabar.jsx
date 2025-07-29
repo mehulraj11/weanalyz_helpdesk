@@ -13,7 +13,7 @@ function Navabar({ onSelect }) {
 
   return (
     <div
-      className="w-full p-4 md:px-8 lg:px-12
+      className="sticky top-0 z-50 w-full p-4 md:px-8 lg:px-12
                     flex items-center justify-between
                     bg-gradient-to-r from-blue-600 to-purple-600
                     text-white shadow-lg"
@@ -23,16 +23,6 @@ function Navabar({ onSelect }) {
       </div>
 
       <ul className="flex items-center space-x-4 md:space-x-6">
-        <li className="flex items-center gap-2 cursor-default">
-          <p
-            className="bg-white text-blue-600 font-bold text-sm
-                        w-8 h-8 flex items-center justify-center rounded-full shadow-md"
-          >
-            BM
-          </p>
-          <p className="text-white text-sm hidden sm:block">BI</p>
-        </li>
-
         <li className="cursor-pointer hover:scale-110 transition-transform duration-200">
           <IoNotifications size={22} color="white" />
         </li>
