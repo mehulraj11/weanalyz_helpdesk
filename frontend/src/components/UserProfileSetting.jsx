@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 function UserProfileSetting() {
   const [formData, setFormData] = useState({
@@ -9,13 +9,11 @@ function UserProfileSetting() {
     newPassword: "",
     confirmNewPassword: "",
     email: "",
-    realName: "", 
-    accessLevel: "", 
-    projectAccessLevel: "", 
+    accessLevel: "",
   });
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
@@ -27,9 +25,7 @@ function UserProfileSetting() {
         ...prev,
         username: user.username || "",
         email: user.email || "",
-        realName: user.realName || "", 
         accessLevel: user.accessLevel || user.role || "",
-        projectAccessLevel: user.projectAccessLevel || "", 
       }));
       setLoading(false);
     } else {
@@ -37,7 +33,7 @@ function UserProfileSetting() {
       setMessageType("error");
       setLoading(false);
     }
-  }, [user]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -67,29 +63,17 @@ function UserProfileSetting() {
         setMessageType("error");
         return;
       }
-      if (formData.newPassword.length < 6) {
-        setMessage("New password must be at least 6 characters long.");
-        setMessageType("error");
-        return;
-      }
     }
 
     try {
       const updatePayload = {
-        username: formData.username,
         email: formData.email,
-        realName: formData.realName,
-        accessLevel: formData.accessLevel,
-        projectAccessLevel: formData.projectAccessLevel,
+        currentPassword: formData.currentPassword,
+        newPassword: formData.newPassword,
       };
 
-      if (formData.newPassword) {
-        updatePayload.currentPassword = formData.currentPassword;
-        updatePayload.newPassword = formData.newPassword;
-      }
-
       const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/users/profile`,
+        `${import.meta.env.VITE_BACKEND_URL}/auth/changepassword`,
         updatePayload,
         {
           headers: {
@@ -229,26 +213,6 @@ function UserProfileSetting() {
             </div>
             <div>
               <label
-                htmlFor="realName"
-                className="block text-lg font-medium text-gray-700 mb-2"
-              >
-                Real Name
-              </label>
-              <input
-                type="text"
-                id="realName"
-                name="realName"
-                placeholder="Enter real name"
-                value={formData.realName}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label
                 htmlFor="accessLevel"
                 className="block text-lg font-medium text-gray-700 mb-2"
               >
@@ -260,23 +224,6 @@ function UserProfileSetting() {
                 name="accessLevel"
                 placeholder="Enter access level"
                 value={formData.accessLevel}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="projectAccessLevel"
-                className="block text-lg font-medium text-gray-700 mb-2"
-              >
-                Project Access Level
-              </label>
-              <input
-                type="text"
-                id="projectAccessLevel"
-                name="projectAccessLevel"
-                placeholder="Enter project access level"
-                value={formData.projectAccessLevel}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
               />

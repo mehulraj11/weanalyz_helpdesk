@@ -77,3 +77,24 @@ exports.getAllUser = async (req, res) => {
         res.status(500).json({ message: "Server error", error: err.message });
     }
 };
+
+exports.updatePassword = async (req, res) => {
+    const { email, currentPassword, newPassword } = req.body;
+    try {
+        const updatedUser = await User.findOne({ email: email });
+        if (!updatedUser) { return res.status(404).json({ message: "User not found" }); }
+        const isMatch = await bcrypt.compare(currentPassword, updatedUser.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Old password is incorrect" });
+        }
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        updatedUser.password = hashedPassword;
+        await updatedUser.save();
+        res.status(200).json({ message: "Password updated successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+}
