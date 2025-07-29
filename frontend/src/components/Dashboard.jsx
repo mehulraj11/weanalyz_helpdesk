@@ -27,7 +27,9 @@ function Dashboard() {
       setFetchError(null);
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/tickets/count`,
+          `${import.meta.env.VITE_BACKEND_URL}/tickets/${
+            user.role === "admin" ? "count" : "userticketcount"
+          }`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -35,6 +37,8 @@ function Dashboard() {
             withCredentials: true,
           }
         );
+        console.log(res.data);
+
         setTicketCount({
           total: res.data.totalTickets,
           resolved: res.data.resolvedTickets,
@@ -98,9 +102,7 @@ function Dashboard() {
           className="bg-white rounded-xl shadow-lg p-6 text-center
                         transform transition-transform duration-200 hover:scale-105"
         >
-          <div className="text-lg font-semibold text-gray-600 mb-2">
-            Total Solved
-          </div>
+          <div className="text-lg font-semibold text-gray-600 mb-2">Solved</div>
           <div className="text-4xl font-bold text-green-600">
             {ticketCount.resolved}
           </div>
@@ -111,7 +113,7 @@ function Dashboard() {
                         transform transition-transform duration-200 hover:scale-105"
         >
           <div className="text-lg font-semibold text-gray-600 mb-2">
-            Total Awaiting Approval
+            Awaiting Approval
           </div>
           <div className="text-4xl font-bold text-yellow-600">
             {ticketCount.pending}
@@ -123,7 +125,7 @@ function Dashboard() {
                         transform transition-transform duration-200 hover:scale-105"
         >
           <div className="text-lg font-semibold text-gray-600 mb-2">
-            Total in Progress
+            In Progress
           </div>
           <div className="text-4xl font-bold text-purple-600">
             {ticketCount.inProgress}

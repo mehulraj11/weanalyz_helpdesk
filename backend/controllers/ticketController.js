@@ -38,6 +38,37 @@ exports.ticketCounts = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+exports.userTicketsCount = async (req, res) => {
+    try {
+        // Count only tickets created by this user
+        const filter = { createdBy: req.user.id };
+
+        const total = await Ticket.countDocuments(filter);
+        const resolved = await Ticket.countDocuments({ ...filter, status: "Resolved" });
+        const pending = await Ticket.countDocuments({ ...filter, status: "Pending" });
+        const inProgress = await Ticket.countDocuments({ ...filter, status: "In Progress" });
+
+        res.status(200).json({
+            totalTickets: total,
+            resolvedTickets: resolved,
+            pendingTickets: pending,
+            inProgressTickets: inProgress,
+        });
+    } catch (err) {
+        console.log("My Tickets Count Error: " + err.message);
+        res.status(500).json({ message: err.message });
+    }
+};
+
+exports.myTicketsCount = async (req, res) => {
+    try {
+        const count = await Ticket.countDocuments({ createdBy: req.user.id });
+        res.status(200).json({ myTicketsCount: count });
+    } catch (err) {
+        console.log("My Tickets Count Error: " + err.message);
+        res.status(500).json({ message: err.message });
+    }
+};
 
 exports.getAllTickets = async (req, res) => {
     try {

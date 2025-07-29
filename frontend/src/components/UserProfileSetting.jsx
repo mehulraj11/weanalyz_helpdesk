@@ -253,6 +253,11 @@ function UserProfileSetting() {
             </button>
           </div>
         </form>
+        <div className="text-center mt-4" >
+          <p className="text-red-500">
+            Note : If you forgot your current password contact ADMIN !
+          </p>
+        </div>
       </div>
     </div>
   );

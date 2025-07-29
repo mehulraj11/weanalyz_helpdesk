@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import TicketDetails from "./TicketDetails";
 import TeamCreationModal from "./TeamCreationModal";
-import { FaSearch, FaEdit, FaTrash } from "react-icons/fa";
+import { FaSearch, FaEdit, FaTrash, FaRegStar } from "react-icons/fa";
 import { MdOutlinePersonAdd } from "react-icons/md";
 import axios from "axios";
 
@@ -66,22 +66,7 @@ function MyTicket({ tickets, setTickets }) {
         ticket.assignedTo.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  const renderStars = (count) => {
-    const stars = [];
-    for (let i = 0; i < 5; i++) {
-      stars.push(
-        <span
-          key={i}
-          className={`text-xl ${
-            i < count ? "text-yellow-500" : "text-gray-400"
-          }`}
-        >
-          {i < count ? <FaStar /> : <FaRegStar />}
-        </span>
-      );
-    }
-    return <div className="flex justify-center">{stars}</div>;
-  };
+  
 
   const statusColors = {
     "In Progress": "bg-blue-500",
@@ -178,9 +163,9 @@ function MyTicket({ tickets, setTickets }) {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Date
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Rate
-                    </th>
+                    </th> */}
                   </>
                 ) : (
                   <>
@@ -239,9 +224,7 @@ function MyTicket({ tickets, setTickets }) {
                           ? new Date(ticket.date).toLocaleDateString()
                           : "-"}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        {renderStars(ticket.rating || 0)}
-                      </td>
+                     
                     </>
                   ) : (
                     <>
