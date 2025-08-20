@@ -66,8 +66,6 @@ function MyTicket({ tickets, setTickets }) {
         ticket.assignedTo.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  
-
   const statusColors = {
     "In Progress": "bg-blue-500",
     "On hold": "bg-yellow-500",
@@ -163,9 +161,6 @@ function MyTicket({ tickets, setTickets }) {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Date
                     </th>
-                    {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Rate
-                    </th> */}
                   </>
                 ) : (
                   <>
@@ -224,7 +219,6 @@ function MyTicket({ tickets, setTickets }) {
                           ? new Date(ticket.date).toLocaleDateString()
                           : "-"}
                       </td>
-                     
                     </>
                   ) : (
                     <>

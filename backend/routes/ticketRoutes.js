@@ -3,7 +3,7 @@ const router = express.Router();
 const ticketController = require('../controllers/ticketController');
 const { protect, authorizeRoles } = require("../middlewares/authMiddleware");
 
-// user , operation, technical, admin
+// user , operation, technical
 router.get("/userticketcount", protect, ticketController.userTicketsCount)
 router.get("/my-tickets", protect, authorizeRoles("user", "technical", "operation"), ticketController.getUserTickets);
 router.post('/create', protect, authorizeRoles("user"), ticketController.createTicket);

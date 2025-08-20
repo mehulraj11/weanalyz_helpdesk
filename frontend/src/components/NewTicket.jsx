@@ -171,14 +171,21 @@ function NewTicket() {
             >
               Department
             </label>
-            <input
-              type="text"
+            <select
               id="department"
               name="department"
               value={ticketData.department}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-            />
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 appearance-none bg-white pr-8"
+            >
+              <option value="">Select Department</option>
+              <option value="IT">IT</option>
+              <option value="HR">HR</option>
+              <option value="Finance">Finance</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Sales">Sales</option>
+              <option value="Support">Support</option>
+            </select>
           </div>
         </div>
 
@@ -208,14 +215,20 @@ function NewTicket() {
             >
               Category
             </label>
-            <input
-              type="text"
-              id="category"
-              name="category"
+            <select
+              id="department"
+              name="department"
               value={ticketData.category}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-            />
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 appearance-none bg-white pr-8"
+            >
+              <option value="">Select Category</option>
+              <option value="Hardware">Hardware</option>
+              <option value="Software">Software</option>
+              <option value="Network">Network</option>
+              <option value="Account">Account</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
           <div>
             <label
@@ -224,14 +237,20 @@ function NewTicket() {
             >
               Type
             </label>
-            <input
-              type="text"
+            <select
               id="type"
               name="type"
               value={ticketData.type}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-            />
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 appearance-none bg-white pr-8"
+            >
+              <option value="">Select Type</option>
+              <option value="Incident">Incident</option>
+              <option value="ServiceRequest">Service Request</option>
+              <option value="ChangeRequest">Change Request</option>
+              <option value="Problem">Problem</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
           <div>
             <label

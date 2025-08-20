@@ -10,7 +10,7 @@ function UserProfile({ setSelected }) {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    console.log(storedUser);
+    // console.log(storedUser);
 
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
