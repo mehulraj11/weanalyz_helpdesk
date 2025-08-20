@@ -4,7 +4,7 @@ import Database from "../components/Database";
 import MyTicket from "../components/MyTicket";
 import Navabar from "../components/Navabar"; 
 import NewTicket from "../components/NewTicket";
-import Performance from "../components/Performance";
+// import Performance from "../components/Performance";
 import Setting from "../components/Setting";
 import TicketApproval from "../components/TicketApproval";
 import UserLogHistory from "../components/UserLogHistory";
@@ -34,7 +34,7 @@ function MainPage({ tickets, setTickets }) {
     ticketapproval: (
       <TicketApproval tickets={tickets} setTickets={setTickets} />
     ),
-    performance: <Performance />,
+    // performance: <Performance />,
     setting: <Setting />,
     database: <Database />,
     userlog: <UserLogHistory />,
@@ -54,14 +54,14 @@ function MainPage({ tickets, setTickets }) {
       "dashboard",
       "ticketapproval",
       "myticket",
-      "performance",
+      // "performance",
       "userprofile",
       "userprofilesetting",
     ],
     technical: [
       "dashboard",
       "myticket",
-      "performance",
+      // "performance",
       "userprofile",
       "userprofilesetting",
     ],

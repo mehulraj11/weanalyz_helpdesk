@@ -37,7 +37,7 @@ function Dashboard() {
             withCredentials: true,
           }
         );
-        console.log(res.data);
+        // console.log(res.data);
 
         setTicketCount({
           total: res.data.totalTickets,

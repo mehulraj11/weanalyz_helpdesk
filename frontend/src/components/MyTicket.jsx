@@ -22,6 +22,24 @@ function MyTicket({ tickets, setTickets }) {
     setSelectedTicket(ticketData);
   };
 
+  const  handleDelete = async (id) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/tickets/deleteticket/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
+      setTickets((prev) => prev.filter((t) => t._id !== id));
+      console.log("Ticket deleted:", id);
+    } catch (error) {
+      console.error("Error deleting ticket:", error.message);
+    }
+  };
+
   useEffect(() => {
     const fetchTickets = async () => {
       setLoading(true);
@@ -284,10 +302,7 @@ function MyTicket({ tickets, setTickets }) {
                           </button>
                           <button
                             title="Delete"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              console.log("Delete", ticket._id);
-                            }}
+                            onClick={(e) => handleDelete(ticket._id)}
                             className="text-red-600 hover:text-red-900 transition duration-150 ease-in-out transform hover:scale-110"
                           >
                             <FaTrash size={14} />
