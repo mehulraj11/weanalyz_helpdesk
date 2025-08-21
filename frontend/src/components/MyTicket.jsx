@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import TicketDetails from "./TicketDetails";
 import TeamCreationModal from "./TeamCreationModal";
-import { FaSearch, FaEdit, FaTrash, FaRegStar } from "react-icons/fa";
+import { FaSearch, FaEdit, FaTrash } from "react-icons/fa";
 import { MdOutlinePersonAdd } from "react-icons/md";
 import axios from "axios";
 
@@ -278,7 +278,7 @@ function MyTicket({ tickets, setTickets }) {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex items-center space-x-3 justify-center">
-                          <button
+                          {/* <button
                             title="Assign Team"
                             onClick={(e) => {
                               e.stopPropagation();
@@ -288,9 +288,9 @@ function MyTicket({ tickets, setTickets }) {
                             className="text-blue-600 hover:text-blue-900 transition duration-150 ease-in-out transform hover:scale-110"
                           >
                             <MdOutlinePersonAdd size={20} />
-                          </button>
+                          </button> */}
 
-                          <button
+                          {/* <button
                             title="Edit"
                             onClick={(e) => {
                               e.stopPropagation();
@@ -299,7 +299,7 @@ function MyTicket({ tickets, setTickets }) {
                             className="text-indigo-600 hover:text-indigo-900 transition duration-150 ease-in-out transform hover:scale-110"
                           >
                             <FaEdit size={14} />
-                          </button>
+                          </button> */}
                           <button
                             title="Delete"
                             onClick={(e) => handleDelete(ticket._id)}
