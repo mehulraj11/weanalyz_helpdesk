@@ -60,15 +60,15 @@ exports.userTicketsCount = async (req, res) => {
     }
 };
 
-exports.myTicketsCount = async (req, res) => {
-    try {
-        const count = await Ticket.countDocuments({ createdBy: req.user.id });
-        res.status(200).json({ myTicketsCount: count });
-    } catch (err) {
-        console.log("My Tickets Count Error: " + err.message);
-        res.status(500).json({ message: err.message });
-    }
-};
+// exports.myTicketsCount = async (req, res) => {
+//     try {
+//         const count = await Ticket.countDocuments({ createdBy: req.user.id });
+//         res.status(200).json({ myTicketsCount: count });
+//     } catch (err) {
+//         console.log("My Tickets Count Error: " + err.message);
+//         res.status(500).json({ message: err.message });
+//     }
+// };
 
 exports.getAllTickets = async (req, res) => {
     try {
@@ -91,7 +91,6 @@ exports.getUserTickets = async (req, res) => {
         } else {
             tickets = await Ticket.find({ assignedTo: req.user.id });
         }
-
         res.status(200).json(tickets);
     } catch (err) {
         console.log("Ticket GET AQ Role Error : " + err.message);
@@ -140,3 +139,20 @@ exports.resolveTicket = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
+exports.deleteTicket = async (req, res) => {
+    const { id } = req.params;
+    // console.log(ticketId);
+    try {
+        const deleted = await Ticket.findByIdAndDelete(id);
+        if (!deleted) {
+            return res.status(404).json({ message: "Ticket not found" });
+        }
+        res.status(200).json({ message: "Ticket deleted successfully" });
+
+    } catch (error) {
+        res.status(500).json({ message: "Error deleting ticket", error });
+
+    }
+
+}

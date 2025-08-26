@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import TicketDetails from "./TicketDetails";
 import TeamCreationModal from "./TeamCreationModal";
-import { FaSearch, FaEdit, FaTrash } from "react-icons/fa";
-import { MdOutlinePersonAdd } from "react-icons/md";
+import { FaSearch, FaTrash } from "react-icons/fa";
 import axios from "axios";
 
 function MyTicket({ tickets, setTickets }) {
@@ -22,7 +21,7 @@ function MyTicket({ tickets, setTickets }) {
     setSelectedTicket(ticketData);
   };
 
-  const  handleDelete = async (id) => {
+  const handleDelete = async (id) => {
     try {
       await axios.delete(
         `${import.meta.env.VITE_BACKEND_URL}/tickets/deleteticket/${id}`,
@@ -278,28 +277,6 @@ function MyTicket({ tickets, setTickets }) {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex items-center space-x-3 justify-center">
-                          {/* <button
-                            title="Assign Team"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setTeamTicket(ticket);
-                              setShowTeamModal(true);
-                            }}
-                            className="text-blue-600 hover:text-blue-900 transition duration-150 ease-in-out transform hover:scale-110"
-                          >
-                            <MdOutlinePersonAdd size={20} />
-                          </button> */}
-
-                          {/* <button
-                            title="Edit"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              console.log("Edit", ticket._id);
-                            }}
-                            className="text-indigo-600 hover:text-indigo-900 transition duration-150 ease-in-out transform hover:scale-110"
-                          >
-                            <FaEdit size={14} />
-                          </button> */}
                           <button
                             title="Delete"
                             onClick={(e) => handleDelete(ticket._id)}
