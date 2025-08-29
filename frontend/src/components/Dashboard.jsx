@@ -60,7 +60,7 @@ function Dashboard() {
     }
   }, [token, user.role]);
 
-  if (loading) {
+  if (loading && !fetchError) {
     return (
       <div className="flex items-center justify-center h-full text-gray-700 text-lg">
         Loading dashboard data...
@@ -84,26 +84,10 @@ function Dashboard() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
         {[
-          {
-            label: "Total Tickets",
-            value: ticketCount.total,
-            color: "text-blue-600",
-          },
-          {
-            label: "Solved",
-            value: ticketCount.resolved,
-            color: "text-green-600",
-          },
-          {
-            label: "Awaiting Approval",
-            value: ticketCount.pending,
-            color: "text-yellow-600",
-          },
-          {
-            label: "In Progress",
-            value: ticketCount.inProgress,
-            color: "text-purple-600",
-          },
+          { label: "Total Tickets", value: ticketCount.total, color: "text-blue-600" },
+          { label: "Solved", value: ticketCount.resolved, color: "text-green-600" },
+          { label: "Awaiting Approval", value: ticketCount.pending, color: "text-yellow-600" },
+          { label: "In Progress", value: ticketCount.inProgress, color: "text-purple-600" },
         ].map(({ label, value, color }) => (
           <div
             key={label}
@@ -112,9 +96,32 @@ function Dashboard() {
             aria-label={`${label}: ${value}`}
           >
             <p className="text-lg font-semibold text-gray-700 mb-3">{label}</p>
-            <p className={`text-5xl font-extrabold ${color} drop-shadow-md`}>
-              {value}
-            </p>
+
+            {loading ? (
+              <svg
+                className={`animate-spin mx-auto h-12 w-12 ${color}`}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                aria-label="Loading"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8z"
+                ></path>
+              </svg>
+            ) : (
+              <p className={`text-5xl font-extrabold ${color} drop-shadow-md`}>{value}</p>
+            )}
           </div>
         ))}
       </div>
@@ -138,22 +145,19 @@ function Dashboard() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {[
-              {
-                label: "Technical Supports",
-                count: ticketCount.tech_team,
-                img: technical,
-                alt: "Technical Team Icon",
-                placeholderText: "Tech",
-              },
-              {
-                label: "Operation Team",
-                count: ticketCount.op_team,
-                img: opertaion,
-                alt: "Operation Team Icon",
-                placeholderText: "Ops",
-              },
-            ].map(({ label, count, img, alt, placeholderText }) => (
+            {[{
+              label: "Technical Supports",
+              count: ticketCount.tech_team,
+              img: technical,
+              alt: "Technical Team Icon",
+              placeholderText: "Tech"
+            }, {
+              label: "Operation Team",
+              count: ticketCount.op_team,
+              img: opertaion,
+              alt: "Operation Team Icon",
+              placeholderText: "Ops"
+            }].map(({ label, count, img, alt, placeholderText }) => (
               <div
                 key={label}
                 className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center justify-center text-center transition-transform duration-300 hover:scale-105 cursor-default"
@@ -168,9 +172,7 @@ function Dashboard() {
                     e.target.src = `https://placehold.co/96x96/e0e0e0/555555?text=${placeholderText}`;
                   }}
                 />
-                <p className="text-2xl font-extrabold text-gray-900 mb-2">
-                  {count}
-                </p>
+                <p className="text-2xl font-extrabold text-gray-900 mb-2">{count}</p>
                 <p className="text-md text-gray-600">{label}</p>
               </div>
             ))}
@@ -179,9 +181,7 @@ function Dashboard() {
               className="bg-white rounded-2xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105 cursor-default"
               aria-label="Customer Feedback"
             >
-              <p className="text-lg font-semibold text-gray-700 mb-6">
-                Customer Feedback
-              </p>
+              <p className="text-lg font-semibold text-gray-700 mb-6">Customer Feedback</p>
               <div className="flex justify-center items-center text-yellow-400 text-4xl space-x-1 select-none">
                 <FaStar />
                 <FaStar />

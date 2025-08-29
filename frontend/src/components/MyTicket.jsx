@@ -114,17 +114,26 @@ function MyTicket({ tickets, setTickets }) {
       </h1>
 
       {selectedTicket && (
-        <TicketDetails
-          ticket={selectedTicket}
-          onClose={() => setSelectedTicket(null)}
-        />
-      )}
-
-      {showTeamModal && (
-        <TeamCreationModal
-          ticket={teamTicket}
-          onClose={() => setShowTeamModal(false)}
-        />
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          aria-modal="true"
+          role="dialog"
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setSelectedTicket(null);
+          }}
+          tabIndex={-1}
+        >
+          <div
+            className="absolute inset-0 backdrop-blur-sm"
+            onClick={() => setSelectedTicket(null)}
+          />
+          <div className="absoulute z-10 max-h-[90vh] w-[95vw] max-w-3xl overflow-y-auto border">
+            <TicketDetails
+              ticket={selectedTicket}
+              onClose={() => setSelectedTicket(null)}
+            />
+          </div>
+        </div>
       )}
 
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0 sm:space-x-4">

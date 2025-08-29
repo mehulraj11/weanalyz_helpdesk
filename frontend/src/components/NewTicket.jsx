@@ -92,29 +92,25 @@ function NewTicket() {
     } catch (err) {
       console.error("Failed to create ticket:", err);
       setMessage(
-        err.response?.data?.message ||
-          "Failed to create ticket. Please try again."
+        err.response?.data?.message || "Failed to create ticket. Please try again."
       );
       setMessageType("error");
     }
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-800 mb-8 text-center drop-shadow-sm">
+    <div className="p-6 max-w-5xl mx-auto">
+      <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-800 mb-10 text-center drop-shadow-sm">
         Create New Ticket
       </h1>
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-xl shadow-lg p-6 lg:p-8 space-y-6"
+        className="bg-white rounded-2xl shadow-xl p-8 space-y-8"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <label
-              htmlFor="ticketNo"
-              className="block text-lg font-medium text-gray-700 mb-2"
-            >
+            <label htmlFor="ticketNo" className="block mb-2 text-lg font-semibold text-gray-700">
               Ticket No.
             </label>
             <input
@@ -124,14 +120,12 @@ function NewTicket() {
               value={ticketData.ticketNo}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+              className="w-full px-5 py-3 border border-gray-300 rounded-xl text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-500 transition"
+              placeholder="Enter Ticket Number"
             />
           </div>
           <div>
-            <label
-              htmlFor="date"
-              className="block text-lg font-medium text-gray-700 mb-2"
-            >
+            <label htmlFor="date" className="block mb-2 text-lg font-semibold text-gray-700">
               Date
             </label>
             <input
@@ -141,17 +135,11 @@ function NewTicket() {
               value={ticketData.date}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+              className="w-full px-5 py-3 border border-gray-300 rounded-xl text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-500 transition"
             />
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label
-              htmlFor="name"
-              className="block text-lg font-medium text-gray-700 mb-2"
-            >
+            <label htmlFor="name" className="block mb-2 text-lg font-semibold text-gray-700">
               Name
             </label>
             <input
@@ -161,14 +149,12 @@ function NewTicket() {
               value={ticketData.name}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+              className="w-full px-5 py-3 border border-gray-300 rounded-xl text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-500 transition"
+              placeholder="Enter Your Name"
             />
           </div>
           <div>
-            <label
-              htmlFor="department"
-              className="block text-lg font-medium text-gray-700 mb-2"
-            >
+            <label htmlFor="department" className="block mb-2 text-lg font-semibold text-gray-700">
               Department
             </label>
             <select
@@ -176,7 +162,7 @@ function NewTicket() {
               name="department"
               value={ticketData.department}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 appearance-none bg-white pr-8"
+              className="w-full px-5 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-500 transition appearance-none pr-8"
             >
               <option value="">Select Department</option>
               <option value="IT">IT</option>
@@ -190,10 +176,7 @@ function NewTicket() {
         </div>
 
         <div>
-          <label
-            htmlFor="subject"
-            className="block text-lg font-medium text-gray-700 mb-2"
-          >
+          <label htmlFor="subject" className="block mb-2 text-lg font-semibold text-gray-700">
             Subject
           </label>
           <input
@@ -203,16 +186,14 @@ function NewTicket() {
             value={ticketData.subject}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+            className="w-full px-5 py-3 border border-gray-300 rounded-xl text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-500 transition"
+            placeholder="Brief Summary"
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <label
-              htmlFor="category"
-              className="block text-lg font-medium text-gray-700 mb-2"
-            >
+            <label htmlFor="category" className="block mb-2 text-lg font-semibold text-gray-700">
               Category
             </label>
             <select
@@ -220,7 +201,7 @@ function NewTicket() {
               name="category"
               value={ticketData.category}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 appearance-none bg-white pr-8"
+              className="w-full px-5 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-500 transition appearance-none pr-8"
             >
               <option value="">Select Category</option>
               <option value="Hardware">Hardware</option>
@@ -231,10 +212,7 @@ function NewTicket() {
             </select>
           </div>
           <div>
-            <label
-              htmlFor="type"
-              className="block text-lg font-medium text-gray-700 mb-2"
-            >
+            <label htmlFor="type" className="block mb-2 text-lg font-semibold text-gray-700">
               Type
             </label>
             <select
@@ -242,7 +220,7 @@ function NewTicket() {
               name="type"
               value={ticketData.type}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 appearance-none bg-white pr-8"
+              className="w-full px-5 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-500 transition appearance-none pr-8"
             >
               <option value="">Select Type</option>
               <option value="Incident">Incident</option>
@@ -253,10 +231,7 @@ function NewTicket() {
             </select>
           </div>
           <div>
-            <label
-              htmlFor="priority"
-              className="block text-lg font-medium text-gray-700 mb-2"
-            >
+            <label htmlFor="priority" className="block mb-2 text-lg font-semibold text-gray-700">
               Priority
             </label>
             <select
@@ -264,7 +239,7 @@ function NewTicket() {
               name="priority"
               value={ticketData.priority}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 appearance-none bg-white pr-8"
+              className="w-full px-5 py-3 border border-gray-300 rounded-xl bg-white text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-500 transition appearance-none pr-8"
             >
               <option value="">Select Priority</option>
               <option value="Low">Low</option>
@@ -276,48 +251,46 @@ function NewTicket() {
         </div>
 
         <div>
-          <label
-            htmlFor="description"
-            className="block text-lg font-medium text-gray-700 mb-2"
-          >
+          <label htmlFor="description" className="block mb-2 text-lg font-semibold text-gray-700">
             Description
           </label>
-          <div className="relative">
-            <textarea
-              id="description"
-              rows="6"
-              placeholder="Enter description..."
-              name="description"
-              value={ticketData.description}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 resize-y"
-            ></textarea>
-            <label
-              htmlFor="file-upload"
-              className="absolute bottom-3 right-3 cursor-pointer text-2xl text-gray-500 hover:text-blue-600 transition duration-200"
-              title="Attach File"
-            >
-              📎
-            </label>
-            <input
-              type="file"
-              id="file-upload"
-              accept="image/*, .pdf, .doc, .docx"
-              className="hidden"
-              onChange={handleFileChange}
-            />
-          </div>
+          <textarea
+            id="description"
+            rows="5"
+            placeholder="Enter description..."
+            name="description"
+            value={ticketData.description}
+            onChange={handleChange}
+            required
+            className="w-full px-5 py-3 border border-gray-300 rounded-xl text-gray-800 focus:outline-none focus:ring-4 focus:ring-blue-500 transition resize-y max-h-52"
+          ></textarea>
+        </div>
+
+        <div className="relative w-36">
+          <label
+            htmlFor="file-upload"
+            className="cursor-pointer flex items-center justify-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition duration-200"
+            title="Attach File"
+          >
+            📎 Attach File
+          </label>
+          <input
+            type="file"
+            id="file-upload"
+            accept="image/*,.pdf,.doc,.docx"
+            className="hidden"
+            onChange={handleFileChange}
+          />
           {ticketData.image && (
-            <p className="text-sm text-gray-600 mt-2">
-              Attached: {ticketData.image}
+            <p className="mt-2 text-sm text-gray-600 truncate" title={ticketData.image}>
+              {ticketData.image}
             </p>
           )}
         </div>
 
         {message && (
           <p
-            className={`text-center font-medium mt-4 ${
+            className={`text-center font-semibold mt-4 ${
               messageType === "success" ? "text-green-600" : "text-red-600"
             }`}
           >
@@ -328,12 +301,8 @@ function NewTicket() {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="px-8 py-3 rounded-lg text-white font-semibold text-lg
-                       bg-gradient-to-r from-blue-600 to-purple-600
-                       hover:from-blue-700 hover:to-purple-700
-                       focus:outline-none focus:ring-3 focus:ring-blue-400 focus:ring-offset-2
-                       transition duration-300 ease-in-out transform hover:-translate-y-1
-                       shadow-lg hover:shadow-xl"
+            className="px-10 py-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg
+                       hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-500 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
             Submit Ticket
           </button>

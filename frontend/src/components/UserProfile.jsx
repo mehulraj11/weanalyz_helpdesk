@@ -10,8 +10,6 @@ function UserProfile({ setSelected }) {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    // console.log(storedUser);
-
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setUserProfile({
@@ -19,9 +17,6 @@ function UserProfile({ setSelected }) {
         email: parsedUser.email || "N/A",
         role: parsedUser.role || "N/A",
       });
-    } else {
-      setMessage("User data not found. Please log in.");
-      setMessageType("error");
     }
   }, []);
 
@@ -30,38 +25,36 @@ function UserProfile({ setSelected }) {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-800 mb-8 text-center drop-shadow-sm">
+    <div className="p-6 max-w-md mx-auto">
+      <h1 className="text-3xl font-extrabold text-gray-900 mb-10 text-center drop-shadow-md tracking-tight">
         User Profile
       </h1>
 
-      <div className="flex flex-col lg:flex-row gap-6">
-        <div
-          className="flex-1 bg-white rounded-xl shadow-lg p-6 lg:p-8 relative
-                        transform transition-transform duration-200 hover:scale-105"
+      <div className="bg-white rounded-3xl shadow-xl p-8 relative transform transition-transform duration-300 hover:scale-105">
+        <button
+          onClick={handleEditClick}
+          className="absolute top-5 right-5 text-blue-600 hover:text-blue-800 transition-transform duration-200 transform hover:scale-110 focus:outline-none cursor-pointer"
+          title="Edit Profile"
+          aria-label="Edit Profile"
         >
-          <button
-            onClick={handleEditClick}
-            className="absolute top-4 right-4 text-blue-600 hover:text-blue-800 transition duration-200 transform hover:scale-110"
-            title="Edit Profile"
-          >
-            <FaEdit size={24} />
-          </button>
+          <FaEdit size={26} />
+        </button>
 
-          <div className="flex flex-col items-center mb-6">
-            <FaUserCircle size={100} className="text-gray-500 mb-4" />{" "}
-            <p className="text-2xl font-bold text-gray-800 mb-4">
-              {userProfile.username}
-            </p>
+        <div className="flex flex-col items-center mb-8">
+          <FaUserCircle size={120} className="text-gray-400 mb-6 drop-shadow" />
+          <p className="text-3xl font-extrabold text-gray-900 tracking-wide">
+            {userProfile.username}
+          </p>
+        </div>
+
+        <div className="space-y-5 text-gray-700 text-lg">
+          <div className="flex justify-between border-b border-gray-200 pb-3">
+            <span className="font-semibold text-gray-600">Role:</span>
+            <span className="uppercase font-semibold">{userProfile.role}</span>
           </div>
-
-          <div className="space-y-3 text-lg text-gray-700">
-            <p>
-              <strong>Role:</strong> {userProfile.role.toUpperCase()}
-            </p>
-            <p>
-              <strong>Email:</strong> {userProfile.email}
-            </p>
+          <div className="flex justify-between border-b border-gray-200 pb-3">
+            <span className="font-semibold text-gray-600">Email:</span>
+            <span className="break-words">{userProfile.email}</span>
           </div>
         </div>
       </div>
