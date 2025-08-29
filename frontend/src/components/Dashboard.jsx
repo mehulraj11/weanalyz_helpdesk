@@ -31,13 +31,10 @@ function Dashboard() {
             user.role === "admin" ? "count" : "userticketcount"
           }`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
             withCredentials: true,
           }
         );
-        // console.log(res.data);
 
         setTicketCount({
           total: res.data.totalTickets,
@@ -61,7 +58,7 @@ function Dashboard() {
       setFetchError("Authentication token missing. Please log in.");
       setLoading(false);
     }
-  }, [token]);
+  }, [token, user.role]);
 
   if (loading) {
     return (
@@ -80,69 +77,58 @@ function Dashboard() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-800 mb-8 text-center drop-shadow-sm">
+    <div className="p-6 sm:p-8 lg:p-12 max-w-screen-xl mx-auto">
+      <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-10 text-center drop-shadow-sm">
         Dashboard Overview
       </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div
-          className="bg-white rounded-xl shadow-lg p-6 text-center
-                        transform transition-transform duration-200 hover:scale-105"
-        >
-          <div className="text-lg font-semibold text-gray-600 mb-2">
-            Total Tickets
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+        {[
+          {
+            label: "Total Tickets",
+            value: ticketCount.total,
+            color: "text-blue-600",
+          },
+          {
+            label: "Solved",
+            value: ticketCount.resolved,
+            color: "text-green-600",
+          },
+          {
+            label: "Awaiting Approval",
+            value: ticketCount.pending,
+            color: "text-yellow-600",
+          },
+          {
+            label: "In Progress",
+            value: ticketCount.inProgress,
+            color: "text-purple-600",
+          },
+        ].map(({ label, value, color }) => (
+          <div
+            key={label}
+            className="bg-white rounded-2xl shadow-lg p-8 text-center transition-transform duration-300 hover:scale-105 cursor-default"
+            role="region"
+            aria-label={`${label}: ${value}`}
+          >
+            <p className="text-lg font-semibold text-gray-700 mb-3">{label}</p>
+            <p className={`text-5xl font-extrabold ${color} drop-shadow-md`}>
+              {value}
+            </p>
           </div>
-          <div className="text-4xl font-bold text-blue-600">
-            {ticketCount.total}
-          </div>
-        </div>
-
-        <div
-          className="bg-white rounded-xl shadow-lg p-6 text-center
-                        transform transition-transform duration-200 hover:scale-105"
-        >
-          <div className="text-lg font-semibold text-gray-600 mb-2">Solved</div>
-          <div className="text-4xl font-bold text-green-600">
-            {ticketCount.resolved}
-          </div>
-        </div>
-
-        <div
-          className="bg-white rounded-xl shadow-lg p-6 text-center
-                        transform transition-transform duration-200 hover:scale-105"
-        >
-          <div className="text-lg font-semibold text-gray-600 mb-2">
-            Awaiting Approval
-          </div>
-          <div className="text-4xl font-bold text-yellow-600">
-            {ticketCount.pending}
-          </div>
-        </div>
-
-        <div
-          className="bg-white rounded-xl shadow-lg p-6 text-center
-                        transform transition-transform duration-200 hover:scale-105"
-        >
-          <div className="text-lg font-semibold text-gray-600 mb-2">
-            In Progress
-          </div>
-          <div className="text-4xl font-bold text-purple-600">
-            {ticketCount.inProgress}
-          </div>
-        </div>
+        ))}
       </div>
 
       {role !== "user" && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div
-            className="bg-white rounded-xl shadow-lg p-6 flex items-center justify-center
-                          transform transition-transform duration-200 hover:scale-105"
+            className="bg-white rounded-2xl shadow-lg p-8 flex items-center justify-center transition-transform duration-300 hover:scale-105"
+            aria-label="Ticket Distribution Graph"
           >
             <img
               src={graph}
               alt="Ticket Distribution Graph"
-              className="max-w-full h-auto rounded-lg"
+              className="max-w-full h-auto rounded-xl"
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src =
@@ -151,55 +137,52 @@ function Dashboard() {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div
-              className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center
-                            transform transition-transform duration-200 hover:scale-105"
-            >
-              <img
-                src={technical}
-                alt="Technical Team Icon"
-                className="w-20 h-20 mb-4 rounded-full object-cover"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src =
-                    "https://placehold.co/80x80/e0e0e0/555555?text=Tech";
-                }}
-              />
-              <p className="text-xl font-bold text-gray-800 mb-1">
-                {ticketCount.tech_team}
-              </p>
-              <p className="text-md text-gray-600">Technical Supports</p>
-            </div>
-
-            <div
-              className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center
-                            transform transition-transform duration-200 hover:scale-105"
-            >
-              <img
-                src={opertaion}
-                alt="Operation Team Icon"
-                className="w-20 h-20 mb-4 rounded-full object-cover"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src =
-                    "https://placehold.co/80x80/e0e0e0/555555?text=Ops";
-                }}
-              />
-              <p className="text-xl font-bold text-gray-800 mb-1">
-                {ticketCount.op_team}
-              </p>
-              <p className="text-md text-gray-600">Operation Team</p>
-            </div>
-
-            <div
-              className="bg-white rounded-xl shadow-lg p-6 col-span-1 sm:col-span-2 text-center
-                            transform transition-transform duration-200 hover:scale-105"
-            >
-              <div className="text-lg font-semibold text-gray-600 mb-4">
-                Customer Feedback
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {[
+              {
+                label: "Technical Supports",
+                count: ticketCount.tech_team,
+                img: technical,
+                alt: "Technical Team Icon",
+                placeholderText: "Tech",
+              },
+              {
+                label: "Operation Team",
+                count: ticketCount.op_team,
+                img: opertaion,
+                alt: "Operation Team Icon",
+                placeholderText: "Ops",
+              },
+            ].map(({ label, count, img, alt, placeholderText }) => (
+              <div
+                key={label}
+                className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center justify-center text-center transition-transform duration-300 hover:scale-105 cursor-default"
+                aria-label={`${label} count: ${count}`}
+              >
+                <img
+                  src={img}
+                  alt={alt}
+                  className="w-24 h-24 mb-5 rounded-full object-cover border-4 border-indigo-100 shadow-sm"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = `https://placehold.co/96x96/e0e0e0/555555?text=${placeholderText}`;
+                  }}
+                />
+                <p className="text-2xl font-extrabold text-gray-900 mb-2">
+                  {count}
+                </p>
+                <p className="text-md text-gray-600">{label}</p>
               </div>
-              <div className="flex justify-center items-center text-yellow-500 text-3xl space-x-1">
+            ))}
+
+            <div
+              className="bg-white rounded-2xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105 cursor-default"
+              aria-label="Customer Feedback"
+            >
+              <p className="text-lg font-semibold text-gray-700 mb-6">
+                Customer Feedback
+              </p>
+              <div className="flex justify-center items-center text-yellow-400 text-4xl space-x-1 select-none">
                 <FaStar />
                 <FaStar />
                 <FaStar />
