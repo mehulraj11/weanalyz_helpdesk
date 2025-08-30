@@ -84,19 +84,39 @@ exports.getAllTickets = async (req, res) => {
 
 exports.getUserTickets = async (req, res) => {
     try {
+        console.log("Fetching tickets for user:", req.user.id, "Role:", req.user.role);
+
         let tickets;
 
         if (req.user.role === "user") {
-            tickets = await Ticket.find({ createdBy: req.user.id });
+            // For users, get tickets they created
+            tickets = await Ticket.find({ createdBy: req.user.id })
+                .populate("assignedTo", "username role")
+                .populate("createdBy", "username role")
+                .sort({ createdAt: -1 });
         } else {
-            tickets = await Ticket.find({ assignedTo: req.user.id });
+            // For non-users, get tickets assigned to them
+            tickets = await Ticket.find({ assignedTo: req.user.id })
+                .populate("assignedTo", "username role")
+                .populate("createdBy", "username role")
+                .sort({ createdAt: -1 });
         }
+
+        console.log("Found tickets:", tickets.length);
+
+        // Since your frontend expects just the tickets array, not an object
         res.status(200).json(tickets);
+
     } catch (err) {
-        console.log("Ticket GET AQ Role Error : " + err.message);
-        res.status(500).json({ message: err.message });
+        console.error("Ticket GET Error:", err.message);
+        console.error("Full Error:", err);
+        res.status(500).json({
+            message: "Failed to fetch tickets",
+            error: err.message
+        });
     }
 };
+
 exports.op_approvals = async (req, res) => {
     try {
         const role = req.body.assignedTo;
@@ -155,4 +175,16 @@ exports.deleteTicket = async (req, res) => {
 
     }
 
+}
+
+exports.getSpecificData = async (req, res) => {
+    try {
+        const users = await Ticket.find().populate("assignedTo", "username role")
+        res.status(200).json({ message: "ok", users })
+    } catch (error) {
+        console.log(error.message);
+
+        res.status(500).json({ message: "specific data error", error });
+
+    }
 }

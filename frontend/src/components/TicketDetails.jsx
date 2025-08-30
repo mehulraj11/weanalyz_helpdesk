@@ -4,13 +4,15 @@ import { FaTimes } from "react-icons/fa";
 
 function TicketDetails({ ticket, onClose, role }) {
   const token = localStorage.getItem("token");
+  const userDetails = JSON.parse(localStorage.getItem("user"));
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const dialogRef = useRef(null);
 
   if (!ticket) return null;
 
-  const isUser = role;
+  const isUser = userDetails.role;
+  // console.log(isUser);
 
   const handleUpdateClick = async () => {
     setMessage("");
@@ -139,7 +141,7 @@ function TicketDetails({ ticket, onClose, role }) {
           >
             Close
           </button>
-          {!isUser == "user" && (
+          {isUser !== "user" && (
             <button
               onClick={handleUpdateClick}
               className="px-5 py-2 rounded-lg text-white font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 transition cursor-pointer"

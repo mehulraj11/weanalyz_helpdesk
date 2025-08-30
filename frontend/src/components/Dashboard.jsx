@@ -1,8 +1,23 @@
 import { useState, useEffect } from "react";
-import graph from "../images/Group.png";
-import opertaion from "../images/691142.png";
-import technical from "../images/soporte-tecnico-icono-png-12.png";
-import { FaStar, FaRegStar } from "react-icons/fa";
+import {
+  FaStar,
+  FaRegStar,
+  FaTicketAlt,
+  FaCheckCircle,
+  FaClock,
+  FaSpinner,
+  FaUsers,
+  FaTools,
+  FaChartBar,
+  FaHeart,
+  FaCalendarDay,
+} from "react-icons/fa";
+import {
+  MdTrendingUp,
+  MdPending,
+  MdCheckCircle,
+  MdAnalytics,
+} from "react-icons/md";
 import axios from "axios";
 
 function Dashboard() {
@@ -60,139 +75,177 @@ function Dashboard() {
     }
   }, [token, user.role]);
 
+  const statsCards = [
+    {
+      label: "Total Tickets",
+      value: ticketCount.total,
+      icon: FaTicketAlt,
+      color: "text-blue-600",
+      bgGradient: "bg-gradient-to-r from-blue-500 to-blue-600",
+      bgLight: "bg-blue-50",
+      borderColor: "border-blue-200",
+    },
+    {
+      label: "Resolved",
+      value: ticketCount.resolved,
+      icon: MdCheckCircle,
+      color: "text-green-600",
+      bgGradient: "bg-gradient-to-r from-green-500 to-green-600",
+      bgLight: "bg-green-50",
+      borderColor: "border-green-200",
+    },
+    {
+      label: "Pending",
+      value: ticketCount.pending,
+      icon: MdPending,
+      color: "text-yellow-600",
+      bgGradient: "bg-gradient-to-r from-yellow-500 to-yellow-600",
+      bgLight: "bg-yellow-50",
+      borderColor: "border-yellow-200",
+    },
+    {
+      label: "In Progress",
+      value: ticketCount.inProgress,
+      icon: FaSpinner,
+      color: "text-purple-600",
+      bgGradient: "bg-gradient-to-r from-purple-500 to-purple-600",
+      bgLight: "bg-purple-50",
+      borderColor: "border-purple-200",
+    },
+  ];
+
   if (loading && !fetchError) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-700 text-lg">
-        Loading dashboard data...
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-xl font-semibold text-gray-700 animate-pulse">
+            Loading dashboard data...
+          </p>
+        </div>
       </div>
     );
   }
 
   if (fetchError) {
     return (
-      <div className="flex items-center justify-center h-full text-red-600 text-lg font-medium">
-        Error: {fetchError}
+      <div className="min-h-screen bg-gradient-to-br from-red-50 via-pink-50 to-red-100 flex items-center justify-center">
+        <div className="bg-white p-8 rounded-2xl shadow-2xl border border-red-200 text-center max-w-md">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-red-600 mb-2">
+            Dashboard Error
+          </h2>
+          <p className="text-gray-600">{fetchError}</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 sm:p-8 lg:p-12 max-w-screen-xl mx-auto">
-      <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-10 text-center drop-shadow-sm">
-        Dashboard Overview
-      </h1>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
-        {[
-          { label: "Total Tickets", value: ticketCount.total, color: "text-blue-600" },
-          { label: "Solved", value: ticketCount.resolved, color: "text-green-600" },
-          { label: "Awaiting Approval", value: ticketCount.pending, color: "text-yellow-600" },
-          { label: "In Progress", value: ticketCount.inProgress, color: "text-purple-600" },
-        ].map(({ label, value, color }) => (
-          <div
-            key={label}
-            className="bg-white rounded-2xl shadow-lg p-8 text-center transition-transform duration-300 hover:scale-105 cursor-default"
-            role="region"
-            aria-label={`${label}: ${value}`}
-          >
-            <p className="text-lg font-semibold text-gray-700 mb-3">{label}</p>
-
-            {loading ? (
-              <svg
-                className={`animate-spin mx-auto h-12 w-12 ${color}`}
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                aria-label="Loading"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8z"
-                ></path>
-              </svg>
-            ) : (
-              <p className={`text-5xl font-extrabold ${color} drop-shadow-md`}>{value}</p>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {role !== "user" && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <div
-            className="bg-white rounded-2xl shadow-lg p-8 flex items-center justify-center transition-transform duration-300 hover:scale-105"
-            aria-label="Ticket Distribution Graph"
-          >
-            <img
-              src={graph}
-              alt="Ticket Distribution Graph"
-              className="max-w-full h-auto rounded-xl"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src =
-                  "https://placehold.co/400x300/e0e0e0/555555?text=Graph+Placeholder";
-              }}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {[{
-              label: "Technical Supports",
-              count: ticketCount.tech_team,
-              img: technical,
-              alt: "Technical Team Icon",
-              placeholderText: "Tech"
-            }, {
-              label: "Operation Team",
-              count: ticketCount.op_team,
-              img: opertaion,
-              alt: "Operation Team Icon",
-              placeholderText: "Ops"
-            }].map(({ label, count, img, alt, placeholderText }) => (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {statsCards.map(
+            ({
+              label,
+              value,
+              icon: Icon,
+              color,
+              bgGradient,
+              bgLight,
+              borderColor,
+            }) => (
               <div
                 key={label}
-                className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center justify-center text-center transition-transform duration-300 hover:scale-105 cursor-default"
-                aria-label={`${label} count: ${count}`}
+                className={`bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border-2 ${borderColor} p-6 transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-default group`}
+                role="region"
+                aria-label={`${label}: ${value}`}
               >
-                <img
-                  src={img}
-                  alt={alt}
-                  className="w-24 h-24 mb-5 rounded-full object-cover border-4 border-indigo-100 shadow-sm"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = `https://placehold.co/96x96/e0e0e0/555555?text=${placeholderText}`;
-                  }}
-                />
-                <p className="text-2xl font-extrabold text-gray-900 mb-2">{count}</p>
-                <p className="text-md text-gray-600">{label}</p>
-              </div>
-            ))}
+                {/* Card Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div
+                    className={`${bgLight} p-3 rounded-xl border ${borderColor}`}
+                  >
+                    <Icon className={`text-2xl ${color}`} />
+                  </div>
+                  <div className="text-right">
+                    <MdTrendingUp className="text-green-500 text-lg" />
+                  </div>
+                </div>
 
-            <div
-              className="bg-white rounded-2xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105 cursor-default"
-              aria-label="Customer Feedback"
-            >
-              <p className="text-lg font-semibold text-gray-700 mb-6">Customer Feedback</p>
-              <div className="flex justify-center items-center text-yellow-400 text-4xl space-x-1 select-none">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStar />
-                <FaRegStar />
+                {/* Card Content */}
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+                    {label}
+                  </p>
+                  {loading ? (
+                    <div className="animate-pulse">
+                      <div className="h-10 bg-gray-200 rounded w-20"></div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center">
+                      <p className={`text-4xl font-black ${color} mr-2`}>
+                        {value}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Progress Bar */}
+                <div className="mt-4 w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className={`h-2 ${bgGradient} rounded-full transition-all duration-1000`}
+                    style={{
+                      width: `${Math.min(
+                        (value / Math.max(ticketCount.total, 1)) * 100,
+                        100
+                      )}%`,
+                    }}
+                  ></div>
+                </div>
+              </div>
+            )
+          )}
+        </div>
+
+        {/* Footer Stats for Users */}
+        {role === "user" && (
+          <div className="mt-12 bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl">
+            <div className="text-center">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">
+                Your Support Overview
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-blue-600">
+                    {ticketCount.total}
+                  </p>
+                  <p className="text-sm text-gray-600">Total Submitted</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-green-600">
+                    {ticketCount.resolved}
+                  </p>
+                  <p className="text-sm text-gray-600">Resolved</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-yellow-600">
+                    {ticketCount.pending}
+                  </p>
+                  <p className="text-sm text-gray-600">Pending</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-purple-600">
+                    {ticketCount.inProgress}
+                  </p>
+                  <p className="text-sm text-gray-600">In Progress</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

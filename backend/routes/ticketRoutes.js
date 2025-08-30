@@ -10,7 +10,7 @@ router.get("/userticketcount", protect, ticketController.userTicketsCount)
 router.get("/my-tickets", protect, authorizeRoles("user", "technical", "operation"), ticketController.getUserTickets);
 // NewTicket.jsx
 router.post('/create', protect, authorizeRoles("user"), ticketController.createTicket);
-
+router.get("/specificdata", protect, authorizeRoles("user", "technical", "operation"), ticketController.getSpecificData)
 // operarion
 router.get("/getalltickets", protect, authorizeRoles("operation"), ticketController.getAllTickets);
 router.post("/op_approvals", protect, authorizeRoles("operation"), ticketController.op_approvals);
