@@ -10,7 +10,6 @@ import {
   FaEye,
   FaEyeSlash,
   FaUserPlus,
-  FaSpinner,
   FaShieldAlt,
   FaUserShield,
   FaUsers,
@@ -66,19 +65,14 @@ function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 flex items-center justify-center p-4">
-      {/* Background Decorative Elements */}
-      <div className="absolute inset-0 overflow-hidden">
+    <div className="min-h-full bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 flex items-center justify-center p-4">
+      <div className="fixed inset-0 overflow-hidden -z-10">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/30 to-purple-600/30 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-indigo-400/30 to-pink-600/30 rounded-full blur-3xl"></div>
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-purple-400/20 to-blue-600/20 rounded-full blur-3xl"></div>
       </div>
-
-      {/* Main Container */}
       <div className="relative w-full max-w-lg">
-        {/* Main Card */}
         <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-8 relative overflow-hidden">
-          {/* Header Section */}
           <div className="text-center mb-8">
             <div className="flex justify-center mb-6">
               <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 rounded-2xl shadow-xl">
@@ -92,10 +86,7 @@ function Signup() {
               Create your account
             </p>
           </div>
-
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Username Field */}
             <div className="space-y-2">
               <label
                 htmlFor="username"
@@ -105,7 +96,7 @@ function Signup() {
                 Username
               </label>
               <div className="relative">
-                <input
+                <Input
                   type="text"
                   id="username"
                   name="username"
@@ -121,8 +112,6 @@ function Signup() {
                 <FaUser className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
               </div>
             </div>
-
-            {/* Email Field */}
             <div className="space-y-2">
               <label
                 htmlFor="email"
@@ -132,7 +121,7 @@ function Signup() {
                 Email Address
               </label>
               <div className="relative">
-                <input
+                <Input
                   type="email"
                   id="email"
                   name="email"
@@ -148,8 +137,6 @@ function Signup() {
                 <FaEnvelope className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
               </div>
             </div>
-
-            {/* Password Field */}
             <div className="space-y-2">
               <label
                 htmlFor="password"
@@ -159,7 +146,7 @@ function Signup() {
                 Password
               </label>
               <div className="relative">
-                <input
+                <Input
                   type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
@@ -181,8 +168,6 @@ function Signup() {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-
-              {/* Password Requirements */}
               <div className="mt-2 p-3 bg-blue-50 rounded-xl border border-blue-200">
                 <h4 className="font-semibold text-blue-800 text-sm mb-2 flex items-center">
                   <IoInformationCircle className="mr-2" />
@@ -195,8 +180,6 @@ function Signup() {
                 </ul>
               </div>
             </div>
-
-            {/* Role Selection */}
             <div className="space-y-2">
               <div className="relative">
                 <select
@@ -218,11 +201,7 @@ function Signup() {
                 <FaUsers className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <MdKeyboardArrowDown className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
               </div>
-
-              {/* Role Description */}
             </div>
-
-            {/* Success/Error Message */}
             {message && (
               <div
                 className={`p-4 rounded-2xl border-2 flex items-start space-x-3 ${
@@ -246,8 +225,6 @@ function Signup() {
                 </div>
               </div>
             )}
-
-            {/* Submit Button */}
             <Loader
               type="submit"
               loading={loading}
@@ -263,8 +240,6 @@ function Signup() {
             flex items-center justify-center space-x-3
             disabled:cursor-not-allowed disabled:opacity-70 disabled:transform-none"
             />
-
-            {/* Links */}
             <div className="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0 pt-4">
               <Link
                 to="/forgotpassword"

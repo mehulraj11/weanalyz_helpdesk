@@ -1,4 +1,3 @@
-import React from "react";
 import { FaSpinner } from "react-icons/fa";
 
 const Loader = ({
@@ -13,8 +12,8 @@ const Loader = ({
 }) => {
   return (
     <button
-      type={type}
       disabled={loading || disabled}
+      type={type}
       className={className}
       {...props}
     >

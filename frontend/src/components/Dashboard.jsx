@@ -1,23 +1,6 @@
 import { useState, useEffect } from "react";
-import {
-  FaStar,
-  FaRegStar,
-  FaTicketAlt,
-  FaCheckCircle,
-  FaClock,
-  FaSpinner,
-  FaUsers,
-  FaTools,
-  FaChartBar,
-  FaHeart,
-  FaCalendarDay,
-} from "react-icons/fa";
-import {
-  MdTrendingUp,
-  MdPending,
-  MdCheckCircle,
-  MdAnalytics,
-} from "react-icons/md";
+import { FaTicketAlt, FaSpinner } from "react-icons/fa";
+import { MdTrendingUp, MdPending, MdCheckCircle } from "react-icons/md";
 import axios from "axios";
 
 function Dashboard() {
