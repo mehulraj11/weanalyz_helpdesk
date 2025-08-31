@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Loader from "./Loader";
-import Input from "./Input";
+import Loader from "./utility/Loader";
+import Input from "./utility/Input";
 import axios from "axios";
 import { FaTicketAlt, FaCheck, FaTimes } from "react-icons/fa";
-import Select from "./Select";
+import Select from "./utility/Select";
 
 function NewTicket() {
   const [ticketData, setTicketData] = useState({

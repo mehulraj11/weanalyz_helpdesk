@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Loader from "../components/Loader";
-import Input from "../components/Input";
+import Loader from "../components/utility/Loader";
+import Input from "../components/utility/Input";
 import axios from "axios";
 import {
   FaEnvelope,
