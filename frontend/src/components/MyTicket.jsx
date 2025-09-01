@@ -1,147 +1,111 @@
 import { useEffect, useState } from "react";
 import TicketDetails from "./TicketDetails";
-import {
-  FaSearch,
-  FaTrash,
-  FaEye,
-  FaFilter,
-  FaTicketAlt,
-} from "react-icons/fa";
-import { MdKeyboardArrowDown } from "react-icons/md";
+import { FaSearch, FaTrash, FaEye, FaTicketAlt } from "react-icons/fa";
 import axios from "axios";
 
 function MyTicket({ tickets, setTickets }) {
   const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = user?.role || "user";
+
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [assigned, setAssigned] = useState([]);
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const role = user?.role || "user";
+  useEffect(() => {
+    fetchTickets();
+  }, [token]);
 
-  const handleTicketSelection = (ticketData) => {
-    setSelectedTicket(ticketData);
-  };
+  const fetchTickets = async () => {
+    setLoading(true);
+    setError(null);
 
-  const getSpecificData = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/tickets/specificdata/`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        `${import.meta.env.VITE_BACKEND_URL}/tickets/my-tickets`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        }
       );
-      setAssigned(res.data.users);
-    } catch (error) {
-      console.log(error.message);
+
+      const ticketsData = res.data.tickets || res.data || [];
+      setTickets(ticketsData);
+    } catch (err) {
+      console.error("Error fetching tickets:", err);
+      setError("Failed to fetch tickets. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDelete = async (id, e) => {
     e.stopPropagation();
+
+    if (!confirm("Are you sure you want to delete this ticket?")) return;
+
     try {
       await axios.delete(
         `${import.meta.env.VITE_BACKEND_URL}/tickets/deleteticket/${id}`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         }
       );
       setTickets((prev) => prev.filter((t) => t._id !== id));
-      console.log("Ticket deleted:", id);
     } catch (error) {
-      console.error("Error deleting ticket:", error.message);
+      console.error("Error deleting ticket:", error);
+      alert("Failed to delete ticket. Please try again.");
     }
   };
 
-  // In MyTicket.jsx, update the useEffect:
-  useEffect(() => {
-    const fetchTickets = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/tickets/my-tickets`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            withCredentials: true,
-          }
-        );
-
-        // Handle both response structures
-        if (res.data.tickets && Array.isArray(res.data.tickets)) {
-          // If response has tickets and users structure
-          setTickets(res.data.tickets);
-          if (res.data.users) {
-            setAssigned(res.data.users);
-          }
-        } else if (Array.isArray(res.data)) {
-          // If response is just tickets array
-          setTickets(res.data);
-        } else {
-          setTickets([]);
-        }
-      } catch (err) {
-        console.error("Error fetching tickets:", err);
-        setError("Failed to fetch tickets. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getSpecificData();
-    if (token) {
-      fetchTickets();
-    } else {
-      setError("Authentication token missing. Please log in.");
-      setLoading(false);
-    }
-  }, [token, setTickets]);
-
-  const filteredTickets = tickets.filter(
-    (ticket) =>
+  // Filter tickets based on search term
+  const filteredTickets = tickets.filter((ticket) => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
       ticket.ticketNo.toString().includes(searchTerm) ||
-      ticket.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ticket.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.subject.toLowerCase().includes(searchLower) ||
+      ticket.status.toLowerCase().includes(searchLower) ||
       (ticket.category &&
-        ticket.category.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        ticket.category.toLowerCase().includes(searchLower)) ||
       (ticket.priority &&
-        ticket.priority.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        ticket.priority.toLowerCase().includes(searchLower)) ||
       (ticket.assignedTo?.name &&
-        ticket.assignedTo.name.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+        ticket.assignedTo.name.toLowerCase().includes(searchLower))
+    );
+  });
 
-  const statusColors = {
-    "In Progress": "bg-gradient-to-r from-blue-500 to-blue-600 shadow-blue-200",
-    "On hold":
-      "bg-gradient-to-r from-yellow-500 to-yellow-600 shadow-yellow-200",
-    Closed: "bg-gradient-to-r from-gray-500 to-gray-600 shadow-gray-200",
-    Pending: "bg-gradient-to-r from-red-500 to-red-600 shadow-red-200",
-    Resolved: "bg-gradient-to-r from-green-500 to-green-600 shadow-green-200",
+  // Status styling helper
+  const getStatusStyle = (status) => {
+    const styles = {
+      "In Progress": "bg-blue-100 text-blue-800 border-blue-200",
+      "On hold": "bg-yellow-100 text-yellow-800 border-yellow-200",
+      Closed: "bg-gray-100 text-gray-800 border-gray-200",
+      Pending: "bg-red-100 text-red-800 border-red-200",
+      Resolved: "bg-green-100 text-green-800 border-green-200",
+    };
+    return styles[status] || "bg-gray-100 text-gray-800 border-gray-200";
   };
 
-  const priorityColors = {
-    High: "bg-gradient-to-r from-red-50 to-red-100 text-red-800 border-red-200",
-    Urgent:
-      "bg-gradient-to-r from-purple-50 to-purple-100 text-purple-800 border-purple-200",
-    Medium:
-      "bg-gradient-to-r from-yellow-50 to-yellow-100 text-yellow-800 border-yellow-200",
-    Low: "bg-gradient-to-r from-blue-50 to-blue-100 text-blue-800 border-blue-200",
+  // Priority styling helper
+  const getPriorityStyle = (priority) => {
+    const styles = {
+      High: "bg-red-100 text-red-800 border-red-200",
+      Urgent: "bg-purple-100 text-purple-800 border-purple-200",
+      Medium: "bg-yellow-100 text-yellow-800 border-yellow-200",
+      Low: "bg-blue-100 text-blue-800 border-blue-200",
+    };
+    return styles[priority] || "bg-gray-100 text-gray-800 border-gray-200";
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-xl font-semibold text-gray-700 animate-pulse">
-            Loading your tickets...
-          </p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading tickets...</p>
         </div>
       </div>
     );
@@ -149,49 +113,31 @@ function MyTicket({ tickets, setTickets }) {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-50 via-pink-50 to-red-100 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-2xl shadow-2xl border border-red-200 text-center max-w-md">
-          <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-bold text-red-600 mb-2">
-            Oops! Something went wrong
-          </h2>
-          <p className="text-gray-600">{error}</p>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="bg-white p-6 rounded-lg shadow border max-w-sm text-center">
+          <div className="text-red-500 text-4xl mb-4">⚠️</div>
+          <h2 className="text-lg font-bold text-gray-900 mb-2">Error</h2>
+          <p className="text-gray-600 text-sm mb-4">{error}</p>
+          <button
+            onClick={fetchTickets}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Retry
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-4 sm:p-6 lg:p-8">
-      {/* Header Section */}
-      <div className="mb-8">
-        <div className="flex items-center justify-center mb-2">
-          <FaTicketAlt className="text-4xl text-blue-600 mr-4" />
-          <h1 className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
-            My Tickets
-          </h1>
-        </div>
-        <p className="text-center text-gray-600 text-lg">
-          Manage and track all your support tickets
-        </p>
-      </div>
-
-      {/* Modal */}
+    <div className="min-h-full bg-gray-50 p-4 sm:p-6">
       {selectedTicket && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
-          aria-modal="true"
-          role="dialog"
-          onKeyDown={(e) => {
-            if (e.key === "Escape") setSelectedTicket(null);
-          }}
-          tabIndex={-1}
-        >
+        <div className="fixed inset-0 z-50 flex items-center justify-center  bg-opacity-50 p-4">
           <div
             className="absolute inset-0"
             onClick={() => setSelectedTicket(null)}
           />
-          <div className="relative z-10 max-h-[90vh] w-[95vw] max-w-4xl overflow-y-auto rounded-2xl">
+          <div className="relative bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <TicketDetails
               ticket={selectedTicket}
               onClose={() => setSelectedTicket(null)}
@@ -199,230 +145,171 @@ function MyTicket({ tickets, setTickets }) {
           </div>
         </div>
       )}
-
-      {/* Controls Section */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6 mb-8">
-        <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0 lg:space-x-6">
-          {/* Search Bar */}
-          <div className="relative w-full lg:w-1/2">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <FaSearch className="text-gray-400 text-lg" />
-            </div>
+      <div className="bg-white rounded-lg shadow  p-4 mb-6">
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+          <div className="relative flex-1 max-w-md">
+            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              placeholder="Search by ticket number, subject, status, or assignee..."
-              className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-300 text-gray-700 placeholder-gray-500"
+              placeholder="Search tickets..."
+              className="w-full pl-10 pr-4 py-2  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
-          {/* Entries Control */}
-          <div className="flex items-center space-x-3 bg-gray-50 px-4 py-3 rounded-xl border border-gray-200">
-            <FaFilter className="text-gray-500" />
-            <span className="text-gray-700 font-medium">Show:</span>
-            <div className="relative">
-              <select
-                className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer font-medium text-gray-700"
-                value={entriesPerPage}
-                onChange={(e) => setEntriesPerPage(Number(e.target.value))}
-              >
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-              <MdKeyboardArrowDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none" />
-            </div>
-            <span className="text-gray-700 font-medium">entries</span>
+          {/* Entries per page */}
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-700">Show:</span>
+            <select
+              value={entriesPerPage}
+              onChange={(e) => setEntriesPerPage(Number(e.target.value))}
+              className="rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+            </select>
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="mt-4 flex flex-wrap gap-4 justify-center lg:justify-start">
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-full shadow-lg">
-            <span className="font-semibold">
-              Total: {filteredTickets.length}
-            </span>
-          </div>
-          {role === "user" && (
-            <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-full shadow-lg">
-              <span className="font-semibold">My Tickets</span>
-            </div>
-          )}
+        {/* Results counter */}
+        <div className="mt-3 text-sm text-gray-600">
+          Showing {Math.min(entriesPerPage, filteredTickets.length)} of{" "}
+          {entriesPerPage} tickets
         </div>
       </div>
 
-      {/* Table Section */}
-      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-white/20">
+      {/* Tickets Table */}
+      <div className="bg-white rounded-lg shadow  overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full">
-            <thead className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                  Ticket No.
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Ticket #
                 </th>
-                <th className="px-6 py-5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Subject
                 </th>
-                {role === "user" ? (
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Status
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Date
+                </th>
+                {role !== "user" && (
                   <>
-                    <th className="px-6 py-5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                      Resolved by
-                    </th>
-                    <th className="px-6 py-5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                      Date
-                    </th>
-                  </>
-                ) : (
-                  <>
-                    <th className="px-6 py-5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                      Category
-                    </th>
-                    <th className="px-6 py-5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Priority
                     </th>
-                    <th className="px-6 py-5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                      Date
-                    </th>
-                    <th className="px-6 py-5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-5 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Assignee
-                    </th>
-                    <th className="px-6 py-5 text-center text-xs font-bold text-gray-600 uppercase tracking-wider">
-                      Actions
                     </th>
                   </>
                 )}
+                <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">
+                  Actions
+                </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
-              {filteredTickets.slice(0, entriesPerPage).map((ticket, index) => (
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredTickets.slice(0, entriesPerPage).map((ticket) => (
                 <tr
                   key={ticket._id}
-                  className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 cursor-pointer transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg group"
-                  onClick={() => handleTicketSelection(ticket)}
+                  className="hover:bg-gray-50 cursor-pointer"
+                  onClick={() => setSelectedTicket(ticket)}
                 >
-                  <td className="px-6 py-5 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
-                        #{ticket.ticketNo}
-                      </div>
-                    </div>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
+                      #{ticket.ticketNo}
+                    </span>
                   </td>
-                  <td className="px-6 py-5 whitespace-nowrap">
-                    <div className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                  <td className="px-4 py-3">
+                    <div className="text-sm font-medium text-gray-900 truncate max-w-xs">
                       {ticket.subject}
                     </div>
                   </td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded border ${getStatusStyle(
+                        ticket.status
+                      )}`}
+                    >
+                      {ticket.status || "Pending"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                    {ticket.date
+                      ? new Date(ticket.date).toLocaleDateString()
+                      : "-"}
+                  </td>
 
-                  {role === "user" ? (
+                  {role !== "user" && (
                     <>
-                      <td className="px-6 py-5 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <span
-                          className={`px-4 py-2 inline-flex text-xs leading-5 font-bold rounded-full text-white shadow-lg ${
-                            statusColors[ticket.status] ||
-                            "bg-gradient-to-r from-gray-500 to-gray-600"
-                          }`}
-                        >
-                          {ticket.status || "Pending"}
-                        </span>
-                      </td>
-                      <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-gray-700">
-                        {ticket.createdBy?.role || "User"}
-                      </td>
-                      <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-gray-700">
-                        {ticket.date
-                          ? new Date(ticket.date).toLocaleDateString()
-                          : "-"}
-                      </td>
-                    </>
-                  ) : (
-                    <>
-                      <td className="px-6 py-5 whitespace-nowrap">
-                        <span className="bg-gray-100 text-gray-800 text-xs font-semibold px-3 py-1 rounded-full border">
-                          {ticket.category || "-"}
-                        </span>
-                      </td>
-                      <td className="px-6 py-5 whitespace-nowrap">
-                        <span
-                          className={`px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full border ${
-                            priorityColors[ticket.priority] ||
-                            "bg-gradient-to-r from-gray-50 to-gray-100 text-gray-800 border-gray-200"
-                          }`}
+                          className={`px-2 py-1 text-xs font-medium rounded border ${getPriorityStyle(
+                            ticket.priority
+                          )}`}
                         >
                           {ticket.priority || "Low"}
                         </span>
                       </td>
-                      <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-gray-700">
-                        {ticket.date
-                          ? new Date(ticket.date).toLocaleDateString()
-                          : "-"}
-                      </td>
-                      <td className="px-6 py-5 whitespace-nowrap">
-                        <span
-                          className={`px-4 py-2 inline-flex text-xs leading-5 font-bold rounded-full text-white shadow-lg ${
-                            statusColors[ticket.status] ||
-                            "bg-gradient-to-r from-gray-500 to-gray-600"
-                          }`}
-                        >
-                          {ticket.status || "Pending"}
-                        </span>
-                      </td>
-                      <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-gray-700">
-                        <div className="flex items-center">
-                          <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold mr-3">
+                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-xs font-medium">
                             {ticket.assignedTo?.name
                               ? ticket.assignedTo.name.charAt(0).toUpperCase()
                               : "?"}
                           </div>
-                          {ticket.assignedTo?.name || "Unassigned"}
-                        </div>
-                      </td>
-                      <td className="px-6 py-5 whitespace-nowrap text-center">
-                        <div className="flex items-center justify-center space-x-3">
-                          <button
-                            title="View Details"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleTicketSelection(ticket);
-                            }}
-                            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white p-2 rounded-lg transition-all duration-300 transform hover:scale-110 shadow-lg hover:shadow-xl"
-                          >
-                            <FaEye size={14} />
-                          </button>
-                          <button
-                            title="Delete Ticket"
-                            onClick={(e) => handleDelete(ticket._id, e)}
-                            className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white p-2 rounded-lg transition-all duration-300 transform hover:scale-110 shadow-lg hover:shadow-xl"
-                          >
-                            <FaTrash size={14} />
-                          </button>
+                          <span className="truncate max-w-20">
+                            {ticket.assignedTo?.name || "Unassigned"}
+                          </span>
                         </div>
                       </td>
                     </>
                   )}
+
+                  <td className="px-4 py-3 whitespace-nowrap text-center">
+                    <div className="flex items-center justify-center space-x-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedTicket(ticket);
+                        }}
+                        className="p-1 text-blue-600 hover:bg-blue-100 rounded"
+                        title="View Details"
+                      >
+                        <FaEye size={14} />
+                      </button>
+                      {role !== "user" && (
+                        <button
+                          onClick={(e) => handleDelete(ticket._id, e)}
+                          className="p-1 text-red-600 hover:bg-red-100 rounded"
+                          title="Delete Ticket"
+                        >
+                          <FaTrash size={14} />
+                        </button>
+                      )}
+                    </div>
+                  </td>
                 </tr>
               ))}
+
               {filteredTickets.length === 0 && (
                 <tr>
                   <td
                     colSpan={role === "user" ? 5 : 7}
-                    className="px-6 py-16 text-center"
+                    className="px-4 py-12 text-center"
                   >
-                    <div className="flex flex-col items-center justify-center">
-                      <div className="text-6xl text-gray-300 mb-4">🎫</div>
-                      <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                    <div className="text-gray-400">
+                      <FaTicketAlt className="mx-auto text-4xl mb-4" />
+                      <p className="text-lg font-medium text-gray-600 mb-2">
                         No tickets found
-                      </h3>
-                      <p className="text-gray-500">
-                        Try adjusting your search criteria or create a new
-                        ticket.
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Try adjusting your search criteria
                       </p>
                     </div>
                   </td>
@@ -431,12 +318,6 @@ function MyTicket({ tickets, setTickets }) {
             </tbody>
           </table>
         </div>
-      </div>
-
-      {/* Footer */}
-      <div className="mt-8 text-center text-gray-500 text-sm">
-        Showing {Math.min(entriesPerPage, filteredTickets.length)} of{" "}
-        {filteredTickets.length} tickets
       </div>
     </div>
   );

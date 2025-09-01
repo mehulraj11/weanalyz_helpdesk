@@ -16,7 +16,7 @@ function MainPage({ tickets, setTickets }) {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <div className="h-screen flex items-center justify-center bg-gray-100 p-4">
         <div className="bg-white rounded-lg shadow p-6 max-w-sm text-center">
           <div className="text-red-500 text-4xl mb-4">🔒</div>
           <h2 className="text-xl font-bold text-gray-900 mb-2">
@@ -49,7 +49,7 @@ function MainPage({ tickets, setTickets }) {
   const navigationItems = {
     dashboard: { label: "Dashboard" },
     newticket: { label: "New Ticket" },
-    myticket: { label: "My Tickets" },
+    myticket: { label: "Tickets" },
     ticketapproval: { label: "Approvals" },
     database: { label: "Database" },
     userlog: { label: "User Logs" },
@@ -83,28 +83,31 @@ function MainPage({ tickets, setTickets }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
       <Navabar onSelect={setSelected} />
-      <div className="flex">
+      <div className="flex flex-1 overflow-hidden">
         {sidebarOpen && (
           <div
-            className="fixed inset-0  z-20"
+            className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         )}
         <aside
           className={`
-          fixed lg:static inset-y-0 left-0 z-30
-          transform ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:translate-x-0
-          transition-transform duration-200 ease-in-out
-          w-64 bg-white border-r border-gray-200 flex flex-col
-        `}
+            fixed lg:static inset-y-0 left-0 z-30
+            transform ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } lg:translate-x-0
+            transition-transform duration-200 ease-in-out
+            w-64 bg-white border-r border-gray-200 flex flex-col
+            lg:h-full
+          `}
         >
-          <div className="p-4 border-b border-gray-200">
+          <div className="p-4 border-b border-gray-200 flex-shrink-0">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2"></div>
+              <div className="flex items-center space-x-2">
+                <span className="font-semibold text-gray-900">Menu</span>
+              </div>
               <button
                 className="lg:hidden p-1"
                 onClick={() => setSidebarOpen(false)}
@@ -113,7 +116,7 @@ function MainPage({ tickets, setTickets }) {
               </button>
             </div>
           </div>
-          <nav className="flex-1 p-4 space-y-1">
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
             {roleOptions[role]?.map((key) => {
               const item = navigationItems[key];
               const isActive = selected === key;
@@ -141,8 +144,8 @@ function MainPage({ tickets, setTickets }) {
             })}
           </nav>
         </aside>
-        <main className="flex-1 lg:ml-0">
-          <div className="lg:hidden bg-white border-b border-gray-200 p-4">
+        <main className="flex-1 flex flex-col overflow-hidden">
+          <div className="lg:hidden bg-white border-b border-gray-200 p-4 flex-shrink-0">
             <div className="flex items-center justify-between">
               <button
                 onClick={() => setSidebarOpen(true)}
@@ -156,28 +159,21 @@ function MainPage({ tickets, setTickets }) {
               <div></div>
             </div>
           </div>
-          <div className="hidden lg:block bg-white border-b border-gray-200 px-6 py-4">
+          <div className="hidden lg:block bg-white border-b border-gray-200 px-6 py-4 flex-shrink-0">
             <div className="flex items-center space-x-3">
-              <span className="text-2xl">
-                {navigationItems[selected]?.icon}
-              </span>
               <div>
                 <h1 className="text-xl font-semibold text-gray-900">
                   {navigationItems[selected]?.label}
                 </h1>
-                <p className="text-sm text-gray-600">
-                  Manage your {navigationItems[selected]?.label.toLowerCase()}
-                </p>
               </div>
             </div>
           </div>
-          <div className="p-4 lg:p-6">
-            <div className="bg-white rounded-lg border border-gray-200 min-h-[calc(100vh-200px)]">
-              {componentsMap[selected]}
-            </div>
+          <div className="flex-1 overflow-y-auto">
+            {componentsMap[selected]}
           </div>
-          <footer className="bg-white border-t border-gray-200 px-6 py-4">
+          <footer className="bg-white border-t border-gray-200 px-6 py-4 flex-shrink-0">
             <div className="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+              <p className="text-sm text-gray-600">© 2025 Support Dashboard</p>
               <a
                 href="https://portfolio-mhvats.onrender.com"
                 target="_blank"
