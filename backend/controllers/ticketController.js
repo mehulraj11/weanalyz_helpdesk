@@ -26,6 +26,48 @@ exports.userTicketsCount = async (req, res) => {
 };
 
 
+exports.assignedTickets = async (req, res) => {
+    try {
+        const role = req.user.role;
+
+        // Find all users with this role
+        const users = await User.find({ role }).select('_id');
+        const userIds = users.map(user => user._id);
+
+        // Count tickets assigned to these users
+        const totalTickets = await Ticket.countDocuments({
+            assignedTo: { $in: userIds }
+        });
+
+        const resolvedTickets = await Ticket.countDocuments({
+            assignedTo: { $in: userIds },
+            status: "Resolved"
+        });
+
+        const pendingTickets = await Ticket.countDocuments({
+            assignedTo: { $in: userIds },
+            status: "Pending"
+        });
+
+        const inProgressTickets = await Ticket.countDocuments({
+            assignedTo: { $in: userIds },
+            status: "In Progress"
+        });
+
+        res.status(200).json({
+            totalTickets,
+            resolvedTickets,
+            pendingTickets,
+            inProgressTickets
+        });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+
+
 // this is for the opertion team to process the ticket either send it to itself or techinalc
 exports.ticketVerify = async (req, res) => {
     try {

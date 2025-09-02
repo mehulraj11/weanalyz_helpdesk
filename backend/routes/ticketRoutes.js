@@ -15,7 +15,7 @@ router.get("/verifyticket", protect, authorizeRoles("operation"), ticketControll
 router.post("/op_approvals", protect, authorizeRoles("operation"), ticketController.op_approvals);
 
 // // technical, operation
-
+router.get("/assignedcount", protect, authorizeRoles("operation", "technical"), ticketController.assignedTickets)
 router.put("/resolve/:id", protect, authorizeRoles("technical", "operation"), ticketController.resolveTicket);
 router.delete("/deleteticket/:id", ticketController.deleteTicket)
 // // admin
