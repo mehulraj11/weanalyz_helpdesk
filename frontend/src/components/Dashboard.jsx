@@ -15,6 +15,7 @@ function Dashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
   const role = user?.role;
   const token = localStorage.getItem("token");
+  console.log(user.role);
 
   useEffect(() => {
     const fetchTicketCount = async () => {
@@ -23,7 +24,9 @@ function Dashboard() {
       try {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/tickets/${
-            user.role === "admin" ? "count" : "userticketcount"
+            user.role === "operation" || user.role === "technical"
+              ? "assignedcount"
+              : "count"
           }`,
           {
             headers: { Authorization: `Bearer ${token}` },

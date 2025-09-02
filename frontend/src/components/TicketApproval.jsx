@@ -30,7 +30,7 @@ function TicketApproval({ tickets, setTickets }) {
 
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/tickets/getalltickets`,
+        `${import.meta.env.VITE_BACKEND_URL}/tickets/verifyticket`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
