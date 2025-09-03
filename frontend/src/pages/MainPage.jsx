@@ -4,8 +4,6 @@ import Database from "../components/Database";
 import MyTicket from "../components/MyTicket";
 import Navabar from "../components/Navabar";
 import NewTicket from "../components/NewTicket";
-// import Performance from "../components/Performance";
-import Setting from "../components/Setting";
 import TicketApproval from "../components/TicketApproval";
 import UserLogHistory from "../components/UserLogHistory";
 import UserProfile from "../components/UserProfile";
@@ -14,13 +12,21 @@ import UserProfileSetting from "../components/UserProfileSetting";
 function MainPage({ tickets, setTickets }) {
   const user = JSON.parse(localStorage.getItem("user"));
   const [selected, setSelected] = useState("dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 p-6">
-        <p className="text-white text-xl font-semibold bg-red-600 p-6 rounded-lg shadow-xl max-w-md text-center">
-          Please login to continue.
-        </p>
+      <div className="h-screen flex items-center justify-center bg-gray-100 p-4">
+        <div className="bg-white rounded-lg shadow p-6 max-w-sm text-center">
+          <div className="text-red-500 text-4xl mb-4">🔒</div>
+          <h2 className="text-xl font-bold text-gray-900 mb-2">
+            Access Denied
+          </h2>
+          <p className="text-gray-600 mb-4">Please log in to continue.</p>
+          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-medium">
+            Go to Login
+          </button>
+        </div>
       </div>
     );
   }
@@ -34,12 +40,21 @@ function MainPage({ tickets, setTickets }) {
     ticketapproval: (
       <TicketApproval tickets={tickets} setTickets={setTickets} />
     ),
-    // performance: <Performance />,
-    setting: <Setting />,
     database: <Database />,
     userlog: <UserLogHistory />,
     userprofile: <UserProfile setSelected={setSelected} />,
     userprofilesetting: <UserProfileSetting />,
+  };
+
+  const navigationItems = {
+    dashboard: { label: "Dashboard" },
+    newticket: { label: "New Ticket" },
+    myticket: { label: "Tickets" },
+    ticketapproval: { label: "Approvals" },
+    database: { label: "Database" },
+    userlog: { label: "User Logs" },
+    userprofile: { label: "Profile" },
+    userprofilesetting: { label: "Settings" },
   };
 
   const roleOptions = {
@@ -54,20 +69,12 @@ function MainPage({ tickets, setTickets }) {
       "dashboard",
       "ticketapproval",
       "myticket",
-      // "performance",
       "userprofile",
       "userprofilesetting",
     ],
-    technical: [
-      "dashboard",
-      "myticket",
-      // "performance",
-      "userprofile",
-      "userprofilesetting",
-    ],
+    technical: ["dashboard", "myticket", "userprofile", "userprofilesetting"],
     admin: [
       "dashboard",
-      "setting",
       "userlog",
       "database",
       "userprofile",
@@ -76,51 +83,106 @@ function MainPage({ tickets, setTickets }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500">
+    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
       <Navabar onSelect={setSelected} />
-
-      <div className="flex flex-1 flex-col md:flex-row p-4 md:p-6 lg:p-8 gap-6 md:gap-8">
+      <div className="flex flex-1 overflow-hidden">
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
         <aside
-          className="w-full md:w-64 lg:w-72 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6
-                     flex flex-row md:flex-col overflow-x-auto md:overflow-x-hidden flex-shrink-0
-                     scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-transparent"
-          aria-label="Sidebar Navigation"
+          className={`
+            fixed lg:static inset-y-0 left-0 z-30
+            transform ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } lg:translate-x-0
+            transition-transform duration-200 ease-in-out
+            w-64 bg-white border-r border-gray-200 flex flex-col
+            lg:h-full
+          `}
         >
-          {roleOptions[role]?.map((key) => (
-            <button
-              key={key}
-              onClick={() => setSelected(key)}
-              className={`w-full py-3 px-5 rounded-lg text-left font-semibold
-                transition duration-300 ease-in-out whitespace-nowrap
-                ${
-                  selected === key
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                    : "text-gray-700 hover:bg-blue-100 hover:text-blue-700"
-                }
-                focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer`}
-            >
-              {key.replace(/([A-Z])/g, " $1").toUpperCase()}
-            </button>
-          ))}
+          <div className="p-4 border-b border-gray-200 flex-shrink-0">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <span className="font-semibold text-gray-900">Menu</span>
+              </div>
+              <button
+                className="lg:hidden p-1"
+                onClick={() => setSidebarOpen(false)}
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+            {roleOptions[role]?.map((key) => {
+              const item = navigationItems[key];
+              const isActive = selected === key;
+
+              return (
+                <button
+                  key={key}
+                  onClick={() => {
+                    setSelected(key);
+                    setSidebarOpen(false);
+                  }}
+                  className={`
+                    w-full flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium
+                    transition-colors duration-150
+                    ${
+                      isActive
+                        ? "bg-blue-100 text-blue-700 border-l-4 border-blue-600"
+                        : "text-gray-700 hover:bg-gray-100"
+                    }
+                  `}
+                >
+                  <span>{item?.label}</span>
+                </button>
+              );
+            })}
+          </nav>
         </aside>
-
-        <main
-          className="flex-1 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-8 flex flex-col overflow-hidden"
-          aria-live="polite"
-        >
-          <section className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-purple-400 scrollbar-track-transparent">
+        <main className="flex-1 flex flex-col overflow-hidden">
+          <div className="lg:hidden bg-white border-b border-gray-200 p-4 flex-shrink-0">
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="p-2 rounded-md text-gray-600 hover:bg-gray-100"
+              >
+                ☰
+              </button>
+              <h1 className="font-semibold text-gray-900">
+                {navigationItems[selected]?.label}
+              </h1>
+              <div></div>
+            </div>
+          </div>
+          <div className="hidden lg:block bg-white border-b border-gray-200 px-6 py-4 flex-shrink-0">
+            <div className="flex items-center space-x-3">
+              <div>
+                <h1 className="text-xl font-semibold text-gray-900">
+                  {navigationItems[selected]?.label}
+                </h1>
+              </div>
+            </div>
+          </div>
+          <div className="flex-1 overflow-y-auto">
             {componentsMap[selected]}
-          </section>
-
-          <footer className="mt-6 pt-4 text-center text-gray-700 text-sm border-t border-gray-300 select-none">
-            <a
-              href="https://portfolio-mhvats.onrender.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 transition duration-200 hover:underline font-semibold"
-            >
-              Developed by Mehul Raj
-            </a>
+          </div>
+          <footer className="bg-white border-t border-gray-200 px-6 py-4 flex-shrink-0">
+            <div className="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+              <p className="text-sm text-gray-600">© 2025 Support Dashboard</p>
+              <a
+                href="https://portfolio-mhvats.onrender.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Developed by Mehul Raj
+              </a>
+            </div>
           </footer>
         </main>
       </div>
