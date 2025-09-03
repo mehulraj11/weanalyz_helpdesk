@@ -77,7 +77,7 @@ function Navbar({ onSelect }) {
               <div className="relative">
                 <button
                   onClick={() => setShowNotifications(!showNotifications)}
-                  className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                   title="Notifications"
                 >
                   <FaBell className="text-gray-600 text-lg" />
@@ -96,7 +96,7 @@ function Navbar({ onSelect }) {
                         </h3>
                         <button
                           onClick={() => setShowNotifications(false)}
-                          className="p-1 rounded hover:bg-gray-100"
+                          className="p-1 rounded hover:bg-gray-100 cursor-pointer"
                         >
                           <FaTimes className="text-gray-500 text-sm" />
                         </button>
@@ -129,14 +129,14 @@ function Navbar({ onSelect }) {
               </div>
               <button
                 onClick={() => onSelect("userprofile")}
-                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                 title="Profile"
               >
                 <FaUser className="text-gray-600 text-lg" />
               </button>
               <button
                 onClick={() => setOpenConfirm(true)}
-                className="p-2 rounded-lg hover:bg-red-50 text-red-600 transition-colors"
+                className="p-2 rounded-lg hover:bg-red-50 text-red-600 transition-colors cursor-pointer"
                 title="Logout"
               >
                 <FaSignOutAlt className="text-lg" />
@@ -178,13 +178,13 @@ function Navbar({ onSelect }) {
               <div className="flex space-x-3">
                 <button
                   onClick={() => setOpenConfirm(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-colors"
+                  className="cursor-pointer flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors"
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors cursor-pointer"
                 >
                   Logout
                 </button>

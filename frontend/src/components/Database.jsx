@@ -87,7 +87,7 @@ function Database() {
                 <button
                   key={tab.value}
                   onClick={() => handleTabChange(tab.value)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer${
                     isActive
                       ? getColorClasses(tab.color, "active")
                       : getColorClasses(tab.color, "default")

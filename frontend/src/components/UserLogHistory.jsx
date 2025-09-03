@@ -168,7 +168,7 @@ function UserLogHistory() {
             <button
               key={i + 1}
               onClick={() => handlePageChange(i + 1)}
-              className={`px-3 py-1 rounded-lg font-medium
+              className={`px-3 py-1 rounded-lg font-medium cursor-pointer
                           ${currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100"}
                           transition duration-150`}
             >
@@ -179,7 +179,7 @@ function UserLogHistory() {
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
             className="px-3 py-1 rounded-lg border border-gray-300 bg-white text-gray-700
-                       hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150"
+                       hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 cursor-pointer"
           >
             Next &raquo;
           </button>

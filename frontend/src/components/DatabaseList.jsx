@@ -112,14 +112,14 @@ const DatabaseList = ({ activeTab }) => {
                         <button
                           title="Edit User"
                           onClick={() => console.log("Edit user:", entry._id)}
-                          className="text-indigo-600 hover:text-indigo-900 transition duration-150 ease-in-out transform hover:scale-110"
+                          className="text-indigo-600 hover:text-indigo-900 transition duration-150 ease-in-out transform hover:scale-110 cursor-pointer"
                         >
                           <FaEdit size={16} />
                         </button>
                         <button
                           title="Delete User"
                           onClick={() => console.log("Delete user:", entry._id)}
-                          className="text-red-600 hover:text-red-900 transition duration-150 ease-in-out transform hover:scale-110"
+                          className="text-red-600 hover:text-red-900 transition duration-150 ease-in-out transform hover:scale-110 cursor-pointer"
                         >
                           <FaTrash size={16} />
                         </button>
