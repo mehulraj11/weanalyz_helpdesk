@@ -177,7 +177,7 @@ function TicketApproval({ tickets, setTickets }) {
           <p className="text-gray-600 text-sm mb-4">{error}</p>
           <button
             onClick={fetchPendingTickets}
-            className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700"
+            className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 cursor-pointer"
           >
             Retry
           </button>
@@ -328,20 +328,20 @@ function TicketApproval({ tickets, setTickets }) {
                           onClick={() =>
                             handleSubmit(ticket.ticketNo, ticket._id)
                           }
-                          className="p-1 text-green-600 hover:bg-green-100 rounded"
+                          className="p-1 text-green-600 hover:bg-green-100 rounded cursor-pointer"
                           title="Approve and Assign"
                         >
                           <FaCheck size={14} />
                         </button>
                         <button
                           onClick={() => handleDelete(ticket._id)}
-                          className="p-1 text-red-600 hover:bg-red-100 rounded"
+                          className="p-1 text-red-600 hover:bg-red-100 rounded cursor-pointer"
                           title="Reject Ticket"
                         >
                           <FaTimes size={14} />
                         </button>
                         <button
-                          className="p-1 text-blue-600 hover:bg-blue-100 rounded"
+                          className="p-1 text-blue-600 hover:bg-blue-100 rounded cursor-pointer"
                           title="View Details"
                         >
                           <FaEye size={14} />

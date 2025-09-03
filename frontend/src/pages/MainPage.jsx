@@ -23,7 +23,7 @@ function MainPage({ tickets, setTickets }) {
             Access Denied
           </h2>
           <p className="text-gray-600 mb-4">Please log in to continue.</p>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-medium">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-medium cursor-pointer">
             Go to Login
           </button>
         </div>
@@ -109,7 +109,7 @@ function MainPage({ tickets, setTickets }) {
                 <span className="font-semibold text-gray-900">Menu</span>
               </div>
               <button
-                className="lg:hidden p-1"
+                className="lg:hidden p-1 cursor-pointer"
                 onClick={() => setSidebarOpen(false)}
               >
                 ✕
@@ -130,7 +130,7 @@ function MainPage({ tickets, setTickets }) {
                   }}
                   className={`
                     w-full flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium
-                    transition-colors duration-150
+                    transition-colors duration-150 cursor-pointer
                     ${
                       isActive
                         ? "bg-blue-100 text-blue-700 border-l-4 border-blue-600"
@@ -149,7 +149,7 @@ function MainPage({ tickets, setTickets }) {
             <div className="flex items-center justify-between">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="p-2 rounded-md text-gray-600 hover:bg-gray-100"
+                className="p-2 rounded-md text-gray-600 hover:bg-gray-100 cursor-pointer"
               >
                 ☰
               </button>

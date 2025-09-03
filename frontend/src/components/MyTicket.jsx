@@ -120,7 +120,7 @@ function MyTicket({ tickets, setTickets }) {
           <p className="text-gray-600 text-sm mb-4">{error}</p>
           <button
             onClick={fetchTickets}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
           >
             Retry
           </button>
@@ -263,7 +263,7 @@ function MyTicket({ tickets, setTickets }) {
                           e.stopPropagation();
                           setSelectedTicket(ticket);
                         }}
-                        className="p-1 text-blue-600 hover:bg-blue-100 rounded"
+                        className="p-1 text-blue-600 hover:bg-blue-100 rounded cursor-pointer"
                         title="View Details"
                       >
                         <FaEye size={14} />
@@ -271,7 +271,7 @@ function MyTicket({ tickets, setTickets }) {
                       {role !== "user" && (
                         <button
                           onClick={(e) => handleDelete(ticket._id, e)}
-                          className="p-1 text-red-600 hover:bg-red-100 rounded"
+                          className="p-1 text-red-600 hover:bg-red-100 rounded cursor-pointer"
                           title="Delete Ticket"
                         >
                           <FaTrash size={14} />
