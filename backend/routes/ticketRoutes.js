@@ -18,5 +18,7 @@ router.post("/op_approvals", protect, authorizeRoles("operation"), ticketControl
 router.get("/assignedcount", protect, authorizeRoles("operation", "technical"), ticketController.assignedTickets)
 router.put("/resolve/:id", protect, authorizeRoles("technical", "operation"), ticketController.resolveTicket);
 router.delete("/deleteticket/:id", ticketController.deleteTicket)
+
 // // admin
+router.get("/adminticketcount", protect, authorizeRoles("admin"), ticketController.adminTicketCount)
 module.exports = router;

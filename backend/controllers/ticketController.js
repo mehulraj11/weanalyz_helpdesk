@@ -25,16 +25,14 @@ exports.userTicketsCount = async (req, res) => {
     }
 };
 
-
+// wors to count tcets for operaton and techncal
 exports.assignedTickets = async (req, res) => {
     try {
         const role = req.user.role;
 
-        // Find all users with this role
         const users = await User.find({ role }).select('_id');
         const userIds = users.map(user => user._id);
 
-        // Count tickets assigned to these users
         const totalTickets = await Ticket.countDocuments({
             assignedTo: { $in: userIds }
         });
@@ -66,7 +64,19 @@ exports.assignedTickets = async (req, res) => {
     }
 };
 
+exports.adminTicketCount = async (req, res) => {
+    try {
+        const total = await Ticket.countDocuments();
+        const resolvedTickets = await Ticket.countDocuments({ status: "Resolved" })
+        const inProgressTickets = await Ticket.countDocuments({ status: "In Progress" })
+        const pendingTickets = await Ticket.countDocuments({ status: "Pending" })
+        res.status(200).json({
+            total, resolvedTickets, pendingTickets, inProgressTickets
+        })
+    } catch (error) {
 
+    }
+}
 
 // this is for the opertion team to process the ticket either send it to itself or techinalc
 exports.ticketVerify = async (req, res) => {

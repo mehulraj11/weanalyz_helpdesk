@@ -21,6 +21,29 @@ function Dashboard() {
     const fetchTicketCount = async () => {
       setLoading(true);
       setFetchError(null);
+      if (user.role === "admin") {
+        try {
+          const res = await axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/tickets/adminticketcount`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+              withCredentials: true,
+            }
+          );
+          console.log(res.data);
+          setTicketCount({
+            total: res.data.total || 0,
+            resolved: res.data.resolvedTickets || 0,
+            pending: res.data.pendingTickets || 0,
+            inProgress: res.data.inProgressTickets || 0,
+          });
+        } catch (error) {
+          console.log(error.message);
+          setFetchError("Failed to load dashboard data. Please try again.");
+        } finally {
+          setLoading(false);
+        }
+      }
       if (user.role === "operation" || user.role === "technical") {
         try {
           const res = await axios.get(
@@ -32,7 +55,7 @@ function Dashboard() {
           );
           console.log(res.data);
           setTicketCount({
-            total: res.data.totalTickets|| 0,
+            total: res.data.totalTickets || 0,
             resolved: res.data.resolvedTickets || 0,
             pending: res.data.pendingTickets || 0,
             inProgress: res.data.inProgressTickets || 0,
