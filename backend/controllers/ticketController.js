@@ -1,5 +1,7 @@
 const Ticket = require("../models/Ticket");
 const User = require("../models/User");
+
+// USER CONTROLLERS
 // thus controller works for the counting of the tickets for each user only
 exports.userTicketsCount = async (req, res) => {
     try {
@@ -25,7 +27,26 @@ exports.userTicketsCount = async (req, res) => {
     }
 };
 
-// wors to count tcets for operaton and techncal
+// this will work for the user to create a new ticket
+exports.createTicket = async (req, res) => {
+    try {
+        const ticketData = {
+            ...req.body,
+            createdBy: req.user.id,
+        };
+        console.log(ticketData);
+
+        // console.log(ticketData.createdBy);
+        const ticket = await Ticket.create(ticketData);
+        res.status(201).json({ message: "Ticket created", ticket });
+    } catch (err) {
+        console.log("Ticket Creation Error : " + err.message);
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// OPERATIOIN AND TECHNICAL CONTROLLERS
+// works to count tickets for operaton and techncal
 exports.assignedTickets = async (req, res) => {
     try {
         const role = req.user.role;
@@ -63,21 +84,6 @@ exports.assignedTickets = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
-
-exports.adminTicketCount = async (req, res) => {
-    try {
-        const total = await Ticket.countDocuments();
-        const resolvedTickets = await Ticket.countDocuments({ status: "Resolved" })
-        const inProgressTickets = await Ticket.countDocuments({ status: "In Progress" })
-        const pendingTickets = await Ticket.countDocuments({ status: "Pending" })
-        res.status(200).json({
-            total, resolvedTickets, pendingTickets, inProgressTickets
-        })
-    } catch (error) {
-
-    }
-}
-
 // this is for the opertion team to process the ticket either send it to itself or techinalc
 exports.ticketVerify = async (req, res) => {
     try {
@@ -91,56 +97,6 @@ exports.ticketVerify = async (req, res) => {
     } catch (err) {
         console.log("get All Ticket : " + err.message);
         res.status(500).json({ message: "Server error" });
-    }
-};
-// this will work for the user to create a new ticket
-exports.createTicket = async (req, res) => {
-    try {
-        const ticketData = {
-            ...req.body,
-            createdBy: req.user.id,
-        };
-        console.log(ticketData.createdBy);
-        const ticket = await Ticket.create(ticketData);
-        res.status(201).json({ message: "Ticket created", ticket });
-    } catch (err) {
-        console.log("Ticket Creation Error : " + err.message);
-        res.status(500).json({ message: err.message });
-    }
-};
-
-
-// this controller will work for the listing of the tickets for the logged users such as user, operation, admin
-exports.getTickets = async (req, res) => {
-    try {
-        console.log("Fetching tickets for user:", req.user.id, "Role:", req.user.role);
-
-        let tickets;
-
-        if (req.user.role === "user") {
-            // For users, get tickets they created
-            tickets = await Ticket.find({ createdBy: req.user.id })
-                .populate("assignedTo", "username role")
-                .populate("createdBy", "username role")
-                .sort({ createdAt: -1 });
-        } else {
-            // For non-users, get tickets assigned to them
-            tickets = await Ticket.find({ assignedTo: req.user.id })
-                .populate("assignedTo", "username role")
-                .populate("createdBy", "username role")
-                .sort({ createdAt: -1 });
-        }
-
-        console.log("Found tickets:", tickets.length);
-        res.status(200).json(tickets);
-
-    } catch (err) {
-        console.error("Ticket GET Error:", err.message);
-        console.error("Full Error:", err);
-        res.status(500).json({
-            message: "Failed to fetch tickets",
-            error: err.message
-        });
     }
 };
 // this will work only for operation for approve it to itself or technical
@@ -203,3 +159,55 @@ exports.deleteTicket = async (req, res) => {
     }
 
 }
+
+// ADMIN CONTROLLERS
+// ths works for admin to count total number of tickets present in database
+exports.adminTicketCount = async (req, res) => {
+    try {
+        const total = await Ticket.countDocuments();
+        const resolvedTickets = await Ticket.countDocuments({ status: "Resolved" })
+        const inProgressTickets = await Ticket.countDocuments({ status: "In Progress" })
+        const pendingTickets = await Ticket.countDocuments({ status: "Pending" })
+        res.status(200).json({
+            total, resolvedTickets, pendingTickets, inProgressTickets
+        })
+    } catch (error) {
+
+    }
+}
+
+
+
+// this controller will work for the listing of the tickets for the logged users such as user, operation, admin
+exports.getTickets = async (req, res) => {
+    try {
+        console.log("Fetching tickets for user:", req.user.id, "Role:", req.user.role);
+
+        let tickets;
+
+        if (req.user.role === "user") {
+            // For users, get tickets they created
+            tickets = await Ticket.find({ createdBy: req.user.id })
+                .populate("assignedTo", "username role")
+                .populate("createdBy", "username role")
+                .sort({ createdAt: -1 });
+        } else {
+            // For non-users, get tickets assigned to them
+            tickets = await Ticket.find({ assignedTo: req.user.id })
+                .populate("assignedTo", "username role")
+                .populate("createdBy", "username role")
+                .sort({ createdAt: -1 });
+        }
+
+        console.log("Found tickets:", tickets.length);
+        res.status(200).json(tickets);
+
+    } catch (err) {
+        console.error("Ticket GET Error:", err.message);
+        console.error("Full Error:", err);
+        res.status(500).json({
+            message: "Failed to fetch tickets",
+            error: err.message
+        });
+    }
+};

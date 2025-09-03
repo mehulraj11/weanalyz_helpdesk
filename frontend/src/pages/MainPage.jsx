@@ -88,7 +88,7 @@ function MainPage({ tickets, setTickets }) {
       <div className="flex flex-1 overflow-hidden">
         {sidebarOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+            className="fixed inset-0 bg-opacity-100 z-20 lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         )}

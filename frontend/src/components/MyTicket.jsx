@@ -40,7 +40,7 @@ function MyTicket({ tickets, setTickets }) {
       setLoading(false);
     }
   };
-
+  console.log(tickets);
   const handleDelete = async (id, e) => {
     e.stopPropagation();
 
@@ -76,7 +76,7 @@ function MyTicket({ tickets, setTickets }) {
         ticket.assignedTo.name.toLowerCase().includes(searchLower))
     );
   });
-
+  console.log(filteredTickets);
   // Status styling helper
   const getStatusStyle = (status) => {
     const styles = {
@@ -198,18 +198,12 @@ function MyTicket({ tickets, setTickets }) {
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Date
                 </th>
-                {role !== "user" && (
-                  <>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Priority
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Assignee
-                    </th>
-                  </>
-                )}
+
                 <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">
                   Actions
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Assigned To
                 </th>
               </tr>
             </thead>
@@ -245,31 +239,22 @@ function MyTicket({ tickets, setTickets }) {
                       : "-"}
                   </td>
 
-                  {role !== "user" && (
-                    <>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <span
-                          className={`px-2 py-1 text-xs font-medium rounded border ${getPriorityStyle(
-                            ticket.priority
-                          )}`}
-                        >
-                          {ticket.priority || "Low"}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-xs font-medium">
-                            {ticket.assignedTo?.name
-                              ? ticket.assignedTo.name.charAt(0).toUpperCase()
-                              : "?"}
-                          </div>
-                          <span className="truncate max-w-20">
-                            {ticket.assignedTo?.name || "Unassigned"}
-                          </span>
-                        </div>
-                      </td>
-                    </>
-                  )}
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded border ${getPriorityStyle(
+                        ticket.priority
+                      )}`}
+                    >
+                      {ticket.priority || "Low"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                    <div className="flex items-center space-x-2">
+                      <span className="truncate max-w-20">
+                        {ticket.assignedTo?.role.toUpperCase() || "Unassigned"}
+                      </span>
+                    </div>
+                  </td>
 
                   <td className="px-4 py-3 whitespace-nowrap text-center">
                     <div className="flex items-center justify-center space-x-2">

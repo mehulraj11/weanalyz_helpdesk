@@ -6,6 +6,7 @@ import { FaTicketAlt, FaCheck, FaTimes } from "react-icons/fa";
 import Select from "./utility/Select";
 
 function NewTicket() {
+  console.log(Date.now());
   const [ticketData, setTicketData] = useState({
     ticketNo: "",
     date: "",
@@ -89,7 +90,6 @@ function NewTicket() {
     setLoading(true);
 
     if (
-      !ticketData.ticketNo ||
       !ticketData.date ||
       !ticketData.name ||
       !ticketData.subject ||
@@ -104,7 +104,10 @@ function NewTicket() {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/tickets/create`,
-        ticketData,
+        {
+          ...ticketData,
+          ticketNo: Date.now().toString(),
+        },
         {
           withCredentials: true,
           headers: {
@@ -142,15 +145,6 @@ function NewTicket() {
   return (
     <div className="min-h-full bg-gray-50 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
-        {/* <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Create New Ticket
-          </h1>
-          <p className="text-gray-600">
-            Submit your support request and we'll get back to you soon
-          </p>
-        </div> */}
-
         {message && (
           <div
             className={`mb-6 p-4 rounded-lg border ${
@@ -176,7 +170,7 @@ function NewTicket() {
         >
           <div className="p-6 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
+              {/* <div>
                 <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
                   Ticket No. <span className="text-red-500 ml-1">*</span>
                 </label>
@@ -189,7 +183,7 @@ function NewTicket() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Enter ticket number"
                 />
-              </div>
+              </div> */}
               <div>
                 <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
                   Date <span className="text-red-500 ml-1">*</span>
