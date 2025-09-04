@@ -142,8 +142,15 @@ exports.adminTicketCount = async (req, res) => {
             total, resolvedTickets, pendingTickets, inProgressTickets
         })
     } catch (error) {
-
+        if (error.response) {
+            console.error("Error status:", error.response.status);
+            res.status(error.response.status).json(error.response.data);
+        } else {
+            console.error("Error:", error.message);
+            res.status(500).json({ error: "Something went wrong" });
+        }
     }
+
 }
 
 // this controller will work for the listing of the tickets for the logged users such as user, operation, admin

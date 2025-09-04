@@ -16,8 +16,8 @@ exports.register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = await User.create({ username, email, password: hashedPassword, role });
-        console.log(newUser);
+        const newUser = new User({ username, email, password: hashedPassword, role });
+        await newUser.save();
         res.status(201).json({ message: "User registered successfully" });
     } catch (err) {
         res.status(500).json({ message: "Server error" });
@@ -30,7 +30,7 @@ exports.login = async (req, res) => {
         return res.status(400).json({ message: "Email and password are required" });
     }
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).select("+password");
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -85,8 +85,7 @@ exports.updatePassword = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ message: "Old password is incorrect" });
         }
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
 
         updatedUser.password = hashedPassword;
         await updatedUser.save();
