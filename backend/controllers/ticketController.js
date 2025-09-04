@@ -2,12 +2,20 @@ const Ticket = require("../models/Ticket");
 const User = require("../models/User");
 
 // USER CONTROLLERS
-// thus controller works for the counting of the tickets for each user only
+// this controller works for the counting of the tickets for each user only
 exports.userTicketsCount = async (req, res) => {
     try {
-        const userId = req.user.id;
+        // const userId = req.user.id;
+        const user = await User.find({ _id: req.user.id })
+        const role = user[0].role;
+        // console.log(role);
 
-        const filter = { createdBy: userId };
+        let filter;
+        if (role === "user") {
+            filter = { createdBy: req.user.id };
+        } else {
+            filter = { assignedTo: req.user.id }
+        }
 
         const total = await Ticket.countDocuments(filter);
         const resolved = await Ticket.countDocuments({ ...filter, status: "Resolved" });
@@ -34,7 +42,7 @@ exports.createTicket = async (req, res) => {
             ...req.body,
             createdBy: req.user.id,
         };
-        console.log(ticketData);
+        // console.log(ticketData);
 
         // console.log(ticketData.createdBy);
         const ticket = await Ticket.create(ticketData);
@@ -46,44 +54,6 @@ exports.createTicket = async (req, res) => {
 };
 
 // OPERATIOIN AND TECHNICAL CONTROLLERS
-// works to count tickets for operaton and techncal
-exports.assignedTickets = async (req, res) => {
-    try {
-        const role = req.user.role;
-
-        const users = await User.find({ role }).select('_id');
-        const userIds = users.map(user => user._id);
-
-        const totalTickets = await Ticket.countDocuments({
-            assignedTo: { $in: userIds }
-        });
-
-        const resolvedTickets = await Ticket.countDocuments({
-            assignedTo: { $in: userIds },
-            status: "Resolved"
-        });
-
-        const pendingTickets = await Ticket.countDocuments({
-            assignedTo: { $in: userIds },
-            status: "Pending"
-        });
-
-        const inProgressTickets = await Ticket.countDocuments({
-            assignedTo: { $in: userIds },
-            status: "In Progress"
-        });
-
-        res.status(200).json({
-            totalTickets,
-            resolvedTickets,
-            pendingTickets,
-            inProgressTickets
-        });
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).json({ message: "Server error" });
-    }
-};
 // this is for the opertion team to process the ticket either send it to itself or techinalc
 exports.ticketVerify = async (req, res) => {
     try {
@@ -175,8 +145,6 @@ exports.adminTicketCount = async (req, res) => {
 
     }
 }
-
-
 
 // this controller will work for the listing of the tickets for the logged users such as user, operation, admin
 exports.getTickets = async (req, res) => {

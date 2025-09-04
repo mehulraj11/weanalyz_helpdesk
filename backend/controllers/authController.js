@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -18,9 +17,8 @@ exports.register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await User.create({ username, email, password: hashedPassword, role });
-
+        console.log(newUser);
         res.status(201).json({ message: "User registered successfully" });
-        console.log(username + "registered")
     } catch (err) {
         res.status(500).json({ message: "Server error" });
     }
@@ -49,7 +47,7 @@ exports.login = async (req, res) => {
             token,
             user: { id: user._id, username: user.username, role: user.role, email: user.email },
         });
-        console.log(user.username + "logged")
+        console.log(user.username + " logged")
     } catch (err) {
         res.status(500).json({ message: "Server error" });
     }

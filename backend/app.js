@@ -28,10 +28,11 @@ app.use(morgan("dev"))
 app.use(express.json());
 
 connectDB();
-
+// home route
 app.get("/", (req, res) => {
   res.status(200).json({ message: "HOME ROUTE" })
 })
+
 app.use("/api/auth", authRoutes);
 app.use("/api/tickets", ticketRoutes)
 

@@ -1,10 +1,11 @@
 const express = require("express");
-const { register, login, getAllUser, updatePassword } = require("../controllers/authController");
-const { protect } = require("../middlewares/authMiddleware")
+const authController = require("../controllers/authController");
+const { protect, authorizeRoles } = require("../middlewares/authMiddleware")
 const router = express.Router();
 
-router.post("/register", register);
-router.post("/login", login);
-router.post("/getalluser", getAllUser)
-router.put("/changepassword", protect, updatePassword)
+router.post("/register", authController.register);
+router.post("/login", authController.login);
+// this route works for admin to the database list
+router.post("/getalluser", protect, authorizeRoles("admin"), authController.getAllUser)
+router.put("/changepassword", protect, authController.updatePassword)
 module.exports = router;

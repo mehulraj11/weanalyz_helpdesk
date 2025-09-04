@@ -13,7 +13,6 @@ function Dashboard() {
   const [fetchError, setFetchError] = useState(null);
 
   const user = JSON.parse(localStorage.getItem("user"));
-  const role = user?.role;
   const token = localStorage.getItem("token");
   console.log(user.role);
 
@@ -44,10 +43,14 @@ function Dashboard() {
           setLoading(false);
         }
       }
-      if (user.role === "operation" || user.role === "technical") {
+      if (
+        user.role === "operation" ||
+        user.role === "technical" ||
+        user.role === "user"
+      ) {
         try {
           const res = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/tickets/assignedcount`,
+            `${import.meta.env.VITE_BACKEND_URL}/tickets/count`,
             {
               headers: { Authorization: `Bearer ${token}` },
               withCredentials: true,
@@ -67,29 +70,29 @@ function Dashboard() {
           setLoading(false);
         }
       }
-      if (user.role === "user") {
-        try {
-          const res = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/tickets/count`,
-            {
-              headers: { Authorization: `Bearer ${token}` },
-              withCredentials: true,
-            }
-          );
+      // if (user.role === "user") {
+      //   try {
+      //     const res = await axios.get(
+      //       `${import.meta.env.VITE_BACKEND_URL}/tickets/count`,
+      //       {
+      //         headers: { Authorization: `Bearer ${token}` },
+      //         withCredentials: true,
+      //       }
+      //     );
 
-          setTicketCount({
-            total: res.data.totalTickets || 0,
-            resolved: res.data.resolvedTickets || 0,
-            pending: res.data.pendingTickets || 0,
-            inProgress: res.data.inProgressTickets || 0,
-          });
-        } catch (err) {
-          console.error("Error fetching ticket count:", err.message);
-          setFetchError("Failed to load dashboard data. Please try again.");
-        } finally {
-          setLoading(false);
-        }
-      }
+      //     setTicketCount({
+      //       total: res.data.totalTickets || 0,
+      //       resolved: res.data.resolvedTickets || 0,
+      //       pending: res.data.pendingTickets || 0,
+      //       inProgress: res.data.inProgressTickets || 0,
+      //     });
+      //   } catch (err) {
+      //     console.error("Error fetching ticket count:", err.message);
+      //     setFetchError("Failed to load dashboard data. Please try again.");
+      //   } finally {
+      //     setLoading(false);
+      //   }
+      // }
     };
 
     if (token) {
