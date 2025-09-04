@@ -14,7 +14,7 @@ function Dashboard() {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("token");
-  console.log(user.role);
+  // console.log(user.role);
 
   useEffect(() => {
     const fetchTicketCount = async () => {
@@ -29,7 +29,7 @@ function Dashboard() {
               withCredentials: true,
             }
           );
-          console.log(res.data);
+          // console.log(res.data);
           setTicketCount({
             total: res.data.total || 0,
             resolved: res.data.resolvedTickets || 0,
@@ -56,7 +56,7 @@ function Dashboard() {
               withCredentials: true,
             }
           );
-          console.log(res.data);
+          // console.log(res.data);
           setTicketCount({
             total: res.data.totalTickets || 0,
             resolved: res.data.resolvedTickets || 0,

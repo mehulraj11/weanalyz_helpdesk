@@ -6,7 +6,7 @@ import { FaTicketAlt, FaCheck, FaTimes } from "react-icons/fa";
 import Select from "./utility/Select";
 
 function NewTicket() {
-  console.log(Date.now());
+  // console.log(Date.now());
   const [ticketData, setTicketData] = useState({
     ticketNo: "",
     date: "",

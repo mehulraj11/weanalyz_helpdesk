@@ -40,7 +40,7 @@ function MyTicket({ tickets, setTickets }) {
       setLoading(false);
     }
   };
-  console.log(tickets);
+  // console.log(tickets);
   const handleDelete = async (id, e) => {
     e.stopPropagation();
 
@@ -76,7 +76,7 @@ function MyTicket({ tickets, setTickets }) {
         ticket.assignedTo.name.toLowerCase().includes(searchLower))
     );
   });
-  console.log(filteredTickets);
+  // console.log(filteredTickets);
   // Status styling helper
   const getStatusStyle = (status) => {
     const styles = {
